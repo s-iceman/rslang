@@ -1,28 +1,38 @@
-import { IView } from '../views/interfaces';
-import { IAppController, IRouter } from './interfaces';
+import { ViewOrNotInit } from '../views/interfaces';
+import { IAppController, IRouter, ITextBookController } from './interfaces';
 import { Router } from './router';
 
 class AppController implements IAppController {
   private router: IRouter;
 
-  private activeView: IView | undefined;
+  private textBookCtrl: ITextBookController;
 
-  constructor() {
+  private activeView: ViewOrNotInit;
+
+  constructor(textBookCtrl: ITextBookController) {
     this.router = new Router();
-    this.activeView = undefined;
 
-    window.addEventListener('load', this.loadView.bind(this));
-    window.addEventListener('hashchange', this.loadView.bind(this));
+    this.activeView = null;
+    this.textBookCtrl = textBookCtrl;
+
+    window.addEventListener('load', () => {
+      const path = window.localStorage.getItem('page') ?? '';
+      this.changeUrl(path);
+    });
+    window.addEventListener('hashchange', () => {
+      this.changeUrl();
+    });
   }
 
   start(): void {
-    console.log('START');
+    console.debug('Run controller');
   }
 
-  private loadView(): void {
-    this.activeView = this.router.process();
+  private changeUrl(path?: string): void {
+    this.activeView = this.router.process(path ?? '');
     if (this.activeView) {
       this.activeView.bindChangePage(this.changePage.bind(this));
+      this.textBookCtrl.setView(this.activeView);
     }
   }
 
@@ -30,6 +40,8 @@ class AppController implements IAppController {
     this.activeView = this.router.process(newPath);
     if (this.activeView) {
       this.activeView.bindChangePage(this.changePage.bind(this));
+      this.textBookCtrl.setView(this.activeView);
+      window.localStorage.setItem('page', newPath);
     }
   }
 }

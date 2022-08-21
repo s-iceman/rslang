@@ -1,3 +1,5 @@
 type ChangePageFn = (newPath: string) => void;
 
-export { ChangePageFn };
+type SelectUnitFn = (unit: string) => void;
+
+export { ChangePageFn, SelectUnitFn };

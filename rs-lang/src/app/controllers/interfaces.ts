@@ -1,11 +1,17 @@
-import { IView } from '../views/interfaces';
+import { ViewOrNotInit } from '../views/interfaces';
+import { UnitLevels } from './constants';
 
 interface IAppController {
   start(): void;
 }
 
-interface IRouter {
-  process(newPaht?: string): IView | undefined;
+interface ITextBookController {
+  getUnit(): UnitLevels;
+  setView(view: ViewOrNotInit): void;
 }
 
-export { IAppController, IRouter };
+interface IRouter {
+  process(newPath?: string): ViewOrNotInit;
+}
+
+export { IAppController, IRouter, ITextBookController };

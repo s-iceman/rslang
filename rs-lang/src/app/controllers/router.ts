@@ -1,6 +1,6 @@
-import { IViewConstructor, IView } from '../views/interfaces';
+import { IViewConstructor, ViewOrNotInit } from '../views/interfaces';
 import { MainPage } from '../views/mainPage';
-import { TextbookView } from '../views/textbook/textbook';
+import { TextBookView } from '../views/textbook/textbook';
 
 type MyType = Map<string, IViewConstructor>;
 
@@ -11,18 +11,18 @@ export class Router {
     this.routes = this.initRoutes();
   }
 
-  process(newPath?: string): IView | undefined {
+  process(newPath?: string): ViewOrNotInit {
     let path = '';
     if (newPath) {
       path = newPath;
-      window.history.pushState({}, newPath, newPath);
+      window.history.pushState({}, newPath, `${newPath}`);
     } else {
       path = this.parseLocation();
     }
 
     const clz: IViewConstructor | undefined = this.routes.get(path);
     if (!clz) {
-      return undefined;
+      return null;
     } else {
       const view = new clz();
       view.render();
@@ -32,16 +32,12 @@ export class Router {
 
   private initRoutes(): MyType {
     const routes: MyType = new Map();
-    const views: Array<IViewConstructor> = [MainPage, TextbookView];
+    const views: Array<IViewConstructor> = [MainPage, TextBookView];
     views.forEach((v) => {
       routes.set(v.getPath(), v);
     });
     return routes;
   }
-
-  // private getComponentByPath(path, routes) {
-  //   return routes.find(r => r.path.match(new RegExp(`^\\${path}$`, 'gm'))) || undefined;
-  // }
 
   private parseLocation(): string {
     return location.hash.slice(1).toLowerCase() || '/';

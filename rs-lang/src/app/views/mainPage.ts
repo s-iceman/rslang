@@ -1,6 +1,5 @@
-import { IView } from './interfaces';
+import { IView, MenuBtn } from './interfaces';
 import { View } from './view';
-import { MenuBtn } from './types';
 
 export class MainPage extends View implements IView {
   private btn: MenuBtn;
