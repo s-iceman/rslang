@@ -1,8 +1,8 @@
-import { IView } from './interfaces';
-import { View } from './view';
-import { MenuBtn } from './types';
+import { IView } from './../interfaces';
+import { View } from '../view';
+import { MenuBtnType, MenuBtn } from '../types';
 
-export class MainPage extends View implements IView {
+export class TextbookView extends View implements IView {
   private btn: MenuBtn;
 
   render(): void {
@@ -11,18 +11,18 @@ export class MainPage extends View implements IView {
   }
 
   static getPath(): string {
-    return '/';
+    return '/textbook';
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
-    const btn: MenuBtn = document.createElement('a');
-    btn.innerText = 'Textbook';
-    btn.id = 'go-to-textbook';
-    btn.href = '/textbook';
+    const btn: MenuBtnType = document.createElement('a');
+    btn.innerText = 'Main page';
+    btn.id = 'go-to-main';
+    btn.href = '/';
     this.btn = btn;
 
     const text: HTMLDivElement = document.createElement('div');
-    text.textContent = 'MAIN PAGE';
+    text.textContent = 'TEXTBOOK';
 
     return [btn, text];
   }
