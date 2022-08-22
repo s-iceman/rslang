@@ -18,8 +18,8 @@ export default class Words extends CreateMarkup {
 
     const wordCardTitle = `
       <div class="word__title">
-        <h3>${word.slice(0, 1).toUpperCase()}${word.slice(1)} - <span>${transcription}</span></h3>
-        <span class="word__subtitle">${wordTranslate}</span>
+          <h3>${word.slice(0, 1).toUpperCase()}${word.slice(1)} - <span>${transcription}</span></h3>
+          <span class="word__subtitle">${wordTranslate}</span>
       </div>
     `;
     const wordCard = new CreateMarkup(this.node, 'li', 'words__item word');
@@ -56,9 +56,11 @@ export default class Words extends CreateMarkup {
 
     btnDiff.node.addEventListener('click', () => {
       (btnDiff.node as HTMLButtonElement).disabled = true;
+      void this.controler.createUserWord(id, true, false);
     });
     btnStudy.node.addEventListener('click', () => {
       (btnStudy.node as HTMLButtonElement).disabled = true;
+      void this.controler.createUserWord(id, false, true);
     });
   }
 

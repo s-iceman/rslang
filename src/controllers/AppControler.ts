@@ -47,6 +47,49 @@ export default class AppControler extends State {
     node.classList.remove('play--active');
   }
 
+  async userSign() {
+    const user = { email: 'test@mail.com', password: '123456789' };
+
+    const data = await this.model.signIn(user);
+
+    if (data) {
+      const userInfo = {
+        isAuth: true,
+        name: `${data.name || ''}`,
+        token: `${data.token || ''}`,
+        userId: `${data.userId || ''}`,
+      };
+      localStorage.setItem('user', JSON.stringify(userInfo));
+      this.setStorage(localStorage.getItem('user') as string);
+      void this.renderWords();
+    }
+  }
+
+  async renderWords() {
+    const data = await this.model.getWords(0, 29);
+    this.view.renderWordList(data);
+  }
+
+  async createUserWord(wordId: string, isDifficulty = false, isStudy = false) {
+    const getWords = await this.model.getUserWords();
+    console.log('getWords: ', getWords);
+    const filterWords = getWords?.filter((item) => item.wordId === wordId) || [];
+
+    if (!filterWords.length && isStudy) {
+      await this.model.postUserWord(wordId, 'simple', isStudy);
+    } else if (filterWords.length > 0 && isStudy) {
+      const difficulty = filterWords[0].difficulty;
+      await this.model.updateUserWord(wordId, difficulty, isStudy);
+    }
+
+    if (!filterWords.length && isDifficulty) {
+      await this.model.postUserWord(wordId, 'hard', isStudy);
+    } else if (filterWords.length > 0 && isDifficulty) {
+      const { study } = filterWords[0].optional;
+      await this.model.updateUserWord(wordId, 'hard', study);
+    }
+  }
+
   async init() {
     const data = await this.model.getWords(4, 5);
     this.view.init(data);

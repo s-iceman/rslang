@@ -21,6 +21,14 @@ export default class AppView {
 
     const header = new CreateMarkup(this.parentNode, 'header', 'header');
     const headerWrap = new CreateMarkup(header.node, 'div', 'header__wrap', headerMarkup);
+    const wordButtons = new CreateMarkup(headerWrap.node, 'div', 'auth__buttons');
+
+    const btnAuth = new CreateMarkup(wordButtons.node, 'button', 'button btn-auth', 'Войти');
+    btnAuth.node.addEventListener('click', () => {
+      btnAuth.node.innerHTML = 'Выйти';
+      document.querySelector('.textbook')!.innerHTML = '';
+      void this.controler?.userSign();
+    });
   }
 
   renderFooter() {
@@ -35,7 +43,7 @@ export default class AppView {
         </div>
         <a target="_blank" href="https://rs.school/js/" class="link rs-link"></a>
       </div>
-      `;
+    `;
     new CreateMarkup(this.parentNode, 'footer', 'footer', footerMarkup);
   }
 
