@@ -25,8 +25,7 @@ export default class AppView {
 
     const btnAuth = new CreateMarkup(wordButtons.node, 'button', 'button btn-auth', 'Войти');
     btnAuth.node.addEventListener('click', () => {
-      btnAuth.node.innerHTML = 'Выйти';
-      document.querySelector('.textbook')!.innerHTML = '';
+      (btnAuth.node as HTMLButtonElement).disabled = true;
       void this.controler?.userSign();
     });
   }
@@ -47,16 +46,22 @@ export default class AppView {
     new CreateMarkup(this.parentNode, 'footer', 'footer', footerMarkup);
   }
 
-  renderWordList(data: IApiWords[]) {
-    const textbook = new CreateMarkup(this.parentNode, 'section', 'textbook');
-    const words = new Words(this.baseUrl, data, textbook.node);
-    return words.render();
+  addWordListWrap() {
+    new CreateMarkup(this.parentNode, 'div', 'dictionary');
   }
 
-  init(data: IApiWords[]) {
+  renderWordList(wordsData: IApiWords[]) {
+    const parentNode = <HTMLElement>document.querySelector('.dictionary');
+    parentNode.innerHTML = '';
+    const words = new Words(this.baseUrl, parentNode);
+    wordsData.map((wordsItem) => words.addCardWord(wordsItem));
+  }
+
+  init() {
     this.controler = new AppControler();
+
     this.renderHeader();
-    this.renderWordList(data);
+    this.addWordListWrap();
     this.renderFooter();
   }
 }

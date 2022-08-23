@@ -1,5 +1,5 @@
 import State from './State';
-import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from './constants';
+import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS, MAX_LIMIT_WORDS } from './constants';
 import { IApiWords, IUserAuth, IUserWord } from './interfaces';
 
 export default class AppModel extends State {
@@ -39,7 +39,7 @@ export default class AppModel extends State {
     return <IApiWords[]>await resp.json();
   }
 
-  async postUserWord(id: string, difficulty: string, isStudy = false) {
+  async setUserWord(id: string, method: string, difficulty: string, isStudy = false) {
     if (this.getUserId() !== '') {
       const setUserWords = `${this.usersUrl}/${this.getUserId()}/words/${id}`;
       const word = {
@@ -49,30 +49,7 @@ export default class AppModel extends State {
         },
       };
       const resp = await fetch(setUserWords, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          Authorization: `Bearer ${this.getToken() || ''}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(word),
-      });
-      return <IUserWord[]>await resp.json();
-    }
-  }
-
-  async updateUserWord(id: string, difficulty: string, isStudy = false) {
-    if (this.getUserId() !== '') {
-      const setUserWords = `${this.usersUrl}/${this.getUserId()}/words/${id}`;
-      const word = {
-        difficulty: `${difficulty}`,
-        optional: {
-          study: isStudy,
-        },
-      };
-      const resp = await fetch(setUserWords, {
-        method: 'PUT',
+        method: `${method}`,
         credentials: 'same-origin',
         headers: {
           Authorization: `Bearer ${this.getToken() || ''}`,
@@ -102,7 +79,29 @@ export default class AppModel extends State {
   async getUserWord(wordId: string) {
     if (this.getUserId() !== '') {
       const userWord = `${this.usersUrl}/${this.getUserId()}/words/${wordId}`;
-      const resp = await fetch(userWord, {
+
+      try {
+        const resp = await fetch(userWord, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.getToken() || ''}`,
+            Accept: 'application/json',
+          },
+        });
+        return <IUserWord>await resp.json();
+      } catch {
+        return false;
+      }
+    }
+  }
+
+  async aggregatedWords(_limit = MAX_LIMIT_WORDS) {
+    if (this.getUserId() !== '') {
+      const aggregatedWordUrl = `
+      ${this.usersUrl}/${this.getUserId()}/aggregatedWords?wordsPerPage=${_limit}&filter={"userWord.difficulty":"hard"}
+    `;
+
+      const resp = await fetch(aggregatedWordUrl, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${this.getToken() || ''}`,

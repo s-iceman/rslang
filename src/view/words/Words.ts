@@ -6,11 +6,11 @@ import AppControler from '../../controllers/AppControler';
 export default class Words extends CreateMarkup {
   controler: AppControler;
 
-  constructor(private baseUrl: string, private data: IApiWords[], private parentNode = document.body) {
+  constructor(private baseUrl: string, private parentNode = document.body) {
     super(parentNode, 'ul', 'words');
-    this.data = data;
     this.baseUrl = baseUrl;
     this.controler = new AppControler();
+    this.parentNode = parentNode;
   }
 
   addCardWord(wordsItem: IApiWords) {
@@ -62,9 +62,5 @@ export default class Words extends CreateMarkup {
       (btnStudy.node as HTMLButtonElement).disabled = true;
       void this.controler.createUserWord(id, false, true);
     });
-  }
-
-  render() {
-    this.data.map((wordsItem) => this.addCardWord(wordsItem));
   }
 }
