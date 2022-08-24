@@ -7,22 +7,24 @@ import './login.css';
 
 export class Login extends View implements IView {
     private btn: MenuBtn;
-  
+    private urlLocalUsersCreate ='http://localhost:8082/users';
+    private urlLocalSignIn = 'http://localhost:8082/signin';
+
     render(): void {
       this.root.innerHTML = '';
-      this.root.append(...this.createContent());
+      this.root.append(...this.createAutorizationForm());
     }
   
     static getPath(): string {
-      return '/login';
+      return '/login';   //путь 
     }
   
-    private createContent(): ReadonlyArray<HTMLElement> {
+    private createAutorizationForm(): ReadonlyArray<HTMLElement> {
       const btn: MenuBtn = document.createElement('a');
       btn.setAttribute('style','color:red')
       btn.innerText = 'go back';
       btn.id = 'login';
-      btn.href = '/';
+      btn.href = '/'; //ссылка временная, удалить потом 
       this.btn = btn;
 
       const autorizationForm = `
@@ -33,9 +35,9 @@ export class Login extends View implements IView {
                 <label class="aut__label" for="signup">Регистрация</label>
                 <div id="wrapper__aut">
                   <div id="arrow"></div>
-                  <input id="email" placeholder="Email" type="text">
-                  <input id="pass" placeholder="Password" type="password">
-                  <input id="name" placeholder="Your name" type="password">
+                  <input id="email" placeholder="Email" type="email" required>
+                  <input id="pass" placeholder="Password" type="password" required pattern="[0-9]{8,16}" title="Введите от 8 до 16 цифр">
+                  <input id="name" placeholder="Your name" type="text">
                 </div>
                 <button class="btn-login" type="submit">
                   <span>
@@ -53,8 +55,6 @@ export class Login extends View implements IView {
       autorization.classList.add('autorization');
       autorization.innerHTML = autorizationForm;
       autorization.appendChild(btn);
-
-
       return [autorization];
     }
   
@@ -95,8 +95,7 @@ export class Login extends View implements IView {
 //       userId:string;
 //     }
 
-//     const urlLocalUsersCreate ='http://localhost:8082/users';
-//     const urlLocalSignIn = 'http://localhost:8082/signin';
+
 
 //     let signinUser:IUserSignIn ={
 //       email:'',

@@ -12,7 +12,10 @@
 
 #wrapper__aut, .aut__label, #arrow, .btn-login span { transition: all .5s cubic-bezier(.6,0,.4,1); }
 
-#wrapper__aut { overflow: hidden; }
+#wrapper__aut { 
+  overflow: hidden;
+  padding: 2px;
+ }
 
 #signin:checked ~ #wrapper__aut { height: 168px; }
 #signin:checked ~ #wrapper__aut #arrow { left: 32px; }
@@ -51,6 +54,7 @@ input[type=radio] { display: none; }
 input[type=radio]:checked + .aut__label { opacity: 1; }
 
 input[type=text],
+input[type=email],
 input[type=password] {
   background: #fff;
   border: none;
