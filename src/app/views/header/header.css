@@ -207,6 +207,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
+    top:-2px;
 }
 
 /* Dropdown Content (Hidden by Default) */
