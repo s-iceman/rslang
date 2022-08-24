@@ -5,7 +5,6 @@ import { ITextBookController } from './interfaces';
 
 export class TextBookController implements ITextBookController {
   private activeUnit: UnitLevels;
-
   private textBookView: ViewOrNotInit;
 
   constructor() {

@@ -34,7 +34,7 @@ export class MainPage extends View implements IView {
     const btn: MenuBtn = document.createElement('a');
     btn.innerText = 'Textbook';
     btn.id = 'go-to-textbook';
-    btn.href = '/textbook';
+    btn.href = '/login';
     this.btn = btn;
 
     const text: HTMLDivElement = document.createElement('div');
