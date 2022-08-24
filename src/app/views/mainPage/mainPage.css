@@ -32,6 +32,25 @@
     
 }
 
+@media(max-width:1000px){
+    .content{
+        flex-direction: column;
+        top: -50%;
+    }
+}
+
+@media(max-width:767px){
+    .why-us__boxs {
+    flex-direction: column;
+    }
+}
+
+@media(max-width:767px){
+    .team__members {
+    flex-direction: column;
+    }
+}
+
 .content__header{
     border-color: white;
 }
