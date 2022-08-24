@@ -18,21 +18,44 @@ export class Login extends View implements IView {
     }
   
     private createContent(): ReadonlyArray<HTMLElement> {
-      //const hero = document.createElement('section')
-      
-  
-  
       const btn: MenuBtn = document.createElement('a');
-      btn.innerText = 'login';
+      btn.setAttribute('style','color:red')
+      btn.innerText = 'go back';
       btn.id = 'login';
-      btn.href = '/login';
+      btn.href = '/';
       this.btn = btn;
-  
-      const text: HTMLDivElement = document.createElement('div');
-      text.textContent = 'login';
-  
-  
-      return [btn];
+
+      const autorizationForm = `
+              <form class="autorization__form">
+                <input checked="" id="signin" name="action" type="radio" value="signin">
+                <label class="aut__label" for="signin">Вход</label>
+                <input id="signup" name="action" type="radio" value="signup">
+                <label class="aut__label" for="signup">Регистрация</label>
+                <div id="wrapper__aut">
+                  <div id="arrow"></div>
+                  <input id="email" placeholder="Email" type="text">
+                  <input id="pass" placeholder="Password" type="password">
+                  <input id="name" placeholder="Your name" type="password">
+                </div>
+                <button class="btn-login" type="submit">
+                  <span>
+                    <br>
+                    Вход
+                    <br>
+                    Зарегистрироваться
+                  </span>
+                </button>
+              </form>
+          `;
+      
+
+      const autorization = document.createElement('div')
+      autorization.classList.add('autorization');
+      autorization.innerHTML = autorizationForm;
+      autorization.appendChild(btn);
+
+
+      return [autorization];
     }
   
     protected getBtnToChangePage(): MenuBtn {
@@ -52,31 +75,7 @@ export class Login extends View implements IView {
 //   }
 
 //   render() {
-//     const html = `
-//     <div class="autorization">
-//         <form class="autorization__form">
-//           <input checked="" id="signin" name="action" type="radio" value="signin">
-//           <label class="aut__label" for="signin">Вход</label>
-//           <input id="signup" name="action" type="radio" value="signup">
-//           <label class="aut__label" for="signup">Регистрация</label>
-//           <div id="wrapper__aut">
-//             <div id="arrow"></div>
-//             <input id="email" placeholder="Email" type="text">
-//             <input id="pass" placeholder="Password" type="password">
-//             <input id="name" placeholder="Your name" type="password">
-//           </div>
-//           <button class="btn-login" type="submit">
-//             <span>
-//               <br>
-//               Вход
-//               <br>
-//               Зарегистрироваться
-//             </span>
-//           </button>
-//         </form>
-//     </div>
-//     `;
-
+//     
 //     type INewUserRegistration= {
 //       name:string;
 //       email:string;
