@@ -4,7 +4,7 @@ export function innerText():string {
     <section class="about" id="about">
     <div class="content">
         <div class="content__header">
-          <img src="../assets/img/about.jpg" alt="about" class="content__img">
+          <img src="./assets/img/about.jpg" alt="about" class="content__img">
         </div>
         <div class="content__text">
           <h4>SpeakLang - английский это просто !</h4>
