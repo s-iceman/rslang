@@ -33,7 +33,7 @@ export class Router {
 
   private initRoutes(): MyType {
     const routes: MyType = new Map();
-    const views: Array<IViewConstructor> = [MainPage, TextBookView];
+    const views: Array<IViewConstructor> = [MainPage, TextBookView,Login];
     views.forEach((v) => {
       routes.set(v.getPath(), v);
     });

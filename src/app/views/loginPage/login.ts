@@ -14,11 +14,11 @@ export class Login extends View implements IView {
     }
   
     static getPath(): string {
-      return '/';
+      return '/login';
     }
   
     private createContent(): ReadonlyArray<HTMLElement> {
-      const hero = document.createElement('section')
+      //const hero = document.createElement('section')
       
   
   
@@ -29,10 +29,10 @@ export class Login extends View implements IView {
       this.btn = btn;
   
       const text: HTMLDivElement = document.createElement('div');
-      text.textContent = 'MAIN PAGE';
+      text.textContent = 'login';
   
   
-      return [hero,btn];
+      return [btn];
     }
   
     protected getBtnToChangePage(): MenuBtn {
