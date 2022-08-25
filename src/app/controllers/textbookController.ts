@@ -3,9 +3,10 @@ import { TextBookView } from '../views/textbook/textbook';
 import { UnitLevels } from './constants';
 import { ITextBookController } from './interfaces';
 import AppModel from '../models/AppModel';
-import { IApiWords } from '../models/interfaces';
+import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
 import State from '../models/State';
 import { UnitLabels } from '../views/constants';
+import { MAX_GROUP_WORDS, MAX_PAGE_WORDS, MIN_GROUP_WORDS, MIN_PAGE_WORDS } from '../models/constants';
 
 export class TextBookController extends State implements ITextBookController {
   private activeUnit: UnitLevels;
@@ -35,13 +36,14 @@ export class TextBookController extends State implements ITextBookController {
 
       const unitName: string = window.localStorage.getItem('unit') || 'beginners';
       const words = await this.getWords();
-      this.textBookView.updateCards(unitName, words);
+      this.textBookView.updateCards(unitName, words, this.getUnit());
     } else {
       this.textBookView = null;
     }
   }
 
   public async selectUnit(unitName: string): Promise<void> {
+    this.removeSound();
     const keys = new Map(
       Object.entries(UnitLabels).map((entry) => entry.reverse()) as [UnitLabels, keyof typeof UnitLabels][]
     );
@@ -51,15 +53,16 @@ export class TextBookController extends State implements ITextBookController {
     }
     this.activeUnit = UnitLevels[level as keyof typeof UnitLevels];
     const words = await this.getWords();
-    this.textBookView?.updateCards?.(unitName, words);
+    this.textBookView?.updateCards?.(unitName, words, this.getUnit());
     window.localStorage.setItem('unit', unitName);
   }
 
   public async changeUnitPage(page: number): Promise<void> {
+    this.removeSound();
     const words = await this.getWords(page);
     const unitName: string | null = window.localStorage.getItem('unit');
     if (unitName) {
-      this.textBookView?.updateCards?.(unitName, words);
+      this.textBookView?.updateCards?.(unitName, words, this.getUnit());
     }
   }
 
@@ -72,13 +75,7 @@ export class TextBookController extends State implements ITextBookController {
     node.classList.add('play--active');
     const playlist = [audio, audioMeaning, audioExample];
 
-    if (this.getSoundList()) {
-      this.getSoundList().forEach((sound) => {
-        sound.pause();
-        sound.currentTime = 0;
-      });
-      this.clearSoundList();
-    }
+    this.removeSound();
 
     const onPlay = async (sound: HTMLAudioElement) => {
       void sound.play();
@@ -93,49 +90,68 @@ export class TextBookController extends State implements ITextBookController {
     node.classList.remove('play--active');
   }
 
+  removeSound() {
+    this.getSoundList().forEach((sound) => {
+      sound.pause();
+      sound.currentTime = 0;
+    });
+    this.clearSoundList();
+  }
+
   async createUserWord(wordId: string, isDifficulty = false, isStudy = false): Promise<void> {
     const getWords = await this.model.getUserWords();
     const filterWords = getWords?.filter((item) => item.wordId === wordId) || [];
 
-    if (!filterWords.length && isStudy) {
-      await this.model.setUserWord(wordId, 'POST', 'simple', isStudy);
-    } else if (filterWords.length > 0 && isStudy) {
+    if (filterWords.length) {
       const difficulty = filterWords[0].difficulty;
-      await this.model.setUserWord(wordId, 'PUT', difficulty, isStudy);
-    }
-
-    if (!filterWords.length && isDifficulty) {
-      await this.model.setUserWord(wordId, 'POST', 'hard', isStudy);
-    } else if (filterWords.length > 0 && isDifficulty) {
       const { study } = filterWords[0].optional;
-      await this.model.setUserWord(wordId, 'PUT', 'hard', study);
+
+      if (isStudy) await this.model.updateUserWord(wordId, difficulty, isStudy);
+      if (isDifficulty) await this.model.updateUserWord(wordId, 'hard', study);
+      if (!isDifficulty && !isStudy) await this.model.updateUserWord(wordId, 'simple', study);
+    } else if (!filterWords.length) {
+      if (isStudy) await this.model.postUserWord(wordId, 'simple', isStudy);
+      if (isDifficulty) await this.model.postUserWord(wordId, 'hard', isStudy);
     }
   }
 
-  async getWords(page = 1): Promise<IApiWords[]> {
-    const wordsData = await this.model.getWords(this.getUnit(), page);
+  async getWords(page = MIN_PAGE_WORDS): Promise<IApiWords[]> {
+    const currentPage = page < MAX_PAGE_WORDS && page >= MIN_PAGE_WORDS ? page : MIN_PAGE_WORDS;
+    const currentGroup = this.getUnit();
+
+    let wordsData: IApiWords[];
+    if (this.isAuth() && currentGroup < MAX_GROUP_WORDS) {
+      wordsData = await this.getAggregatedWords(currentGroup, currentPage);
+    } else if (this.isAuth() && currentGroup === MAX_GROUP_WORDS) {
+      wordsData = await this.getAggregatedWords(currentGroup, currentPage);
+    } else {
+      wordsData = await this.model.getWords(currentGroup, currentPage);
+    }
     return wordsData;
   }
 
-  isAuth(): boolean {
-    return true;
-  }
-
   // todo: move from here
-  async userSign() {
-    const user = { email: 'test@mail.com', password: '123456789' };
 
-    const data = await this.model.signIn(user);
-
-    if (data) {
-      const userInfo = {
-        isAuth: true,
-        name: `${data.name || ''}`,
-        token: `${data.token || ''}`,
-        userId: `${data.userId || ''}`,
-      };
-      localStorage.setItem('user', JSON.stringify(userInfo));
-      // await this.renderWords();
+  async getAggregatedWords(currentGroup: number, currentPage: number) {
+    let wordsUserData: IUserAggregatedWords[];
+    if (currentGroup === MAX_GROUP_WORDS) {
+      wordsUserData = await this.model.aggregatedHardWords();
+    } else {
+      wordsUserData = await this.model.userAggregatedWords(currentGroup, currentPage);
+    }
+    if (wordsUserData) {
+      return <IApiWords[]>wordsUserData[0].paginatedResults.map((item) =>
+        Object.keys(item).reduce((acc, key) => {
+          if (key === '_id') {
+            acc[key.slice(1)] = item[key];
+          } else {
+            acc[key] = <string>item[key];
+          }
+          return acc;
+        }, {})
+      );
+    } else {
+      return [];
     }
   }
 }

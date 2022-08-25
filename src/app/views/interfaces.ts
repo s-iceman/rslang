@@ -14,8 +14,7 @@ interface IView {
 
 interface ITextBookView extends IView {
   setController(ctrl: ITextBookController): void;
-  renderWordList(wordsData: IApiWords[]): void;
-  updateCards(unitName: string, cards: IApiWords[]): void;
+  updateCards(unitName: string, cards: IApiWords[], group: number): void;
 }
 
 type ViewOrNotInit = IView | null;

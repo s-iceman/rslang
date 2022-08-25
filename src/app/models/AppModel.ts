@@ -1,6 +1,6 @@
 import State from './State';
-import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAuth, IUserWord } from './interfaces';
+import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
+import { IApiWords, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
 
 export default class AppModel extends State {
   signinUrl: string;
@@ -30,78 +30,61 @@ export default class AppModel extends State {
     return <IUserAuth>await resp.json();
   }
 
-  async getWords(_group = MIN_GROUP_WORDS, _page = MIN_PAGE_WORDS) {
-    const group = _group < MAX_GROUP_WORDS && _group >= MIN_GROUP_WORDS ? _group : MIN_GROUP_WORDS;
-    const page = _page < MAX_PAGE_WORDS && _page >= MIN_PAGE_WORDS ? _page : MIN_PAGE_WORDS;
-    const url = `${this.wordsUrl}?group=${group}&page=${page}`;
+  async getWords(groupId = MIN_GROUP_WORDS, pageId = MIN_PAGE_WORDS) {
+    const url = `${this.wordsUrl}?group=${groupId}&page=${pageId}`;
 
     const resp = await fetch(url);
     return <IApiWords[]>await resp.json();
   }
 
-  async setUserWord(id: string, method: string, difficulty: string, isStudy = false) {
-    if (this.getUserId() !== '') {
-      const setUserWords = `${this.usersUrl}/${this.getUserId()}/words/${id}`;
-      const word = {
-        difficulty: `${difficulty}`,
-        optional: {
-          study: isStudy,
-        },
-      };
-      const resp = await fetch(setUserWords, {
-        method: `${method}`,
-        credentials: 'same-origin',
-        headers: {
-          Authorization: `Bearer ${this.getToken() || ''}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(word),
-      });
-      return <IUserWord[]>await resp.json();
-    }
+  private async setUserWord(method: string, id: string, difficulty: string, isStudy = false) {
+    const setUserWords = `${this.usersUrl}/${this.getUserId()}/words/${id}`;
+    const word = {
+      difficulty: `${difficulty}`,
+      optional: {
+        study: isStudy,
+      },
+    };
+    const resp = await fetch(setUserWords, {
+      method: `${method}`,
+      credentials: 'same-origin',
+      headers: {
+        Authorization: `Bearer ${this.getToken() || ''}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(word),
+    });
+    return <IUserWord[]>await resp.json();
+  }
+
+  public async postUserWord(id: string, difficulty: string, isStudy = false) {
+    const userWordData = await this.setUserWord('POST', id, difficulty, isStudy);
+    return userWordData;
+  }
+
+  public async updateUserWord(id: string, difficulty: string, isStudy = false) {
+    const userWordData = await this.setUserWord('PUT', id, difficulty, isStudy);
+    return userWordData;
   }
 
   async getUserWords() {
-    if (this.getUserId() !== '') {
-      const userWords = `${this.usersUrl}/${this.getUserId()}/words`;
-      const resp = await fetch(userWords, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${this.getToken() || ''}`,
-          Accept: 'application/json',
-        },
-      });
-      return <IUserWord[]>await resp.json();
-    }
+    const userWords = `${this.usersUrl}/${this.getUserId()}/words`;
+    const resp = await fetch(userWords, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.getToken() || ''}`,
+        Accept: 'application/json',
+      },
+    });
+    return <IUserWord[]>await resp.json();
   }
 
   async getUserWord(wordId: string) {
-    if (this.getUserId() !== '') {
-      const userWord = `${this.usersUrl}/${this.getUserId()}/words/${wordId}`;
+    const userWord = `${this.usersUrl}/${this.getUserId()}/words/${wordId}`;
 
-      try {
-        const resp = await fetch(userWord, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${this.getToken() || ''}`,
-            Accept: 'application/json',
-          },
-        });
-        return <IUserWord>await resp.json();
-      } catch {
-        return false;
-      }
-    }
-  }
-
-  async aggregatedWords(_limit = MAX_LIMIT_WORDS) {
-    if (this.getUserId() !== '') {
-      const aggregatedWordUrl = `
-      ${this.usersUrl}/${this.getUserId()}/aggregatedWords?wordsPerPage=${_limit}&filter={"userWord.difficulty":"hard"}
-    `;
-
-      const resp = await fetch(aggregatedWordUrl, {
+    try {
+      const resp = await fetch(userWord, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${this.getToken() || ''}`,
@@ -109,6 +92,41 @@ export default class AppModel extends State {
         },
       });
       return <IUserWord>await resp.json();
+    } catch {
+      return false;
     }
+  }
+
+  private async aggregatedWords(wordUrl: string) {
+    const aggregatedWordUrl = wordUrl;
+
+    const resp = await fetch(aggregatedWordUrl, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.getToken() || ''}`,
+        Accept: 'application/json',
+      },
+    });
+    return <IUserAggregatedWords[]>await resp.json();
+  }
+
+  public async aggregatedHardWords() {
+    const limit = MAX_LIMIT_WORDS;
+    const aggregatedWordUrl = `
+      ${this.usersUrl}/${this.getUserId()}/aggregatedWords?wordsPerPage=${limit}&filter={"userWord.difficulty":"hard"}
+    `;
+    const aggregatedWordsData = await this.aggregatedWords(aggregatedWordUrl);
+    return aggregatedWordsData;
+  }
+
+  public async userAggregatedWords(groupId = MIN_GROUP_WORDS, pageId = MIN_PAGE_WORDS) {
+    const limit = MIN_LIMIT_WORDS;
+    const aggregatedWordUrl = `
+      ${
+        this.usersUrl
+      }/${this.getUserId()}/aggregatedWords?wordsPerPage=${limit}&filter={"group":${groupId}, "page":${pageId}}
+    `;
+    const aggregatedWordsData = await this.aggregatedWords(aggregatedWordUrl);
+    return aggregatedWordsData;
   }
 }
