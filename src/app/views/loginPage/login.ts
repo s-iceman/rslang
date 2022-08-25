@@ -1,10 +1,11 @@
+import { ViewPath } from '../../common/constants';
 import { IView, MenuBtn } from '../interfaces';
 import { View } from '../view';
 import './login.css';
 import { createUser, loginUser } from './loginApi';
 import { IUserSignIn, INewUserRegistration, IAutentificatedUser } from './types';
 
-export class Login extends View implements IView {
+export class LoginView extends View implements IView {
     private btn: MenuBtn;
 
     render(): void {
@@ -14,7 +15,7 @@ export class Login extends View implements IView {
     }
   
     static getPath(): string {
-      return '/login';   //путь 
+      return ViewPath.LOGIN;   //путь 
     }
   
     private createAutorizationForm(): ReadonlyArray<HTMLElement> {
@@ -22,7 +23,7 @@ export class Login extends View implements IView {
       btn.setAttribute('style','color:red')
       btn.innerText = 'go back';
       btn.id = 'login';
-      btn.href = '/'; //ссылка временная, удалить потом 
+      btn.href = '/login'; //ссылка временная, удалить потом 
       this.btn = btn;
 
       const autorizationForm = `
@@ -101,5 +102,3 @@ export class Login extends View implements IView {
     }
 
 }
-
-export default Login;

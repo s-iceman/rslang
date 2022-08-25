@@ -69,7 +69,7 @@ module.exports = {
   ],
   devServer: {
     static: './dist',
-    port: 8080, // порт default 8080
+    port: 8181, // порт default 8080
     compress: true, // сжатие gzip
     hot: isDev, // при добавлении новых модулей сразу их подключать
     historyApiFallback: true, // использование history HTML5
