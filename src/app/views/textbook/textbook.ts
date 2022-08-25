@@ -90,7 +90,7 @@ export class TextBookView extends View implements ITextBookView {
   private createCardsBlock(unitName: string, words: IApiWords[]): HTMLElement {
     const parent: HTMLDivElement = document.createElement('div');
     parent.classList.add('dictionary');
-    // this.createCards(parent, unitName, words);
+    this.createCards(parent, unitName, words);
     this.cardsBlock = parent;
     return parent;
   }

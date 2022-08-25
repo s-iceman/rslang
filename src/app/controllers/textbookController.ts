@@ -43,6 +43,7 @@ export class TextBookController extends State implements ITextBookController {
   }
 
   public async selectUnit(unitName: string): Promise<void> {
+    this.removeSound();
     const keys = new Map(
       Object.entries(UnitLabels).map((entry) => entry.reverse()) as [UnitLabels, keyof typeof UnitLabels][]
     );
@@ -57,6 +58,7 @@ export class TextBookController extends State implements ITextBookController {
   }
 
   public async changeUnitPage(page: number): Promise<void> {
+    this.removeSound();
     const words = await this.getWords(page);
     const unitName: string | null = window.localStorage.getItem('unit');
     if (unitName) {
@@ -73,13 +75,7 @@ export class TextBookController extends State implements ITextBookController {
     node.classList.add('play--active');
     const playlist = [audio, audioMeaning, audioExample];
 
-    if (this.getSoundList()) {
-      this.getSoundList().forEach((sound) => {
-        sound.pause();
-        sound.currentTime = 0;
-      });
-      this.clearSoundList();
-    }
+    this.removeSound();
 
     const onPlay = async (sound: HTMLAudioElement) => {
       void sound.play();
@@ -92,6 +88,14 @@ export class TextBookController extends State implements ITextBookController {
       await onPlay(sound);
     }
     node.classList.remove('play--active');
+  }
+
+  removeSound() {
+    this.getSoundList().forEach((sound) => {
+      sound.pause();
+      sound.currentTime = 0;
+    });
+    this.clearSoundList();
   }
 
   async createUserWord(wordId: string, isDifficulty = false, isStudy = false): Promise<void> {

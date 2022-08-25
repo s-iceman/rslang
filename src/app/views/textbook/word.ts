@@ -99,6 +99,7 @@ export default class Words extends CreateMarkup {
     btnRemoveDiff.node.addEventListener('click', () => {
       cardNode.remove();
       this.textBookCtrl.createUserWord(id, false).catch((err) => console.debug(err));
+      this.textBookCtrl.removeSound();
     });
   }
 }
