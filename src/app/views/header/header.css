@@ -29,6 +29,7 @@
     justify-content: space-between;
     height: 80px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header__logo{
