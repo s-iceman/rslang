@@ -1,4 +1,4 @@
-import { ChangePageFn, SelectUnitFn } from '../controllers/types';
+import { SelectUnitFn } from '../controllers/types';
 import { UnitLabels, PaginBtnType } from './constants';
 
 type MenuBtnType = HTMLAnchorElement;
@@ -7,7 +7,6 @@ type MenuBtn = MenuBtnType | undefined;
 
 interface IView {
   render(): void;
-  bindChangePage(handler: ChangePageFn): void;
   bindUnitListeners?(handler: SelectUnitFn): void;
   updateCards?(unitName: string): void;
   bindChangePageListeners?(): void;

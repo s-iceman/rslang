@@ -1,3 +1,4 @@
+import { ViewPath } from '../../common/constants';
 import { IView, MenuBtn } from '../interfaces';
 import { View } from '../view';
 import './mainPage.css';
@@ -12,7 +13,7 @@ export class MainPage extends View implements IView {
   }
 
   static getPath(): string {
-    return '/';
+    return ViewPath.MAIN;
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
@@ -31,20 +32,9 @@ export class MainPage extends View implements IView {
     containerMain.innerHTML = innerText();
     this.root.append(containerMain)
 
-    const btn: MenuBtn = document.createElement('a');
-    btn.innerText = 'Textbook';
-    btn.id = 'go-to-textbook';
-    btn.href = '/login';
-    this.btn = btn;
-
     const text: HTMLDivElement = document.createElement('div');
     text.textContent = 'MAIN PAGE';
 
-
-    return [hero,containerMain,btn];
-  }
-
-  protected getBtnToChangePage(): MenuBtn {
-    return this.btn;
+    return [hero,containerMain];
   }
 }

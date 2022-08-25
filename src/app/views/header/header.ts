@@ -1,6 +1,7 @@
 //import { PageIds } from '../../../pages/app';
 import Component from '../components/components'
 import './header.css'
+import { ViewPath } from '../../common/constants';
 
 class Header extends Component {
   constructor(tagName: string, className: string, id?:string) {
@@ -19,8 +20,8 @@ class Header extends Component {
          </div>
          <nav class="header__menu">
          <ul class="header__list">
-           <li><a class="header__link active" href="#">Главная</a></li>
-           <li><a class="header__link" href="textbook">Учебник</a></li>
+           <li><a class="header__link active" href="#${ViewPath.MAIN}">Главная</a></li>
+           <li><a class="header__link" href="#${ViewPath.TEXTBOOK}">Учебник</a></li>
            <li><div class="dropdown">
                 <button class="dropbtn">ИГРЫ</button>
                   <div class="dropdown_content">
@@ -29,10 +30,10 @@ class Header extends Component {
                   </div>
               </div>
            </li>
-           <li><a class="header__link" href="#">Статистика</a></li>
-           <li><a class="header__link" href="#about">О приложении</a></li>
-           <li><a class="header__link" href="#team">О команде</a></li>
-           <li><a class="header__link login" href="#">Login</a></li>
+           <li><a class="header__link" href="#${ViewPath.STATISTICS}">Статистика</a></li>
+           <li><a class="header__link" href="${ViewPath.ABOUT}">О приложении</a></li>
+           <li><a class="header__link" href="${ViewPath.TEAM}">О команде</a></li>
+           <li><a class="header__link login" href="#${ViewPath.LOGIN}">Login</a></li>
          </ul>
         </nav>
        </div>

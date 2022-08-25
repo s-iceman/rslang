@@ -1,3 +1,4 @@
+import { ViewPath } from '../../common/constants';
 import { IView, MenuBtnType, MenuBtn, UnitKeys, IPagination } from './../interfaces';
 import { View } from '../view';
 import { UnitLabels, PaginBtnType } from '../constants';
@@ -7,8 +8,6 @@ import { SelectUnitFn } from './../../controllers/types';
 import { Pagination } from './pagination';
 
 export class TextBookView extends View implements IView {
-  private btn: MenuBtn;
-
   private unitsNav: HTMLDivElement | undefined;
 
   private cardsBlock: HTMLDivElement | undefined;
@@ -23,7 +22,7 @@ export class TextBookView extends View implements IView {
   }
 
   static getPath(): string {
-    return '/textbook';
+    return ViewPath.TEXTBOOK;
   }
 
   render(): void {
@@ -89,26 +88,11 @@ export class TextBookView extends View implements IView {
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
-    const menu: HTMLElement = this.createMenu();
-
     const container: HTMLDivElement = document.createElement('div');
     container.append(this.createUnitsNav(), this.createCardsBlock('beginners'));
     container.append(this.pagination.create());
 
-    return [menu, container];
-  }
-
-  protected getBtnToChangePage(): MenuBtn {
-    return this.btn;
-  }
-
-  private createMenu(): HTMLElement {
-    const btn: MenuBtnType = document.createElement('a');
-    btn.innerText = 'Main page';
-    btn.id = 'go-to-main';
-    btn.href = '/';
-    this.btn = btn;
-    return btn;
+    return [container];
   }
 
   private createUnitsNav(): HTMLDivElement {

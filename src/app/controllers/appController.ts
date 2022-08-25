@@ -1,9 +1,12 @@
 import { ViewOrNotInit } from '../views/interfaces';
+import { BaseContainer } from '../views/base/baseContainer';
 import { IAppController, IRouter, ITextBookController } from './interfaces';
 import { Router } from './router';
 
 class AppController implements IAppController {
   private router: IRouter;
+
+  private baseContainer: BaseContainer;
 
   private textBookCtrl: ITextBookController;
 
@@ -13,13 +16,17 @@ class AppController implements IAppController {
     this.router = new Router();
 
     this.activeView = null;
+    this.baseContainer = new BaseContainer();
+
     this.textBookCtrl = textBookCtrl;
 
     window.addEventListener('load', () => {
       const path = window.localStorage.getItem('page') ?? '';
+      console.log('LOAD', path);
       this.changeUrl(path);
     });
     window.addEventListener('hashchange', () => {
+      console.log('CHANGE HASH');
       this.changeUrl();
     });
   }
@@ -31,17 +38,7 @@ class AppController implements IAppController {
   private changeUrl(path?: string): void {
     this.activeView = this.router.process(path ?? '');
     if (this.activeView) {
-      this.activeView.bindChangePage(this.changePage.bind(this));
       this.textBookCtrl.setView(this.activeView);
-    }
-  }
-
-  public changePage(newPath: string): void {
-    this.activeView = this.router.process(newPath);
-    if (this.activeView) {
-      this.activeView.bindChangePage(this.changePage.bind(this));
-      this.textBookCtrl.setView(this.activeView);
-      window.localStorage.setItem('page', newPath);
     }
   }
 }
