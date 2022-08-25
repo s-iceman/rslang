@@ -57,6 +57,9 @@ a{
 }
 
 .footer__rsshool_img img{
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px 2px rgba(235, 212, 9, 0.2);
+    margin-top: 2px;
 }
