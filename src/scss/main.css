@@ -520,8 +520,15 @@ h6 {
   margin: 0;
 }
 
-h1 {
-  color: #d5d5d5;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 20px;
 }
 
 a {
@@ -795,6 +802,16 @@ button, input {
   flex-direction: row;
   font-family: "Roboto", sans-serif;
   font-size: 3rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.textbook-nav {
+  display: flex;
+  flex-direction: row;
+  font-family: "Georgia", serif;
   letter-spacing: 0.05rem;
   padding-bottom: 30px;
 }
@@ -903,3 +920,43 @@ button, input {
 .pagination .disabled {
   background-color: rgb(216, 205, 205);
 }/*# sourceMappingURL=main.css.map */
+
+html,body{
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", sans-serif;
+  color: #444444;
+}
+
+li {
+  list-style-type: none;
+ }
+
+footer {
+  flex: 0 0 auto;
+}
+
+h1{
+  margin-top: 100px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", sans-serif;
+}
+
+.container{
+  display: block;
+  max-width: 1400px;
+  margin: 0px auto;
+  padding: 0px 10px;
+}
+
+.root{
+  margin-top: 80px;
+  flex: 1 0 auto;
+}

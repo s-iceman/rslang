@@ -1,4 +1,3 @@
-import { ChangePageFn } from '../controllers/types';
 import { UnitLabels, PaginBtnType } from './constants';
 import { IApiWords } from '../models/interfaces';
 import { ITextBookController } from './../controllers/interfaces';
@@ -9,7 +8,6 @@ type MenuBtn = MenuBtnType | undefined;
 
 interface IView {
   render(): void;
-  bindChangePage(handler: ChangePageFn): void;
 }
 
 interface ITextBookView extends IView {
