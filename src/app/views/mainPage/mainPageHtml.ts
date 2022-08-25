@@ -38,15 +38,26 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Учебник</h4>
-              <p>С помощью учебника вы можете учится произносить слова и увеличивать уровни сложности слов.</p>
+              <div class="why-us__box_img"><img src="../assets/img/why-as-box/textbook.jpg" alt="statistic"></div>
+              <p>Слушай и запоминай.</p>
             </div>
           </div>
 
           <div class="">
             <div class="why-us__box">
               <span></span>
-              <h4>Игры</h4>
-              <p>Савана Спринт</p>
+              <h4>Савана</h4>
+              <div class="why-us__box_img"><img src="../assets/img/why-as-box/savana.jpg" alt="statistic"></div>
+              <p>Играй и учись</p>
+            </div>
+          </div>
+
+          <div class="">
+            <div class="why-us__box">
+              <span></span>
+              <h4>Спринт</h4>
+              <div class="why-us__box_img"><img src="../assets/img/why-as-box/sprint.jpg" alt="statistic"></div>
+              <p>Пробуй запоминанть быстрее.</p>
             </div>
           </div>
 
@@ -54,7 +65,8 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Статистика</h4>
-              <p>Отслеживайте свой прогресс с помощью статистики</p>
+              <div class="why-us__box_img"><img src="../assets/img/why-as-box/statistic.png" alt="statistic"></div>
+              <p>Отслеживайте свой прогресс.</p>
             </div>
           </div>
 
