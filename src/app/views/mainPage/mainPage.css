@@ -45,12 +45,6 @@
     }
 }
 
-@media(max-width:767px){
-    .team__members {
-    flex-direction: column;
-    }
-}
-
 .content__header{
     border-color: white;
 }
@@ -102,8 +96,8 @@
     display: flex;
     border: 2px solid #5c9f24;
     border-radius: 25px;
-    padding: 10px;
-    height: 100px;
+    padding: 15px;
+    min-height: 150px;
     align-items: center;
     text-align: center;
 }
@@ -163,6 +157,12 @@
     flex-direction: row;
     justify-content: center;
     margin: 5px;
+}
+
+@media(max-width:767px){
+    .team__members {
+    flex-direction: column;
+    }
 }
 
 .team__member{
