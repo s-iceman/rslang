@@ -652,6 +652,7 @@ button, input {
   gap: 3.5rem;
   margin: 5rem auto;
   font-size: 1.6rem;
+  width: 70%;
 }
 
 .word {
@@ -722,6 +723,11 @@ button, input {
   width: 20rem;
   height: 4rem;
   font-weight: 500;
+}
+.word__buttons .btn-simple {
+  width: 100%;
+  background-color: #00c7ba;
+  margin-top: 1rem;
 }
 
 .btn-diff:disabled {

@@ -1,18 +1,17 @@
 import CreateMarkup from '../common/createMarkup';
-import { IApiWords } from '../../models/interfaces';
+import { IApiWords, IUserWord } from '../../models/interfaces';
 import { ITextBookController } from '../../controllers/interfaces';
 
 export default class Words extends CreateMarkup {
   private textBookCtrl: ITextBookController;
 
-  constructor(private baseUrl: string, ctrl: ITextBookController, private parentNode = document.body) {
+  constructor(private baseUrl: string, ctrl: ITextBookController, private parentNode: HTMLElement) {
     super(parentNode, 'ul', 'words');
     this.baseUrl = baseUrl;
     this.textBookCtrl = ctrl;
-    this.parentNode = parentNode;
   }
 
-  addCardWord(wordsItem: IApiWords): HTMLElement {
+  addCardWord(wordsItem: IApiWords, isHardUnit: boolean): HTMLElement {
     const { word, transcription, image, wordTranslate } = wordsItem;
 
     const wordCardTitle = `
@@ -21,7 +20,7 @@ export default class Words extends CreateMarkup {
           <span class="word__subtitle">${wordTranslate}</span>
       </div>
     `;
-    const wordCard = new CreateMarkup(this.parentNode, 'li', 'words__item word');
+    const wordCard = new CreateMarkup(this.node, 'li', 'words__item word');
     const wordImg = new CreateMarkup(wordCard.node, 'div', 'word__img');
     wordImg.node.style.backgroundImage = `url(${this.baseUrl}/${image})`;
 
@@ -29,11 +28,11 @@ export default class Words extends CreateMarkup {
     const wordHeader = new CreateMarkup(wordContent.node, 'div', 'word__header', wordCardTitle);
     const wordPlay = new CreateMarkup(wordHeader.node, 'span', 'word__play');
     wordPlay.node.addEventListener('click', () => void this.textBookCtrl.playSound(wordsItem, wordPlay.node));
-    this.addCardDescription(wordContent.node, wordsItem);
+    this.addCardDescription(wordCard.node, wordContent.node, wordsItem, isHardUnit);
     return wordCard.node;
   }
 
-  addCardDescription(node: HTMLElement, wordsItem: IApiWords) {
+  addCardDescription(cardNode: HTMLElement, parentNode: HTMLElement, wordsItem: IApiWords, isHardUnit: boolean) {
     const { id, textMeaning, textMeaningTranslate, textExample, textExampleTranslate } = wordsItem;
     const wordCardDesc = `
       <div class="word__meaning">
@@ -45,24 +44,54 @@ export default class Words extends CreateMarkup {
           <p>${textExampleTranslate}</p>
       </div>
     `;
-    new CreateMarkup(node, 'div', 'word__description', wordCardDesc);
+    new CreateMarkup(parentNode, 'div', 'word__description', wordCardDesc);
+    const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
+
     if (this.textBookCtrl.isAuth()) {
-      this.addCardButton(node, id);
+      if (wordsItem.userWord && isHardUnit) {
+        this.addCardButtonHard(cardNode, wordButtons.node, id);
+      } else if (wordsItem.userWord && !isHardUnit) {
+        cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
+        this.addCardButton(cardNode, wordButtons.node, id, wordsItem.userWord);
+      } else {
+        this.addCardButton(cardNode, wordButtons.node, id);
+      }
     }
   }
 
-  addCardButton(parentNode: HTMLElement, id: string) {
+  addCardButton(cardNode: HTMLElement, parentNode: HTMLElement, id: string, userWord?: IUserWord) {
     const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
     const btnDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-diff', 'Сложное слово');
     const btnStudy = new CreateMarkup(wordButtons.node, 'button', 'button btn-study', 'Изученное слово');
 
+    if (userWord) {
+      const { difficulty, optional } = userWord;
+      if (difficulty === 'hard') {
+        (btnDiff.node as HTMLButtonElement).disabled = true;
+      }
+      if (optional.study === true) {
+        (btnStudy.node as HTMLButtonElement).disabled = true;
+      }
+    }
+
     btnDiff.node.addEventListener('click', () => {
       (btnDiff.node as HTMLButtonElement).disabled = true;
+      cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
       this.textBookCtrl.createUserWord(id, true, false).catch((err) => console.debug(err));
     });
     btnStudy.node.addEventListener('click', () => {
       (btnStudy.node as HTMLButtonElement).disabled = true;
+      cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
       this.textBookCtrl.createUserWord(id, false, true).catch((err) => console.debug(err));
+    });
+  }
+
+  addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string) {
+    const btnRemoveDiff = new CreateMarkup(parentNode, 'button', 'button btn-simple', 'Простое слово');
+
+    btnRemoveDiff.node.addEventListener('click', () => {
+      cardNode.remove();
+      this.textBookCtrl.createUserWord(id, false).catch((err) => console.debug(err));
     });
   }
 }

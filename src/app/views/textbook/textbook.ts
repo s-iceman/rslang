@@ -5,6 +5,7 @@ import { Pagination } from './pagination';
 import Words from './word';
 import { IApiWords } from '../../models/interfaces';
 import { ITextBookController } from '../../controllers/interfaces';
+import { MAX_GROUP_WORDS } from './constants';
 
 export class TextBookView extends View implements ITextBookView {
   private btn: MenuBtn;
@@ -66,17 +67,20 @@ export class TextBookView extends View implements ITextBookView {
       }
       this.pagination.update(Number(targetElem.id) as PaginBtnType);
       if (this.ctrl) {
-        this.ctrl.changeUnitPage(this.pagination.getCurrentPage()).catch((err) => console.debug(err));
+        this.ctrl.changeUnitPage(this.pagination.getCurrentPage() - 1).catch((err) => console.debug(err));
       }
     });
   }
 
-  updateCards(unitName: string, words: IApiWords[]): void {
+  updateCards(unitName: string, words: IApiWords[], group: number): void {
+    const isHardUnit = group === MAX_GROUP_WORDS;
+
     if (!this.cardsBlock) {
       return;
     }
     this.cardsBlock.innerHTML = '';
-    this.createCards(this.cardsBlock, unitName, words);
+    const test = this.createCards(this.cardsBlock, unitName, words, isHardUnit);
+    console.log('test: ', test);
 
     const navBtn: HTMLElement | null = document.getElementById(unitName);
     if (navBtn) {
@@ -87,27 +91,18 @@ export class TextBookView extends View implements ITextBookView {
   private createCardsBlock(unitName: string, words: IApiWords[]): HTMLElement {
     const parent: HTMLDivElement = document.createElement('div');
     parent.classList.add('dictionary');
-    this.createCards(parent, unitName, words);
+    // this.createCards(parent, unitName, words);
     this.cardsBlock = parent;
     return parent;
   }
 
-  private createCards(parent: HTMLElement, className: string, wordsData: IApiWords[]): void {
+  private createCards(parent: HTMLElement, className: string, wordsData: IApiWords[], isHardUnit = false): void {
     if (!this.ctrl) {
       return;
     }
     const words = new Words(this.baseUrl, this.ctrl, parent);
-    wordsData.map((wordsItem) => words.addCardWord(wordsItem));
-  }
-
-  renderWordList(wordsData: IApiWords[]) {
-    if (!this.ctrl) {
-      return;
-    }
-    const parentNode = <HTMLElement>document.querySelector('.dictionary');
-    parentNode.innerHTML = '';
-    const words = new Words(this.baseUrl, this.ctrl, parentNode);
-    wordsData.map((wordsItem) => words.addCardWord(wordsItem));
+    console.log('words: ', words);
+    wordsData.map((wordsItem) => words.addCardWord(wordsItem, isHardUnit));
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
