@@ -48,11 +48,18 @@ export default class Words extends CreateMarkup {
     const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
 
     if (this.textBookCtrl.isAuth()) {
-      if (wordsItem.userWord && isHardUnit) {
-        this.addCardButtonHard(cardNode, wordButtons.node, id);
-      } else if (wordsItem.userWord && !isHardUnit) {
-        cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
-        this.addCardButton(cardNode, wordButtons.node, id, wordsItem.userWord);
+      if (wordsItem.userWord) {
+        const { difficulty } = wordsItem.userWord;
+        const { study } = wordsItem.userWord.optional;
+
+        if (difficulty === 'hard' || study === true) {
+          cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15)';
+        }
+        if (isHardUnit) {
+          this.addCardButtonHard(cardNode, wordButtons.node, id);
+        } else if (!isHardUnit) {
+          this.addCardButton(cardNode, wordButtons.node, id, wordsItem.userWord);
+        }
       } else {
         this.addCardButton(cardNode, wordButtons.node, id);
       }

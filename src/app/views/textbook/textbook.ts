@@ -79,8 +79,7 @@ export class TextBookView extends View implements ITextBookView {
       return;
     }
     this.cardsBlock.innerHTML = '';
-    const test = this.createCards(this.cardsBlock, unitName, words, isHardUnit);
-    console.log('test: ', test);
+    this.createCards(this.cardsBlock, unitName, words, isHardUnit);
 
     const navBtn: HTMLElement | null = document.getElementById(unitName);
     if (navBtn) {
@@ -101,7 +100,6 @@ export class TextBookView extends View implements ITextBookView {
       return;
     }
     const words = new Words(this.baseUrl, this.ctrl, parent);
-    console.log('words: ', words);
     wordsData.map((wordsItem) => words.addCardWord(wordsItem, isHardUnit));
   }
 
