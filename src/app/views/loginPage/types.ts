@@ -10,9 +10,9 @@ password:string;
 }
 
 export type IAutentificatedUser= {
-message:string;
+message?:string;
 name:string;
-refreshToken:string;
-token:string;
-userId:string;
+refreshToken?:string;
+token?:string;
+userId?:string;
 }
