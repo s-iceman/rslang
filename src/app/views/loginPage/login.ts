@@ -1,7 +1,4 @@
-//import Page from '../../core/templates/page';
-//import App from '../app';
 import { IView, MenuBtn } from '../interfaces';
-import { innerText } from '../mainPage/mainPageHtml';
 import { View } from '../view';
 import './login.css';
 import { IUserSignIn, INewUserRegistration, IAutentificatedUser } from './types';
