@@ -16,7 +16,7 @@ class AppController implements IAppController {
   private activeView: ViewOrNotInit;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8080';
+    this.baseUrl = 'http://localhost:8082';
     this.router = new Router(this.baseUrl);
 
     this.activeView = null;
