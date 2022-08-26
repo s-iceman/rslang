@@ -24,6 +24,8 @@
         "eslint-config-airbnb": "latest",
         "eslint-plugin-html": "latest",
         "eslint-plugin-jsx-a11y": "latest",
+        "copy-webpack-plugin": "^11.0.0",
+        "file-loader": "^6.2.0",
         "html-loader": "latest",
         "html-webpack-plugin": "latest",
         "prettier": "latest",
@@ -32,6 +34,7 @@
         "style-loader": "latest",
         "ts-loader": "latest",
         "typescript": "latest",
+        "url-loader": "^4.1.1",
         "webpack": "latest",
         "webpack-cli": "latest",
         "webpack-dev-server": "latest"

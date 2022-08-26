@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
 const mode = process.env.NODE_ENV;
@@ -36,6 +37,13 @@ module.exports = {
                 },
             },
             {
+              test: /\.(jpe?g|png|gif|svg|img)$/i, 
+              loader: 'file-loader',
+              options: {
+                name: '/public/icons/[name].[ext]'
+              }
+            },
+            {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: 'asset/resource',
                 generator: {
@@ -53,6 +61,11 @@ module.exports = {
             title: 'RS-Lang',
             filename: 'index.html',
             favicon: 'src/favicon.ico',
+        }),
+        new CopyPlugin({
+          patterns: [
+            { from: "./src/assets", to: "./assets" },
+          ],
         }),
     ],
     devServer: {

@@ -17,18 +17,18 @@ export default class AppModel extends State {
     this.signinUrl = `${this.baseUrl}/signin`;
   }
 
-  async signIn(user: IUserAuth) {
-    const resp = await fetch(this.signinUrl, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    });
+  // async signIn(user: IUserAuth) {
+  //   const resp = await fetch(this.signinUrl, {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(user),
+  //   });
 
-    return <IUserAuth>await resp.json();
-  }
+  //   return <IUserAuth>await resp.json();
+  // }
 
   async getWords(groupId = MIN_GROUP_WORDS, pageId = MIN_PAGE_WORDS) {
     const url = `${this.wordsUrl}?group=${groupId}&page=${pageId}`;

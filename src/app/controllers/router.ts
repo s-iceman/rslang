@@ -1,8 +1,18 @@
+import { ViewPath } from '../common/constants';
 import { IViewConstructor, ViewOrNotInit } from '../views/interfaces';
-import { MainPage } from '../views/mainPage';
+import { LoginView } from '../views/loginPage/login';
+import { MainPage } from '../views/mainPage/mainPage';
 import { TextBookView } from '../views/textbook/textbook';
+import { StatisticsView } from '../views/statistics/statistics';
+import { View } from '../views/view';
 
 type MyType = Map<string, IViewConstructor>;
+
+const ALL_VIEWS = [MainPage, TextBookView, StatisticsView, LoginView];
+const ANCHORS = {
+  [ViewPath.ABOUT]: ViewPath.MAIN,
+  [ViewPath.TEAM]: ViewPath.MAIN,
+};
 
 export class Router {
   private routes: MyType;
@@ -15,13 +25,7 @@ export class Router {
   }
 
   process(newPath?: string): ViewOrNotInit {
-    let path = '';
-    if (newPath) {
-      path = newPath;
-      window.history.pushState({}, newPath, `${newPath}`);
-    } else {
-      path = this.parseLocation();
-    }
+    const [path, anchor] = newPath ? [newPath, ''] : this.getLocation();
 
     const clz: IViewConstructor | undefined = this.routes.get(path);
     if (!clz) {
@@ -29,20 +33,34 @@ export class Router {
     } else {
       const view = new clz(this.baseUrl);
       view.render();
+      window.localStorage.setItem('page', clz.getPath());
+      console.log(path);
+      if (anchor) {
+        window.location.href = window.location.pathname + anchor;
+      }
       return view;
     }
   }
 
   private initRoutes(): MyType {
     const routes: MyType = new Map();
-    const views: Array<IViewConstructor> = [MainPage, TextBookView];
+    const views: Array<IViewConstructor> = ALL_VIEWS;
     views.forEach((v) => {
       routes.set(v.getPath(), v);
     });
     return routes;
   }
 
-  private parseLocation(): string {
-    return location.hash.slice(1).toLowerCase() || '/';
+  private getLocation(): [string, string] {
+    const rawPath = location.hash.toLowerCase();
+    let path = '';
+    let anchor = '';
+    if (rawPath in ANCHORS) {
+      path = ANCHORS[rawPath];
+      anchor = rawPath;
+    } else {
+      path = location.hash.slice(1).toLowerCase() || '/';
+    }
+    return [path, anchor];
   }
 }
