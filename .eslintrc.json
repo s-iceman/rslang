@@ -24,6 +24,6 @@
         "class-methods-use-this": "off",
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-var-requires": "error",
-        "max-lines-per-function": ["error", 40]
+        "max-lines-per-function": ["error", 70]
     }
 }

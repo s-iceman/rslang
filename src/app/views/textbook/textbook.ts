@@ -108,7 +108,7 @@ export class TextBookView extends View implements ITextBookView {
     const menu: HTMLElement = this.createMenu();
 
     const container: HTMLDivElement = document.createElement('div');
-    container.classList.add('container');
+    container.className = 'container textbook';
     container.setAttribute('style','margin-top:90px')
     container.append(this.createUnitsNav(), this.createCardsBlock('beginners', []));
     container.append(this.pagination.create());

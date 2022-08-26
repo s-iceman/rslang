@@ -8,4 +8,9 @@ enum UnitLevels {
   Hard,
 }
 
-export { UnitLevels };
+enum DifficultyWord {
+  Simple = 'simple',
+  Hard = 'hard',
+}
+
+export { UnitLevels, DifficultyWord };
