@@ -1,12 +1,12 @@
 import { ViewOrNotInit, TextBookViewOrNotInit } from '../views/interfaces';
 import { TextBookView } from '../views/textbook/textbook';
-import { UnitLevels } from './constants';
+import { DifficultyWord, UnitLevels } from './constants';
 import { ITextBookController } from './interfaces';
 import AppModel from '../models/AppModel';
 import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
 import State from '../models/State';
 import { UnitLabels } from '../views/constants';
-import { MAX_GROUP_WORDS, MAX_PAGE_WORDS, MIN_GROUP_WORDS, MIN_PAGE_WORDS } from '../models/constants';
+import { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from '../constants';
 
 export class TextBookController extends State implements ITextBookController {
   private activeUnit: UnitLevels;
@@ -103,15 +103,17 @@ export class TextBookController extends State implements ITextBookController {
     const filterWords = getWords?.filter((item) => item.wordId === wordId) || [];
 
     if (filterWords.length) {
-      const difficulty = filterWords[0].difficulty;
-      const { study } = filterWords[0].optional;
-
-      if (isStudy) await this.model.updateUserWord(wordId, difficulty, isStudy);
-      if (isDifficulty) await this.model.updateUserWord(wordId, 'hard', study);
-      if (!isDifficulty && !isStudy) await this.model.updateUserWord(wordId, 'simple', study);
+      if (isDifficulty) {
+        await this.model.updateUserWord(wordId, DifficultyWord.Hard, isStudy);
+      } else {
+        await this.model.updateUserWord(wordId, DifficultyWord.Simple, isStudy);
+      }
     } else if (!filterWords.length) {
-      if (isStudy) await this.model.postUserWord(wordId, 'simple', isStudy);
-      if (isDifficulty) await this.model.postUserWord(wordId, 'hard', isStudy);
+      if (isDifficulty) {
+        await this.model.postUserWord(wordId, DifficultyWord.Hard, isStudy);
+      } else {
+        await this.model.updateUserWord(wordId, DifficultyWord.Simple, isStudy);
+      }
     }
   }
 
@@ -129,8 +131,6 @@ export class TextBookController extends State implements ITextBookController {
     }
     return wordsData;
   }
-
-  // todo: move from here
 
   async getAggregatedWords(currentGroup: number, currentPage: number) {
     let wordsUserData: IUserAggregatedWords[];

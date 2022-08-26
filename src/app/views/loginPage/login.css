@@ -15,7 +15,7 @@
 #wrapper__aut { 
   overflow: hidden;
   padding: 2px;
- }
+}
 
 #signin:checked ~ #wrapper__aut { height: 168px; }
 #signin:checked ~ #wrapper__aut #arrow { left: 32px; }

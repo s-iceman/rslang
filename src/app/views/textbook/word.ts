@@ -52,8 +52,10 @@ export default class Words extends CreateMarkup {
         const { difficulty } = wordsItem.userWord;
         const { study } = wordsItem.userWord.optional;
 
-        if (difficulty === 'hard' || study === true) {
-          cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15)';
+        if (difficulty === 'hard') {
+          cardNode.classList.add('word--hard');
+        } else if (study === true) {
+          cardNode.classList.add('word--study');
         }
         if (isHardUnit) {
           this.addCardButtonHard(cardNode, wordButtons.node, id);
@@ -71,24 +73,36 @@ export default class Words extends CreateMarkup {
     const btnDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-diff', 'Сложное слово');
     const btnStudy = new CreateMarkup(wordButtons.node, 'button', 'button btn-study', 'Изученное слово');
 
+    const toggleStyle = (isHardWord: boolean) => {
+      if (isHardWord) {
+        (btnStudy.node as HTMLButtonElement).disabled = false;
+        (btnDiff.node as HTMLButtonElement).disabled = true;
+        cardNode.classList.add('word--hard');
+        if (cardNode.closest('.word--study')) cardNode.classList.remove('word--study');
+      } else {
+        (btnStudy.node as HTMLButtonElement).disabled = true;
+        (btnDiff.node as HTMLButtonElement).disabled = false;
+        cardNode.classList.add('word--study');
+        if (cardNode.closest('.word--hard')) cardNode.classList.remove('word--hard');
+      }
+    };
+
     if (userWord) {
       const { difficulty, optional } = userWord;
       if (difficulty === 'hard') {
-        (btnDiff.node as HTMLButtonElement).disabled = true;
+        toggleStyle(true);
       }
       if (optional.study === true) {
-        (btnStudy.node as HTMLButtonElement).disabled = true;
+        toggleStyle(false);
       }
     }
 
     btnDiff.node.addEventListener('click', () => {
-      (btnDiff.node as HTMLButtonElement).disabled = true;
-      cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
+      toggleStyle(true);
       this.textBookCtrl.createUserWord(id, true, false).catch((err) => console.debug(err));
     });
     btnStudy.node.addEventListener('click', () => {
-      (btnStudy.node as HTMLButtonElement).disabled = true;
-      cardNode.style.backgroundImage = '-webkit-linear-gradient(bottom, rgba(0, 0, 0, 0), rgb(255 225 0 / 0.15))';
+      toggleStyle(false);
       this.textBookCtrl.createUserWord(id, false, true).catch((err) => console.debug(err));
     });
   }
@@ -98,7 +112,7 @@ export default class Words extends CreateMarkup {
 
     btnRemoveDiff.node.addEventListener('click', () => {
       cardNode.remove();
-      this.textBookCtrl.createUserWord(id, false).catch((err) => console.debug(err));
+      this.textBookCtrl.createUserWord(id, false, false).catch((err) => console.debug(err));
       this.textBookCtrl.removeSound();
     });
   }

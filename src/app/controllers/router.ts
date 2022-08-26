@@ -4,7 +4,6 @@ import { LoginView } from '../views/loginPage/login';
 import { MainPage } from '../views/mainPage/mainPage';
 import { TextBookView } from '../views/textbook/textbook';
 import { StatisticsView } from '../views/statistics/statistics';
-import { View } from '../views/view';
 
 type MyType = Map<string, IViewConstructor>;
 
@@ -34,7 +33,6 @@ export class Router {
       const view = new clz(this.baseUrl);
       view.render();
       window.localStorage.setItem('page', clz.getPath());
-      console.log(path);
       if (anchor) {
         window.location.href = window.location.pathname + anchor;
       }

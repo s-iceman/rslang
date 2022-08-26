@@ -1,6 +1,8 @@
 import State from './State';
-import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
+import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
 import { IApiWords, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
+import { MIN_PAGE_WORDS } from '../constants';
+import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 
 export default class AppModel extends State {
   signinUrl: string;
@@ -17,18 +19,43 @@ export default class AppModel extends State {
     this.signinUrl = `${this.baseUrl}/signin`;
   }
 
-  // async signIn(user: IUserAuth) {
-  //   const resp = await fetch(this.signinUrl, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(user),
-  //   });
+  async signIn(user: IUserAuth) {
+    const resp = await fetch(this.signinUrl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
 
-  //   return <IUserAuth>await resp.json();
-  // }
+    return <IUserAuth>await resp.json();
+  }
+
+  async createUser(user: INewUserRegistration) {
+    const rawResponse = await fetch(this.usersUrl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    return <INewUserRegistration>await rawResponse.json();
+  }
+
+  async loginUser(user: IUserSignIn) {
+    const rawResponse = await fetch(this.signinUrl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+
+    return rawResponse.json();
+  }
 
   async getWords(groupId = MIN_GROUP_WORDS, pageId = MIN_PAGE_WORDS) {
     const url = `${this.wordsUrl}?group=${groupId}&page=${pageId}`;
