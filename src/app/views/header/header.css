@@ -207,7 +207,7 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    top:-2px;
+    top:-3px;
 }
 
 .dropdown_content {

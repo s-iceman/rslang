@@ -95,7 +95,7 @@ export class LoginView extends View implements IView {
           registrNewUser!.password = passwordForm.value;
           registrNewUser!.name = name.value;
           createUser(registrNewUser!)
-          .then(()=>{alert('Вы зарегистрированны');localStorage.setItem('User',JSON.stringify(registrNewUser));window.location.href='#';})
+          .then(()=>{alert('Вы зарегистрированны');loginText.innerHTML = registrNewUser.name;localStorage.setItem('user',JSON.stringify(registrNewUser));window.location.href='#';})
           .catch(()=>alert('Такой пользователь уже есть'));
           }else (alert('Введите имя'))
         }

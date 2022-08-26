@@ -5,7 +5,7 @@
   color: #fff;
   font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
-  height: 83vh;
+  height: calc(100vh - 80px);
   width: 100%;
   overflow-y:hidden;
 }
