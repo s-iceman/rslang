@@ -12,12 +12,21 @@ class Footer extends Component {
     <div class='container'>
       <div class="footer__body">
       <div class="footer__rsshool_img">
-      <a target="_blank" href="https://rs.school/"><img src="../assets/img/rs_school.jpg" alt="rs_school"></a></div>
-      <div class="contacts">           
-      <h3 class="contacts__title">GitHub of project</h3>
+      <a target="_blank" href="https://rs.school/"><img src="./assets/img/rs_school.jpg" alt="rs_school"></a></div>
+      <div class="footer__members">
+        <img src="./assets/img/gitHubWhite.jpg" alt="gihub" class="footer__git-img"">
+        <div class="footer__members_git-hub">
+        <a target="_blank" href="https://github.com/s-iceman">Oksana Zavadskaya</a>
+        <a target="_blank" href="https://github.com/darap1">Andrei Darapiyevich</a>
+        <a target="_blank" href="https://github.com/Boffin-ux">Boris Nizameev</a>
+        </div>
+      </div> 
+      <div class="contacts__project">       
+      <h3 class="contacts__project__title">GitHub of project:</h3>
          <a href="https://github.com/s-iceman/rslang"  class="rslang">
          <p class="gitHub">SpeakLang</p></a>
-   </div>
+      </div>
+      <div class="footer__copyright">©<span>2022 RSLang</span></div>
        </div>
     </div>
   ` 

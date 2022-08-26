@@ -38,7 +38,7 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Учебник</h4>
-              <div class="why-us__box_img"><img src="../assets/img/why-as-box/textbook.jpg" alt="statistic"></div>
+              <div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div>
               <p>Слушай и запоминай.</p>
             </div>
           </div>
@@ -47,7 +47,7 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Савана</h4>
-              <div class="why-us__box_img"><img src="../assets/img/why-as-box/savana.jpg" alt="statistic"></div>
+              <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="statistic"></div>
               <p>Играй и учись</p>
             </div>
           </div>
@@ -56,7 +56,7 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Спринт</h4>
-              <div class="why-us__box_img"><img src="../assets/img/why-as-box/sprint.jpg" alt="statistic"></div>
+              <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="statistic"></div>
               <p>Пробуй запоминанть быстрее.</p>
             </div>
           </div>
@@ -65,7 +65,7 @@ export function innerText():string {
             <div class="why-us__box">
               <span></span>
               <h4>Статистика</h4>
-              <div class="why-us__box_img"><img src="../assets/img/why-as-box/statistic.png" alt="statistic"></div>
+              <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div>
               <p>Отслеживайте свой прогресс.</p>
             </div>
           </div>
@@ -97,7 +97,7 @@ export function innerText():string {
             <h4>Okasana Zavadskaya</h4>
             <span>Team Lead</span>
             <span>what have done</span>
-            <a target="_blank" href="https://github.com/s-iceman"><img src="../assets/img/GitHub-Logo.png" alt="gihub"></a>
+            <a target="_blank" href="https://github.com/s-iceman"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
             <div class="social">
               <a href=""><i class="twitter"></i></a>
             </div>
@@ -116,7 +116,7 @@ export function innerText():string {
             <h4>Boris Nizameev</h4>
             <span>Programmer</span>
             <span>what have done</span>
-            <a target="_blank" href="https://github.com/Boffin-ux"><img src="../assets/img/GitHub-Logo.png" alt="gihub"></a>
+            <a target="_blank" href="https://github.com/Boffin-ux"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
             <div class="social">
               <a href=""><i class="twitter"></i></a>
             </div>
@@ -135,7 +135,7 @@ export function innerText():string {
             <h4>Andrei Darapiyevich</h4>
             <span>Programmer</span>
             <span>what have done</span>
-            <a target="_blank" href="https://github.com/darap1"><img src="../assets/img/GitHub-Logo.png" alt="gihub"></a>
+            <a target="_blank" href="https://github.com/darap1"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
             <div class="social">
               <a href=""><i class="twitter"></i></a>
             </div>
