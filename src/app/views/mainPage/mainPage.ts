@@ -19,7 +19,7 @@ export class MainPage extends View implements IView {
   private createContent(): ReadonlyArray<HTMLElement> {
     const hero = document.createElement('section')
     hero.classList.add('hero');
-    hero.setAttribute('style','background-image: url(../assets/img/slide/slide-1.jpg)');
+    hero.setAttribute('style','background-image: url(./assets/img/slide/slide-1.jpg)');
     hero.innerHTML = `
     <div class="hero__container";>
     <h2>SPEAKLAND</h2>
