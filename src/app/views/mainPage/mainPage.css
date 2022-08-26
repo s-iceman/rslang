@@ -21,6 +21,33 @@
     margin-bottom: 50px;
 }
 
+@media(max-width:1200px){
+    .hero {
+    height: 80vh;
+    }
+}
+
+@media(max-width:967px){
+    .hero {
+    height: 60vh;
+    }
+}
+
+@media(max-width:767px){
+    .hero {
+    height: 40vh;
+    }
+    .hero__container{
+        font-size: 1em;
+    }
+}
+
+@media(max-width:500px){
+    .hero {
+    height: 30vh;
+    }
+}
+
 .about{
  margin-top: 25px;
 }
@@ -31,9 +58,15 @@
     align-items: center; 
 }
 
-@media(max-width:767px){
+@media(max-width:900px){
     .content {
     flex-direction: column;
+    }
+}
+
+@media(max-width:500px){
+    .hero__container h2 {
+        margin-bottom: 0px;
     }
 }
 
@@ -205,6 +238,7 @@
     align-items: center;
     align-content: center;
     flex-wrap: wrap;
+    transition: 0.3s;
 }
 
 .team__member:hover{
