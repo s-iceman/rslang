@@ -91,7 +91,7 @@ export class TextBookView extends View implements ITextBookView {
       this.markSelected(navBtn);
     }
 
-    if (isHardUnit && words.length < 5) {
+    if (isHardUnit) {
       this.pagination.hideBlock(true);
     } else {
       this.pagination.hideBlock(false);
