@@ -19,7 +19,9 @@ export class TextBookController extends State implements ITextBookController {
 
   constructor(baseUrl: string) {
     super();
-    this.activeUnit = UnitLevels.A1;
+    const savedUnit: string | null = window.localStorage.getItem('unit');
+    const savedUnitLevel = savedUnit && this.getUnitLevelByName(savedUnit);
+    this.activeUnit = savedUnitLevel || UnitLevels.A1;
     this.textBookView = null;
     this.baseUrl = baseUrl;
     this.model = new AppModel(this.baseUrl);
@@ -29,31 +31,36 @@ export class TextBookController extends State implements ITextBookController {
     return this.activeUnit;
   }
 
-  async setView(view: ViewOrNotInit): Promise<void> {
+  registerView(view: ViewOrNotInit): void {
     if (view instanceof TextBookView) {
       this.textBookView = view;
       this.textBookView.setController(this);
-
-      const unitName: string = window.localStorage.getItem('unit') || 'beginners';
-      const words = await this.getWords();
-      this.textBookView.updateCards(unitName, words, this.getUnit());
     } else {
       this.textBookView = null;
     }
   }
 
+  async updateView(): Promise<void> {
+    if (this.textBookView) {
+      await this.setTextBookView();
+    }
+  }
+
+  private async setTextBookView(): Promise<void> {
+    const unitName: string = UnitLabels[this.activeUnit];
+    const words = await this.getWords();
+    this.textBookView?.updateCards(unitName, words);
+  }
+
   public async selectUnit(unitName: string): Promise<void> {
     this.removeSound();
-    const keys = new Map(
-      Object.entries(UnitLabels).map((entry) => entry.reverse()) as [UnitLabels, keyof typeof UnitLabels][]
-    );
-    const level: string | undefined = keys.get(<UnitLabels>unitName);
+    const level = this.getUnitLevelByName(unitName);
     if (!level) {
       return;
     }
-    this.activeUnit = UnitLevels[level as keyof typeof UnitLevels];
+    this.activeUnit = level;
     const words = await this.getWords();
-    this.textBookView?.updateCards?.(unitName, words, this.getUnit());
+    this.textBookView?.updateCards?.(unitName, words);
     window.localStorage.setItem('unit', unitName);
   }
 
@@ -62,7 +69,7 @@ export class TextBookController extends State implements ITextBookController {
     const words = await this.getWords(page);
     const unitName: string | null = window.localStorage.getItem('unit');
     if (unitName) {
-      this.textBookView?.updateCards?.(unitName, words, this.getUnit());
+      this.textBookView?.updateCards?.(unitName, words);
     }
   }
 
@@ -153,5 +160,12 @@ export class TextBookController extends State implements ITextBookController {
     } else {
       return [];
     }
+  }
+
+  private getUnitLevelByName(unitName: string): UnitLevels | undefined {
+    const keys = new Map(
+      Object.entries(UnitLabels).map((entry) => entry.reverse()) as [string, keyof typeof UnitLabels][]
+    );
+    return keys.get(unitName);
   }
 }

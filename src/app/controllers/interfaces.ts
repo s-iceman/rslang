@@ -8,7 +8,8 @@ interface IAppController {
 
 interface ITextBookController {
   getUnit(): UnitLevels;
-  setView(view: ViewOrNotInit): Promise<void>;
+  registerView(view: ViewOrNotInit): void;
+  updateView(): Promise<void>;
   playSound(wordsItem: IApiWords, node: HTMLElement): Promise<void>;
   createUserWord(wordId: string, isDifficulty: boolean, isStudy?: boolean): Promise<void>;
   isAuth(): boolean;

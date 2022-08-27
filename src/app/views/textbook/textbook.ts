@@ -1,5 +1,5 @@
 import { ViewPath } from '../../common/constants';
-import { ITextBookView, MenuBtnType, MenuBtn, UnitKeys, IPagination } from '../interfaces';
+import { ITextBookView, IPagination, PaginType } from '../interfaces';
 import { View } from '../view';
 import { UnitLabels, PaginBtnType } from '../constants';
 import { Pagination } from './pagination';
@@ -7,10 +7,11 @@ import Words from './word';
 import { IApiWords } from '../../models/interfaces';
 import { ITextBookController } from '../../controllers/interfaces';
 import { MAX_GROUP_WORDS } from './constants';
+import { UnitLevels } from '../../controllers/constants';
+
+const USER_UNITS = [String(UnitLevels.Hard)];
 
 export class TextBookView extends View implements ITextBookView {
-  private btn: MenuBtn;
-
   private unitsNav: HTMLDivElement | undefined;
 
   private cardsBlock: HTMLDivElement | undefined;
@@ -57,46 +58,50 @@ export class TextBookView extends View implements ITextBookView {
   }
 
   private addChangePageListeners(): void {
-    const elem = <HTMLElement>document.querySelector('.pagination');
-    elem?.addEventListener('click', (event) => {
-      if (!event.target) {
-        return;
-      }
-      const targetElem = <HTMLElement>event.target;
-      if (!targetElem.classList.contains('pagination__item')) {
-        return;
-      }
-      this.pagination.update(Number(targetElem.id) as PaginBtnType);
-      if (this.ctrl) {
-        this.ctrl.changeUnitPage(this.pagination.getCurrentPage() - 1).catch((err) => console.debug(err));
-      }
+    const elems = document.querySelectorAll('.pagination');
+    elems.forEach((elem) => {
+      elem.addEventListener('click', (event) => {
+        if (!event.target) {
+          return;
+        }
+        const targetElem = <HTMLElement>event.target;
+        if (!targetElem.classList.contains('pagination__item')) {
+          return;
+        }
+        this.pagination.update(Pagination.getBtnId(targetElem) as PaginBtnType);
+        if (this.ctrl) {
+          this.ctrl.changeUnitPage(this.pagination.getCurrentPage() - 1).catch((err) => console.debug(err));
+        }
+      });
     });
   }
 
-  updateCards(unitName: string, words: IApiWords[], group: number): void {
+  updateCards(unitName: string, words: IApiWords[]): void {
+    const group = this.ctrl?.getUnit();
     const isHardUnit = group === MAX_GROUP_WORDS;
 
     if (!this.cardsBlock) {
       return;
     }
     this.cardsBlock.innerHTML = '';
-    this.createCards(this.cardsBlock, unitName, words, isHardUnit);
+    this.createCards(this.cardsBlock, words, isHardUnit);
 
     const navBtn: HTMLElement | null = document.getElementById(unitName);
     if (navBtn) {
       this.markSelected(navBtn);
     }
+    this.pagination.updateActiveBtn([this.getActiveUnitName()]);
   }
 
-  private createCardsBlock(unitName: string, words: IApiWords[]): HTMLElement {
+  private createCardsBlock(words: IApiWords[]): HTMLElement {
     const parent: HTMLDivElement = document.createElement('div');
     parent.classList.add('dictionary');
-    this.createCards(parent, unitName, words);
+    this.createCards(parent, words);
     this.cardsBlock = parent;
     return parent;
   }
 
-  private createCards(parent: HTMLElement, className: string, wordsData: IApiWords[], isHardUnit = false): void {
+  private createCards(parent: HTMLElement, wordsData: IApiWords[], isHardUnit = false): void {
     if (!this.ctrl) {
       return;
     }
@@ -105,33 +110,18 @@ export class TextBookView extends View implements ITextBookView {
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
-    const menu: HTMLElement = this.createMenu();
-
     const container: HTMLDivElement = document.createElement('div');
     container.className = 'container textbook';
-    container.setAttribute('style','margin-top:90px')
-    container.append(this.createUnitsNav(), this.createCardsBlock('beginners', []));
-    container.append(this.pagination.create());
+    container.append(this.createUnitsNav());
+    container.append(this.pagination.create(this.getActiveUnitName(), PaginType.TOP));
+    container.append(this.createCardsBlock([]));
+    container.append(this.pagination.create(this.getActiveUnitName(), PaginType.BOTTOM));
 
     return [container];
   }
 
-  protected getBtnToChangePage(): MenuBtn {
-    return this.btn;
-  }
-
-  private createMenu(): HTMLElement {
-    const btn: MenuBtnType = document.createElement('a');
-    btn.classList.add('go-to-btn');
-    btn.innerText = 'Main page';
-    btn.id = 'go-to-main';
-    btn.href = '/';
-    this.btn = btn;
-    return btn;
-  }
-
   private createUnitsNav(): HTMLDivElement {
-    const btns: ReadonlyArray<string> = Object.keys(UnitLabels).map((e) => this.createUnitNavBtn(e));
+    const btns: ReadonlyArray<string> = this.getAvailableUnits().map((e) => this.createUnitNavBtn(e));
     const parent: HTMLDivElement = document.createElement('div');
     parent.classList.add('textbook-nav');
     parent.innerHTML = btns.join('\n');
@@ -139,13 +129,20 @@ export class TextBookView extends View implements ITextBookView {
     return parent;
   }
 
-  private createUnitNavBtn(unitId: string): string {
-    const key = UnitLabels[unitId as UnitKeys];
+  private createUnitNavBtn(unitId: UnitLevels): string {
+    const key = UnitLabels[unitId];
     return `
       <div class="textbook-nav__btn ${key}" id="${key}">
-        ${unitId}
+        ${UnitLevels[unitId]}
       </div>
     `;
+  }
+
+  private getAvailableUnits(): UnitLevels[] {
+    if (this.ctrl?.isAuth()) {
+      return Object.keys(UnitLevels).filter((k) => k in UnitLabels) as [];
+    }
+    return Object.keys(UnitLevels).filter((k) => k in UnitLabels && !USER_UNITS.includes(k)) as [];
   }
 
   private markSelected(elem: HTMLElement): void {
@@ -159,5 +156,10 @@ export class TextBookView extends View implements ITextBookView {
       element.classList.remove('active');
     });
     elem.classList.add('active');
+  }
+
+  private getActiveUnitName(): string {
+    const unitLevel = this.ctrl?.getUnit() || UnitLevels.A1;
+    return UnitLabels[unitLevel];
   }
 }

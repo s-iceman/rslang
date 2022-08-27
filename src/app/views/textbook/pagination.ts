@@ -1,6 +1,8 @@
 import { PaginBtnType } from '../constants';
-import { IPagination } from '../interfaces';
+import { IPagination, PaginType } from '../interfaces';
 import { TOTAL_PAGES, START_PAGE } from './constants';
+
+const DELIMITER = '-';
 
 export class Pagination implements IPagination {
   private current: number;
@@ -15,21 +17,25 @@ export class Pagination implements IPagination {
     this.current = current || this.start;
   }
 
+  static getBtnId(elem: HTMLElement): number {
+    return Number(elem.id.slice(elem.id.lastIndexOf(DELIMITER) + 1));
+  }
+
   getCurrentPage(): number {
     return this.current;
   }
 
-  create(current = START_PAGE): HTMLDivElement {
+  create(activeBtnClass: string, btnIdPref?: PaginType, current = START_PAGE): HTMLDivElement {
     this.current = current;
 
     const parent: HTMLDivElement = document.createElement('div');
     parent.classList.add('pagination');
     parent.append(
-      this.createBtn(PaginBtnType.First, '&laquo;&laquo;'),
-      this.createBtn(PaginBtnType.Prev, '&laquo;'),
-      this.createBtn(PaginBtnType.Current, this.current.toString()),
-      this.createBtn(PaginBtnType.Next, '&raquo;'),
-      this.createBtn(PaginBtnType.Last, '&raquo;&raquo;')
+      this.createBtn(PaginBtnType.First, '<<', btnIdPref),
+      this.createBtn(PaginBtnType.Prev, '<', btnIdPref),
+      this.createBtn(PaginBtnType.Current, this.current.toString(), btnIdPref, activeBtnClass),
+      this.createBtn(PaginBtnType.Next, '>', btnIdPref),
+      this.createBtn(PaginBtnType.Last, '>>', btnIdPref)
     );
     return parent;
   }
@@ -39,7 +45,7 @@ export class Pagination implements IPagination {
     const btns: NodeListOf<HTMLElement> = document.querySelectorAll('.pagination__item');
     Array.from(btns).forEach((e) => {
       const btn: HTMLElement = e;
-      const btnType: number = +btn.id;
+      const btnType = Pagination.getBtnId(e);
       if (btnType === PaginBtnType.Current) {
         btn.textContent = String(this.getCurrentPage());
         return;
@@ -50,6 +56,18 @@ export class Pagination implements IPagination {
         btn.classList.remove('disabled');
       }
     });
+  }
+
+  updateActiveBtn(classNames: Array<string>): void {
+    const btns: NodeListOf<HTMLElement> = document.querySelectorAll('.pagination__item');
+    Array.from(btns)
+      .filter((e) => Pagination.getBtnId(e) === PaginBtnType.Current)
+      .forEach((e) => {
+        const btn: HTMLElement = e;
+        const oldClasses = btn.classList;
+        oldClasses.forEach((c) => btn.classList.remove(c));
+        btn.classList.add('pagination__item', 'active', ...classNames);
+      });
   }
 
   private updateIndeces(btnType: PaginBtnType): void {
@@ -75,15 +93,17 @@ export class Pagination implements IPagination {
     }
   }
 
-  private createBtn(btnType: PaginBtnType, label: string): HTMLElement {
+  private createBtn(btnType: PaginBtnType, label: string, btnIdPref?: PaginType, activeBtnClass?: string): HTMLElement {
     const btn: HTMLElement = document.createElement('span');
     btn.classList.add('pagination__item');
     if (this.isDisabled(btnType)) {
       btn.classList.add('disabled');
     } else if (btnType == PaginBtnType.Current) {
       btn.classList.add('active');
+      btn.classList.add(`${activeBtnClass || ''}`);
     }
-    btn.id = String(btnType);
+    const prefix = btnIdPref ? btnIdPref + DELIMITER : '';
+    btn.id = `${prefix || ''}${btnType}`;
     btn.innerHTML = label;
     return btn;
   }
