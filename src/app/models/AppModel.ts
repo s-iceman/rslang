@@ -1,6 +1,6 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_PAGE_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
+import { IApiWords, IUserAggregatedWords, IUserWord } from './interfaces';
 
 export default class AppModel extends State {
   signinUrl: string;

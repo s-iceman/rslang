@@ -1,15 +1,14 @@
-//import { PageIds } from '../../../pages/app';
-import Component from '../components/components'
-import './header.css'
+import Component from '../components/components';
+import './header.css';
 import { ViewPath } from '../../common/constants';
 
 class Header extends Component {
-  constructor(tagName: string, className: string, id?:string) {
-    super(tagName, className,id);
+  constructor(tagName: string, className: string, id?: string) {
+    super(tagName, className, id);
   }
 
   render() {
-    this.container.innerHTML =`
+    this.container.innerHTML = `
     <div class='container'>
       <div class="header__body">
         <a class="header__logo" href="#" class="header__logo">
@@ -38,17 +37,16 @@ class Header extends Component {
         </nav>
        </div>
     </div>
-  `
-  document.body.addEventListener('click',function(event){
-    const eventTarget = event!.target! as HTMLButtonElement;
-    if (eventTarget.classList.contains('header__burger')) {
-    eventTarget.classList.toggle('active')
-    const menu = document.getElementsByClassName('header__menu') as HTMLCollection;
-    menu[0].classList.toggle('active');
-    }
-    
-  })
-    
+  `;
+    document.body.addEventListener('click', function (event) {
+      const eventTarget = event!.target! as HTMLButtonElement;
+      if (eventTarget.classList.contains('header__burger')) {
+        eventTarget.classList.toggle('active');
+        const menu = document.getElementsByClassName('header__menu') as HTMLCollection;
+        menu[0].classList.toggle('active');
+      }
+    });
+
     return this.container;
   }
 }

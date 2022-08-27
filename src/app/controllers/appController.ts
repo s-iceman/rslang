@@ -39,7 +39,7 @@ class AppController implements IAppController {
     });
   }
 
-  private async changeUrl(path?: string):  Promise<void> {
+  private async changeUrl(path?: string): Promise<void> {
     this.activeView = this.router.process(path ?? '');
     if (this.activeView) {
       await this.textBookCtrl.setView(this.activeView);

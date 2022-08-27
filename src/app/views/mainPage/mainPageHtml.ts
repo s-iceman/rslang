@@ -1,5 +1,5 @@
-export function innerText():string {
-    return `
+export function innerText(): string {
+  return `
     <!-- ======= About Section ======= -->
     <section class="about" id="about">
     <div class="content">
@@ -14,7 +14,7 @@ export function innerText():string {
           </p>
           <ul class="content__games">В нашем приложении разработаны активные игры для изучения языка
             <li><a class="content__game" href="#">Савана</a></li>
-            <li><a class="content__game" href="#">Спринт</a></li>
+            <li><a class="content__game" href="#">Спринт</a></li> 
           </ul>
           <p>Так же что бы получить полный доступ к функция приложения вам необходимо быть верефицированным пользователем
             <a class="content__link__reg" href="#">Пробуй!</a>
@@ -146,5 +146,5 @@ export function innerText():string {
 
       </div>
     </section><!-- End Team Section -->
-    `
+    `;
 }

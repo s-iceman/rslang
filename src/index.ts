@@ -1,6 +1,5 @@
 import { AppController } from '../src/app/controllers/appController';
 import { IAppController } from '../src/app/controllers/interfaces';
-import AppModel from './app/models/AppModel';
 import './scss/main.css';
 
 const app: IAppController = new AppController();

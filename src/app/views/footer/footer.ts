@@ -1,14 +1,14 @@
 //import { PageIds } from '../../../pages/app';
-import Component from '../components/components'
-import './footer.css'
+import Component from '../components/components';
+import './footer.css';
 
 class Footer extends Component {
-  constructor(tagName: string, className: string, id?:string) {
-    super(tagName, className,id);
+  constructor(tagName: string, className: string, id?: string) {
+    super(tagName, className, id);
   }
 
   render() {
-    this.container.innerHTML =`
+    this.container.innerHTML = `
     <div class='container'>
       <div class="footer__body">
       <div class="footer__rsshool_img">
@@ -29,7 +29,7 @@ class Footer extends Component {
       <div class="footer__copyright">©<span>2022 RSLang</span></div>
        </div>
     </div>
-  ` 
+  `;
     return this.container;
   }
 }

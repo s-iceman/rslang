@@ -6,7 +6,7 @@ import AppModel from '../models/AppModel';
 import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
 import State from '../models/State';
 import { UnitLabels } from '../views/constants';
-import { MAX_GROUP_WORDS, MAX_PAGE_WORDS, MIN_GROUP_WORDS, MIN_PAGE_WORDS } from '../models/constants';
+import { MAX_GROUP_WORDS, MAX_PAGE_WORDS, MIN_PAGE_WORDS } from '../models/constants';
 
 export class TextBookController extends State implements ITextBookController {
   private activeUnit: UnitLevels;

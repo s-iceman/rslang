@@ -9,8 +9,6 @@ import { ITextBookController } from '../../controllers/interfaces';
 import { MAX_GROUP_WORDS } from './constants';
 
 export class TextBookView extends View implements ITextBookView {
-  private btn: MenuBtn;
-
   private unitsNav: HTMLDivElement | undefined;
 
   private cardsBlock: HTMLDivElement | undefined;
@@ -109,15 +107,11 @@ export class TextBookView extends View implements ITextBookView {
 
     const container: HTMLDivElement = document.createElement('div');
     container.classList.add('container');
-    container.setAttribute('style','margin-top:90px')
+    container.setAttribute('style', 'margin-top:90px');
     container.append(this.createUnitsNav(), this.createCardsBlock('beginners', []));
     container.append(this.pagination.create());
 
     return [container];
-  }
-
-  protected getBtnToChangePage(): MenuBtn {
-    return this.btn;
   }
 
   private createMenu(): HTMLElement {
@@ -126,7 +120,7 @@ export class TextBookView extends View implements ITextBookView {
     btn.innerText = 'Main page';
     btn.id = 'go-to-main';
     btn.href = '/';
-    this.btn = btn;
+    //this.btn = btn;
     return btn;
   }
 
