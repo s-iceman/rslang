@@ -70,7 +70,7 @@ export class TextBookView extends View implements ITextBookView {
         }
         this.pagination.update(Pagination.getBtnId(targetElem) as PaginBtnType);
         if (this.ctrl) {
-          this.ctrl.changeUnitPage(this.pagination.getCurrentPage() - 1).catch((err) => console.debug(err));
+          this.ctrl.changeUnitPage(this.pagination.getCurrentPage()).catch((err) => console.debug(err));
         }
       });
     });
@@ -78,7 +78,7 @@ export class TextBookView extends View implements ITextBookView {
 
   updateCards(unitName: string, words: IApiWords[]): void {
     const group = this.ctrl?.getUnit();
-    const isHardUnit = group === MAX_GROUP_WORDS;
+    const isHardUnit = group == MAX_GROUP_WORDS;
 
     if (!this.cardsBlock) {
       return;
@@ -90,7 +90,21 @@ export class TextBookView extends View implements ITextBookView {
     if (navBtn) {
       this.markSelected(navBtn);
     }
-    this.pagination.updateActiveBtn([this.getActiveUnitName()]);
+
+    if (isHardUnit && words.length < 5) {
+      this.pagination.hideBlock(true);
+    } else {
+      this.pagination.hideBlock(false);
+    }
+  }
+
+  updateUnit(unitName: string, words: IApiWords[]): void {
+    this.updateCards(unitName, words);
+    this.pagination.update(PaginBtnType.First, [this.getActiveUnitName()]);
+  }
+
+  updatePage(page: number): void {
+    this.pagination.update(PaginBtnType.Current, undefined, page);
   }
 
   private createCardsBlock(words: IApiWords[]): HTMLElement {

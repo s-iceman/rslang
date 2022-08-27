@@ -888,6 +888,7 @@ button, input {
   flex-direction: row;
   justify-content: center;
   gap: 0;
+  padding-top: 2.5rem;
   padding-bottom: 6rem;
 }
 @media screen and (max-width: 767px) {
@@ -907,6 +908,10 @@ button, input {
   cursor: pointer;
   font-size: 2.5rem;
   clear: both;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 @media screen and (max-width: 767px) {
   .pagination .pagination__item {

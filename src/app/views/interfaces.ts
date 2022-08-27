@@ -13,6 +13,8 @@ interface IView {
 interface ITextBookView extends IView {
   setController(ctrl: ITextBookController): void;
   updateCards(unitName: string, cards: IApiWords[]): void;
+  updateUnit(unitName: string, cards: IApiWords[]): void;
+  updatePage(page: number): void;
 }
 
 type ViewOrNotInit = IView | null;
@@ -33,10 +35,10 @@ enum PaginType {
 }
 
 interface IPagination {
-  create(activeBtnClass: string, btnIdPref?: PaginType, current?: number): HTMLDivElement;
+  create(activeBtnClass: string, btnIdPref?: PaginType): HTMLDivElement;
   getCurrentPage(): number;
-  update(btnType: PaginBtnType): void;
-  updateActiveBtn(classNames: Array<string>): void;
+  update(btnType: PaginBtnType, classNames?: Array<string>, current?: number): void;
+  hideBlock(isHidden: boolean): void;
 }
 
 export {
