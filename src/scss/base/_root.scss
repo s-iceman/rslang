@@ -19,10 +19,7 @@ body {
    display: flex;
    flex-direction: column;
 }
-/*section, main, footer, header, article {
-   display: flex;
-   font-size: 1.8rem;
-}*/
+
 ul {
    padding-left: 0;
    margin: 0;
@@ -81,10 +78,7 @@ button, input {
       cursor: default;
    }
 }
-.auth__buttons {
-   display: flex;
-   gap: 1.2rem;
-}
+
 .btn-out {
    display: none;
 }
@@ -106,29 +100,12 @@ button, input {
    }
 }
 
-.footer {
-
-   &__wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3rem;
-      width: 100%;
-      height: 100%;
-      box-shadow: 0 -1px 0 0 #d2d0cc;
-      color: $color-primary;
-      font-weight: 500;
-      cursor: default;
-      margin-top: 5rem;
-   }
-
-   &__teams {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1.5rem;
-   }
+.root {
+   padding-top: $header-height-normal;
+   min-height: calc(100vh - 8rem);
+   font-size: 1.6rem;
 }
+
 .link, .icon {
    height: 5rem;
    display: inline-block;
@@ -151,6 +128,9 @@ button, input {
 }
 
 @media (max-width: 768px) {
+   .root {
+      padding-top: $header-height-min;
+   }
    .footer__wrap {
       gap: 2rem;
       flex-direction: column;

@@ -1,5 +1,4 @@
 import Component from '../components/components';
-import './footer.css';
 
 class Footer extends Component {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
@@ -23,11 +22,11 @@ class Footer extends Component {
       </div> 
       <div class="contacts__project">       
       <h3 class="contacts__project__title">GitHub of project:</h3>
-         <a href="https://github.com/s-iceman/rslang"  class="rslang">
-         <p class="gitHub">SpeakLang</p></a>
+          <a href="https://github.com/s-iceman/rslang"  class="rslang">
+          <p class="gitHub">SpeakLang</p></a>
       </div>
       <div class="footer__copyright">©<span>2022 RSLang</span></div>
-       </div>
+        </div>
     </div>
   `;
     return this.container;

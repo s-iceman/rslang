@@ -2,10 +2,12 @@
 @import "./abstracts/set";
 
 @import "./base/normalize";
-@import "./base/fonts";
 @import "./base/root";
 
+@import "./components/header";
 @import "./components/words";
+@import "./components/footer";
 
+@import "./pages/login";
+@import "./pages/mainPage";
 @import "./pages/textbook";
-// @import "./pages/login";

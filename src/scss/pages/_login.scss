@@ -5,7 +5,7 @@
   color: #fff;
   font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 16rem);
   width: 100%;
   overflow-y: hidden;
 }
@@ -19,33 +19,33 @@
 
 #wrapper__aut {
   overflow: hidden;
-  padding: 2px;
+  padding: .2rem;
 }
 
 #signin:checked ~ #wrapper__aut {
-  height: 168px;
+  height: 16.8rem;
 }
 #signin:checked ~ #wrapper__aut #arrow {
-  left: 32px;
+  left: 3.2rem;
 }
 #signin:checked ~ .btn-login span {
-  transform: translate3d(0, -72px, 0);
+  transform: translate3d(0, -7.2rem, 0);
 }
 
 #signup:checked ~ #wrapper__aut {
-  height: 262px;
+  height: 26.2rem;
 }
 #signup:checked ~ #wrapper__aut #arrow {
-  left: 150px;
+  left: 15rem;
 }
 #signup:checked ~ .btn-login span {
-  transform: translate3d(0, -144px, 0);
+  transform: translate3d(0, -14.4rem, 0);
 }
 
 .autorization__form {
-  width: 450px;
-  height: 370px;
-  margin: -185px -225px;
+  width: 45rem;
+  height: 37rem;
+  margin: -18.5rem -22.5rem;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -58,10 +58,10 @@ input[type='radio'] {
 .aut__label {
   cursor: pointer;
   display: inline-block;
-  font-size: 22px;
+  font-size: 2.2rem;
   font-weight: 800;
   opacity: 0.5;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
   text-transform: uppercase;
 }
 .aut__label:hover {
@@ -69,7 +69,7 @@ input[type='radio'] {
   opacity: 1;
 }
 .aut__label[for='signin'] {
-  margin-right: 20px;
+  margin-right: 2rem;
 }
 input[type='radio']:checked + .aut__label {
   opacity: 1;
@@ -80,35 +80,35 @@ input[type='email'],
 input[type='password'] {
   background: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 20px;
+  border-radius: .8rem;
+  font-size: 2rem;
   font-family: 'Raleway', sans-serif;
-  height: 72px;
+  height: 7.2rem;
   width: 99.5%;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
   opacity: 1;
-  text-indent: 20px;
+  text-indent: 2rem;
   transition: all 0.2s ease-in-out;
 }
 .btn-login {
   background: rgba(0, 0, 0, 0.75);
   border: none;
-  border-radius: 8px;
+  border-radius: .8rem;
   color: #fff;
   cursor: pointer;
   font-family: 'Raleway', sans-serif;
-  font-size: 27px;
-  height: 72px;
+  font-size: 2.7rem;
+  height: 7.2rem;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 1rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.6, 0, 0.4, 1);
 }
 .btn-login span {
   display: block;
-  line-height: 72px;
+  line-height: 7.2rem;
   position: relative;
-  top: -2px;
+  top: -.2rem;
   transform: translate3d(0, 0, 0);
 }
 .btn-login:hover {
@@ -118,18 +118,18 @@ input[type='password'] {
 #arrow {
   height: 0;
   width: 0;
-  border-bottom: 10px solid #fff;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  border-bottom: 1rem solid #fff;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
   position: relative;
-  left: 32px;
+  left: 3.2rem;
 }
 
 .after-autarization {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 8rem);
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
@@ -138,10 +138,10 @@ input[type='password'] {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  height: 250px;
+  width: 35rem;
+  height: 25rem;
   background: rgba(0, 0, 0, 0.75);
-  border-radius: 25px;
+  border-radius: 2.5rem;
 }
 
 .after-aut-message {
@@ -156,10 +156,10 @@ input[type='password'] {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  width: 80px;
-  border: #5c9f24 2px solid;
-  border-radius: 10px;
+  height: 5rem;
+  width: 8rem;
+  border: #5c9f24 .2rem solid;
+  border-radius: 1rem;
 }
 
 .go-to-main-button:hover {

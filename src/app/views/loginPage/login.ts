@@ -1,7 +1,6 @@
 import { ViewPath } from '../../common/constants';
 import { IView } from '../interfaces';
 import { View } from '../view';
-import './login.css';
 import { LoginController } from '../../controllers/loginController';
 import { IAutentificatedUser } from './types';
 export class LoginView extends View implements IView {

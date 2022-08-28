@@ -8,7 +8,7 @@ import AppModel from '../models/AppModel';
 import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
 import State from '../models/State';
 import { UnitLabels } from '../views/constants';
-import { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from '../constants';
+import { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from '../common/constants';
 
 export class TextBookController extends State implements ITextBookController {
   private textBookState: TextBookState;
