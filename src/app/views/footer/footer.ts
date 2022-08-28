@@ -1,8 +1,8 @@
-//import { PageIds } from '../../../pages/app';
 import Component from '../components/components';
 import './footer.css';
 
 class Footer extends Component {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(tagName: string, className: string, id?: string) {
     super(tagName, className, id);
   }
