@@ -47,7 +47,7 @@ export function innerText(): string {
           <div class="">
             <div class="why-us__box">
               <span></span>
-              <h4>Савана</h4>
+              <h4>Аудиовызов</h4>
               <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="statistic"></div>
               <p>Играй и учись</p>
             </div>

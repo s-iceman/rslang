@@ -1,6 +1,7 @@
 import { PaginBtnType } from './constants';
 import { IApiWords } from '../models/interfaces';
-import { ITextBookController } from './../controllers/interfaces';
+import { IGameController, ITextBookController } from './../controllers/interfaces';
+import { GameType } from '../controllers/constants';
 
 type MenuBtnType = HTMLAnchorElement;
 
@@ -15,6 +16,14 @@ interface ITextBookView extends IView {
   updateCards(unitName: string, cards: IApiWords[]): void;
   updateUnit(unitName: string, cards: IApiWords[]): void;
   updatePage(page: number): void;
+}
+
+interface IGameView extends IView {
+  setController(ctrl: IGameController): void;
+  updateView(): void;
+  getGameType(): GameType;
+  showWord(word?: IApiWords): void;
+  startGame(word?: IApiWords): void;
 }
 
 type ViewOrNotInit = IView | null;
@@ -51,5 +60,6 @@ export {
   IPagination,
   ITextBookView,
   TextBookViewOrNotInit,
+  IGameView,
   PaginType,
 };

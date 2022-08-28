@@ -24,8 +24,8 @@ class Header extends Component {
             <li><div class="dropdown">
                 <button class="dropbtn">ИГРЫ</button>
                   <div class="dropdown_content">
-                      <a href="#">Савана</a>
-                      <a href="#">Спринт</a>
+                    <a href="#${ViewPath.VOICECALL}">Аудиовызов</a>
+                    <a href="#${ViewPath.SPRINT}">Спринт</a>
                   </div>
               </div>
             </li>

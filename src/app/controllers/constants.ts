@@ -8,9 +8,16 @@ enum UnitLevels {
   Hard,
 }
 
+const USER_UNITS = [String(UnitLevels.Hard)];
+
 enum DifficultyWord {
   Simple = 'simple',
   Hard = 'hard',
 }
 
-export { UnitLevels, DifficultyWord };
+enum GameType {
+  Sprint = 'sprint',
+  VoiceCall = 'voicecall',
+}
+
+export { UnitLevels, DifficultyWord, USER_UNITS, GameType };

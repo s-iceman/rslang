@@ -19,7 +19,7 @@ export class TextBookController extends State implements ITextBookController {
 
   private textBookView: TextBookViewOrNotInit;
 
-  constructor(baseUrl: string) {
+  constructor(baseUrl: string, model: AppModel) {
     super();
     const savedUnit: string | null = window.localStorage.getItem('unit');
     const savedUnitLevel = savedUnit && this.getUnitLevelByName(savedUnit);
@@ -29,7 +29,7 @@ export class TextBookController extends State implements ITextBookController {
     };
     this.textBookView = null;
     this.baseUrl = baseUrl;
-    this.model = new AppModel(this.baseUrl);
+    this.model = model;
   }
 
   getUnit(): UnitLevels {

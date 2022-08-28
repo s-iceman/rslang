@@ -5,6 +5,28 @@
   @media (max-width: 768px) {
     width: 100%;
   }
+
+  &__games {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    padding-bottom: 15rem;
+
+    @media screen and (max-width: 767px) {
+      padding-bottom: 4rem;
+
+      .why-us__box {
+        width: 20rem;
+        height: 20rem;
+
+        &_img {
+          width: 12rem;
+          height: 12rem;
+        }
+      }
+    }
+  }
 }
 
 .textbook-nav {

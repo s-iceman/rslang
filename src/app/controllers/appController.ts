@@ -1,26 +1,31 @@
 import { ViewOrNotInit } from '../views/interfaces';
-import { IAppController, IRouter, ITextBookController } from './interfaces';
+import { IAppController, IGameController, IRouter, ITextBookController } from './interfaces';
 import { Router } from './router';
 import { TextBookController } from './textbookController';
 import { BaseContainer } from '../views/base/baseContainer';
+import AppModel from '../models/AppModel';
+import { GameController } from './gameController';
 
 class AppController implements IAppController {
+  private model: AppModel;
+
   private baseUrl: string;
 
   private router: IRouter;
 
   private baseContainer: BaseContainer;
 
-  private controllers: Array<ITextBookController>;
+  private controllers: Array<ITextBookController | IGameController>;
 
   private activeView: ViewOrNotInit;
 
   constructor() {
     this.baseUrl = 'http://localhost:8082';
     this.router = new Router(this.baseUrl);
+    this.model = new AppModel(this.baseUrl);
 
     this.activeView = null;
-    this.controllers = [new TextBookController(this.baseUrl)];
+    this.controllers = [new TextBookController(this.baseUrl, this.model), new GameController(this.baseUrl, this.model)];
 
     this.baseContainer = new BaseContainer();
   }

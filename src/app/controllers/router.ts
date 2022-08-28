@@ -4,10 +4,12 @@ import { LoginView } from '../views/loginPage/login';
 import { MainPage } from '../views/mainPage/mainPage';
 import { TextBookView } from '../views/textbook/textbook';
 import { StatisticsView } from '../views/statistics/statistics';
+import { SprintView } from '../views/games/sprint';
+import { VoiceCallView } from '../views/games/voiceCall';
 
 type MyType = Map<string, IViewConstructor>;
 
-const ALL_VIEWS = [MainPage, TextBookView, StatisticsView, LoginView];
+const ALL_VIEWS = [MainPage, TextBookView, StatisticsView, LoginView, SprintView, VoiceCallView];
 const ANCHORS = {
   [ViewPath.ABOUT]: ViewPath.MAIN,
   [ViewPath.TEAM]: ViewPath.MAIN,
