@@ -1,3 +1,8 @@
-type SelectUnitFn = (unit: string) => void;
+import { UnitLevels } from './constants';
 
-export { SelectUnitFn };
+type TextBookState = {
+  unit: UnitLevels;
+  page: number;
+};
+
+export { TextBookState };

@@ -1,6 +1,8 @@
 import { ViewOrNotInit, TextBookViewOrNotInit } from '../views/interfaces';
+import { START_PAGE } from '../views/textbook/constants';
 import { TextBookView } from '../views/textbook/textbook';
 import { DifficultyWord, UnitLevels } from './constants';
+import { TextBookState } from './types';
 import { ITextBookController } from './interfaces';
 import AppModel from '../models/AppModel';
 import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
@@ -9,7 +11,7 @@ import { UnitLabels } from '../views/constants';
 import { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from '../constants';
 
 export class TextBookController extends State implements ITextBookController {
-  private activeUnit: UnitLevels;
+  private textBookState: TextBookState;
 
   private baseUrl: string;
 
@@ -19,50 +21,60 @@ export class TextBookController extends State implements ITextBookController {
 
   constructor(baseUrl: string) {
     super();
-    this.activeUnit = UnitLevels.A1;
+    const savedUnit: string | null = window.localStorage.getItem('unit');
+    const savedUnitLevel = savedUnit && this.getUnitLevelByName(savedUnit);
+    this.textBookState = {
+      unit: savedUnitLevel || UnitLevels.A1,
+      page: Number(window.localStorage.getItem('unit-page')) || START_PAGE,
+    };
     this.textBookView = null;
     this.baseUrl = baseUrl;
     this.model = new AppModel(this.baseUrl);
   }
 
   getUnit(): UnitLevels {
-    return this.activeUnit;
+    return this.textBookState.unit;
   }
 
-  async setView(view: ViewOrNotInit): Promise<void> {
+  getPage(): number {
+    return this.textBookState.page;
+  }
+
+  registerView(view: ViewOrNotInit): void {
     if (view instanceof TextBookView) {
       this.textBookView = view;
       this.textBookView.setController(this);
-
-      const unitName: string = window.localStorage.getItem('unit') || 'beginners';
-      const words = await this.getWords();
-      this.textBookView.updateCards(unitName, words, this.getUnit());
     } else {
       this.textBookView = null;
     }
   }
 
+  async updateView(): Promise<void> {
+    if (this.textBookView) {
+      await this.setTextBookView();
+    }
+  }
+
   public async selectUnit(unitName: string): Promise<void> {
     this.removeSound();
-    const keys = new Map(
-      Object.entries(UnitLabels).map((entry) => entry.reverse()) as [UnitLabels, keyof typeof UnitLabels][]
-    );
-    const level: string | undefined = keys.get(<UnitLabels>unitName);
+    const level = this.getUnitLevelByName(unitName);
     if (!level) {
       return;
     }
-    this.activeUnit = UnitLevels[level as keyof typeof UnitLevels];
+    this.textBookState.unit = level;
+    this.updatePage(START_PAGE);
     const words = await this.getWords();
-    this.textBookView?.updateCards?.(unitName, words, this.getUnit());
+    this.textBookView?.updateUnit?.(unitName, words);
     window.localStorage.setItem('unit', unitName);
   }
 
   public async changeUnitPage(page: number): Promise<void> {
     this.removeSound();
+    this.updatePage(page);
     const words = await this.getWords(page);
-    const unitName: string | null = window.localStorage.getItem('unit');
+    const unitName: string = UnitLabels[this.textBookState.unit];
     if (unitName) {
-      this.textBookView?.updateCards?.(unitName, words, this.getUnit());
+      this.textBookView?.updateCards?.(unitName, words);
     }
   }
 
@@ -117,8 +129,10 @@ export class TextBookController extends State implements ITextBookController {
     }
   }
 
-  async getWords(page = MIN_PAGE_WORDS): Promise<IApiWords[]> {
-    const currentPage = page < MAX_PAGE_WORDS && page >= MIN_PAGE_WORDS ? page : MIN_PAGE_WORDS;
+  async getWords(page?: number): Promise<IApiWords[]> {
+    let currentPage: number = page || this.textBookState.page;
+    currentPage = this.validatePage(currentPage) ? currentPage : START_PAGE;
+
     const currentGroup = this.getUnit();
 
     let wordsData: IApiWords[];
@@ -153,5 +167,28 @@ export class TextBookController extends State implements ITextBookController {
     } else {
       return [];
     }
+  }
+
+  async setTextBookView(): Promise<void> {
+    const unitName: string = UnitLabels[this.textBookState.unit];
+    const words = await this.getWords();
+    this.textBookView?.updateCards(unitName, words);
+    this.textBookView?.updatePage(this.textBookState.page);
+  }
+
+  private getUnitLevelByName(unitName: string): UnitLevels | undefined {
+    const keys = new Map(
+      Object.entries(UnitLabels).map((entry) => entry.reverse()) as [string, keyof typeof UnitLabels][]
+    );
+    return keys.get(unitName);
+  }
+
+  private updatePage(page: number): void {
+    this.textBookState.page = page;
+    window.localStorage.setItem('unit-page', page.toString());
+  }
+
+  private validatePage(page: number): boolean {
+    return page >= MIN_PAGE_WORDS && page <= MAX_PAGE_WORDS;
   }
 }

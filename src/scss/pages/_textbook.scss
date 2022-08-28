@@ -1,5 +1,11 @@
 .textbook {
+  position: relative;
+  top: $header-height-normal;
   padding: 5rem;
+
+  @media(max-width: 767px) {
+    top: $header-height-min;
+  }
 }
 
 .textbook-nav {
@@ -17,6 +23,15 @@
     justify-content: center;
     cursor: pointer;
     user-select: none;
+    font-family: $font-main;
+    color: white;
+    font-weight: 500;
+    user-select: none;
+    -webkit-user-select: none;
+
+    @media(max-width: 767px) {
+      font-size: 2rem;
+    }
 
     &:hover {
       color: white;
@@ -29,34 +44,6 @@
     font-weight: 700;
     color: white;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-  }
-
-  .beginner {
-    background-color: red;
-  }
-
-  .pre-intermediate {
-    background-color: orange;
-  }
-
-  .intermediate {
-    background-color: yellow;
-  }
-
-  .upper-intermediate {
-    background-color: rgb(21, 161, 21);
-  }
-
-  .advanced {
-    background-color: rgb(24, 190, 231);
-  }
-
-  .proficient {
-    background-color: blue;
-  }
-
-  .hard {
-    background-color: rgb(192, 15, 192);
   }
 }
 
@@ -112,26 +99,70 @@
   flex-direction: row;
   justify-content: center;
   gap: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 6rem;
+
+  @media screen and (max-width: 767px) {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+  }
 
   .pagination__item {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ddd;
+    width: 60px;
+    height: 30px;
+    padding: 10px;
     cursor: pointer;
     font-size: 2.5rem;
+    clear: both;
+    user-select: none;
+
+    @media screen and (max-width: 767px) {
+      width: 60px;
+      font-size: 2rem;
+    }
   }
 
   .active {
-    background-color: #545f55fa;
     color: white;
+    font-weight: 700;
   }
 
   .disabled {
-    background-color: rgb(216, 205, 205);
+    background-color: white;
+    color: #90a192fa;
+    cursor:auto;
   }
+}
 
+
+.beginner {
+  background-color: $color-unit-a1;
+}
+
+.pre-intermediate {
+  background-color: $color-unit-a2;
+}
+
+.intermediate {
+  background-color: $color-unit-b1;
+}
+
+.upper-intermediate {
+  background-color: $color-unit-b2;
+}
+
+.advanced {
+  background-color: $color-unit-c1;
+}
+
+.proficient {
+  background-color: $color-unit-c2;
+}
+
+.hard {
+  background-color: $color-unit-hard;
 }

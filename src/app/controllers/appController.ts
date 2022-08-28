@@ -11,7 +11,7 @@ class AppController implements IAppController {
 
   private baseContainer: BaseContainer;
 
-  private textBookCtrl: ITextBookController;
+  private controllers: Array<ITextBookController>;
 
   private activeView: ViewOrNotInit;
 
@@ -20,7 +20,7 @@ class AppController implements IAppController {
     this.router = new Router(this.baseUrl);
 
     this.activeView = null;
-    this.textBookCtrl = new TextBookController(this.baseUrl);
+    this.controllers = [new TextBookController(this.baseUrl)];
 
     this.baseContainer = new BaseContainer();
   }
@@ -41,8 +41,13 @@ class AppController implements IAppController {
 
   private async changeUrl(path?: string): Promise<void> {
     this.activeView = this.router.process(path ?? '');
-    if (this.activeView) {
-      await this.textBookCtrl.setView(this.activeView);
+    if (!this.activeView) {
+      return;
+    }
+    this.controllers.forEach((ctrl) => ctrl.registerView(this.activeView));
+    this.activeView.render();
+    for (const ctrl of this.controllers) {
+      await ctrl.updateView().catch((err) => console.debug(err));
     }
   }
 }

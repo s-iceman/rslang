@@ -1,4 +1,4 @@
-import { UnitLabels, PaginBtnType } from './constants';
+import { PaginBtnType } from './constants';
 import { IApiWords } from '../models/interfaces';
 import { ITextBookController } from './../controllers/interfaces';
 
@@ -12,7 +12,9 @@ interface IView {
 
 interface ITextBookView extends IView {
   setController(ctrl: ITextBookController): void;
-  updateCards(unitName: string, cards: IApiWords[], group: number): void;
+  updateCards(unitName: string, cards: IApiWords[]): void;
+  updateUnit(unitName: string, cards: IApiWords[]): void;
+  updatePage(page: number): void;
 }
 
 type ViewOrNotInit = IView | null;
@@ -27,13 +29,17 @@ interface ICard {
   getContent(): string;
 }
 
-interface IPagination {
-  create(current?: number): HTMLDivElement;
-  getCurrentPage(): number;
-  update(btnType: PaginBtnType): void;
+enum PaginType {
+  TOP = 't',
+  BOTTOM = 'b',
 }
 
-type UnitKeys = keyof typeof UnitLabels;
+interface IPagination {
+  create(activeBtnClass: string, btnIdPref?: PaginType): HTMLDivElement;
+  getCurrentPage(): number;
+  update(btnType: PaginBtnType, classNames?: Array<string>, current?: number): void;
+  hideBlock(isHidden: boolean): void;
+}
 
 export {
   IView,
@@ -41,9 +47,9 @@ export {
   ICard,
   MenuBtn,
   MenuBtnType,
-  UnitKeys,
   ViewOrNotInit,
   IPagination,
   ITextBookView,
   TextBookViewOrNotInit,
+  PaginType,
 };

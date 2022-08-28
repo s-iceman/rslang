@@ -31,7 +31,6 @@ export class Router {
       return null;
     } else {
       const view = new clz(this.baseUrl);
-      view.render();
       window.localStorage.setItem('page', clz.getPath());
       if (anchor) {
         window.location.href = window.location.pathname + anchor;
@@ -54,7 +53,7 @@ export class Router {
     let path = '';
     let anchor = '';
     if (rawPath in ANCHORS) {
-      path = ANCHORS[rawPath];
+      path = <string>ANCHORS[rawPath];
       anchor = rawPath;
     } else {
       path = location.hash.slice(1).toLowerCase() || '/';

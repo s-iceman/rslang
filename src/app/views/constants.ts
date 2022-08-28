@@ -1,12 +1,15 @@
-enum UnitLabels {
-  A1 = 'beginner',
-  A2 = 'pre-intermediate',
-  B1 = 'intermediate',
-  B2 = 'upper-intermediate',
-  C1 = 'advanced',
-  C2 = 'proficient',
-  Hard = 'hard',
-}
+import { UnitLevels } from '../controllers/constants';
+
+const UnitLabels = {
+  [UnitLevels.A1]: 'beginner',
+  [UnitLevels.A2]: 'pre-intermediate',
+  [UnitLevels.B1]: 'intermediate',
+  [UnitLevels.B2]: 'upper-intermediate',
+  [UnitLevels.C1]: 'advanced',
+  [UnitLevels.C2]: 'proficient',
+  [UnitLevels.Hard]: 'hard',
+};
+Object.freeze(UnitLabels);
 
 const enum PaginBtnType {
   First = 0,
