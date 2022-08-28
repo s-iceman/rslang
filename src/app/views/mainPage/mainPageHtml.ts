@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 export function innerText(): string {
   return `
     <!-- ======= About Section ======= -->
