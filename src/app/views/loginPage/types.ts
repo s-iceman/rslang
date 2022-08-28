@@ -14,5 +14,5 @@ export type IAutentificatedUser = {
   name: string;
   refreshToken?: string;
   token?: string;
-  userId?: string;
+  userId: string;
 };
