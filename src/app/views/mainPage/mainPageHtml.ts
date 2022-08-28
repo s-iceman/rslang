@@ -91,7 +91,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="../assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpeg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
@@ -110,7 +110,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="../assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpeg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
@@ -129,7 +129,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="../assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpeg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
