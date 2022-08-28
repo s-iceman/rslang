@@ -1,5 +1,5 @@
 import { ViewPath } from '../../common/constants';
-import { ITextBookView, MenuBtnType, UnitKeys, IPagination } from '../interfaces';
+import { ITextBookView, UnitKeys, IPagination } from '../interfaces';
 import { View } from '../view';
 import { UnitLabels, PaginBtnType } from '../constants';
 import { Pagination } from './pagination';
