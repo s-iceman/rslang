@@ -1,17 +1,39 @@
 import { ViewPath } from '../../common/constants';
-import { IView, MenuBtn } from '../interfaces';
+import { IView } from '../interfaces';
 import { View } from '../view';
 import './login.css';
-import { LoginController } from './loginController';
+import { LoginController } from '../../controllers/loginController';
+import { IAutentificatedUser } from './types';
 export class LoginView extends View implements IView {
+  private logincontroller: LoginController;
+
+  constructor() {
+    super('/login');
+    this.logincontroller = new LoginController();
+  }
+
   render(): void {
     this.root.innerHTML = '';
-    this.root.append(...this.createAutorizationForm());
-    this.root.addEventListener('submit', (e) => {
-      // to do
-      let loginController = new LoginController();
-      loginController.autUserFormMetod(e);
-    });
+    const user: IAutentificatedUser | null = localStorage.getItem('user')
+      ? <IAutentificatedUser>JSON.parse(localStorage.getItem('user') || '')
+      : null;
+    if (user === null) {
+      this.root.append(...this.createAutorizationForm());
+      this.root.addEventListener(
+        'submit',
+        (e: SubmitEvent) => {
+          // to do
+          this.logincontroller.autUserFormMetod(e);
+        },
+        true
+      );
+    } else {
+      this.root.append(...this.createAutorizedForm(user.name));
+      this.root.addEventListener('click', (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains('go-to-main-button')) this.logincontroller.logOut(e);
+      });
+    }
   }
 
   static getPath(): string {
@@ -45,5 +67,30 @@ export class LoginView extends View implements IView {
     autorization.classList.add('autorization');
     autorization.innerHTML = autorizationForm;
     return [autorization];
+  }
+
+  public createAutorizedForm(name: string): ReadonlyArray<HTMLElement> {
+    const afterAutForm = `
+            <div class="after-aut">
+              <div class="after-aut-message">
+              <p>Вы вошли в систему</p>
+              <span>Пользователь: ${name}</span>
+                <div class="go-to-main-button">
+                  Выход
+                </div>
+              </div>
+            </div>
+          `;
+    const messageAfterAut = document.createElement('div');
+    messageAfterAut.classList.add('after-autarization');
+    messageAfterAut.innerHTML = afterAutForm;
+    return [messageAfterAut];
+  }
+
+  public popUpWindowAut() {
+    const popUp = `
+
+    `;
+    return popUp;
   }
 }
