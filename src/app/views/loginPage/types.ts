@@ -1,5 +1,5 @@
 export type INewUserRegistration = {
-  isAuth: boolean;
+  isAuth?: boolean;
   name: string;
   email: string;
   password: string;
