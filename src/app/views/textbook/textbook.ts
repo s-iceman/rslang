@@ -1,5 +1,5 @@
 import { ViewPath } from '../../common/constants';
-import { ITextBookView, MenuBtnType, MenuBtn, UnitKeys, IPagination } from '../interfaces';
+import { ITextBookView, MenuBtnType, UnitKeys, IPagination } from '../interfaces';
 import { View } from '../view';
 import { UnitLabels, PaginBtnType } from '../constants';
 import { Pagination } from './pagination';
@@ -103,7 +103,7 @@ export class TextBookView extends View implements ITextBookView {
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
-    const menu: HTMLElement = this.createMenu();
+    //const menu: HTMLElement = this.createMenu();
 
     const container: HTMLDivElement = document.createElement('div');
     container.classList.add('container');
