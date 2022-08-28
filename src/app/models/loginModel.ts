@@ -1,17 +1,13 @@
-import { INewUserRegistration, IUserSignIn } from './types';
+import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 export class LoginModel {
   private baseUrl;
-  private urlSigin;
-  private urlUserCreate;
 
   constructor() {
     this.baseUrl = 'http://localhost:8082';
-    this.urlSigin = 'http://localhost:8082/users';
-    this.urlUserCreate = 'http://localhost:8082/signin';
   }
 
-  public async createUser(user: INewUserRegistration) {
-    const rawResponse = await fetch(this.urlUserCreate, {
+  static async createUser(user: INewUserRegistration, urlForRequest: string) {
+    const rawResponse = await fetch(urlForRequest, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -19,12 +15,11 @@ export class LoginModel {
       },
       body: JSON.stringify(user),
     });
-    //rawResponse.status === 200 403
     return rawResponse.json();
   }
 
-  public async loginUser(user: IUserSignIn) {
-    const rawResponse = await fetch(this.urlSigin, {
+  static async loginUser(user: IUserSignIn, urlForRequest: string) {
+    const rawResponse = await fetch(urlForRequest, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

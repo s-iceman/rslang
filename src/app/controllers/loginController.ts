@@ -1,31 +1,39 @@
-import { loginUser, createUser } from './loginApi';
-import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from './types';
+import { LoginModel } from '../models/loginModel';
+import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 
 export class LoginController {
   private baseUrl: string;
 
+  //private loginModel: LoginModel;
+
+  private urlSignin: string;
+
+  private urlUserCreate: string;
+
   constructor() {
     this.baseUrl = 'http://localhost:8082';
+    this.urlUserCreate = `${this.baseUrl}/users`;
+    this.urlSignin = `${this.baseUrl}/signin`;
   }
 
   public newUserRegistrate(registrNewUser: INewUserRegistration) {
-    createUser(registrNewUser)
-      .then((response) => {
+    LoginModel.createUser(registrNewUser, this.urlUserCreate)
+      .then((response: IAutentificatedUser): void => {
         alert('Вы зарегистрированны'), this.userAfterSignIn(response);
       })
-      .catch(() => alert('Такой пользователь уже есть'));
+      .catch(() => alert('Пользователь с таким email уже существует'));
   }
 
   public userSignIn(signInUser: IUserSignIn) {
-    loginUser(signInUser)
-      .then((response) => {
+    LoginModel.loginUser(signInUser, this.urlSignin)
+      .then((response: IAutentificatedUser) => {
         this.userAfterSignIn(response);
       })
-      .catch((response) => {
+      .catch((response: Error) => {
         if (response.message === 'Failed to fetch') {
           alert('Нету подключения к серверу');
         } else {
-          console.log(response), 'Incorrect e-mail or password';
+          alert('Incorrect e-mail or password');
         }
       });
   }
@@ -35,16 +43,16 @@ export class LoginController {
     loginText.innerHTML = autorizedUser.name;
     alert('Вы авторизированы');
     localStorage.setItem('user', JSON.stringify(autorizedUser));
-    window.location.href = '#';
+    window.location.reload();
   }
 
   public getUserInputValueSignIn(email: string, password: string) {
-    let signinUser: IUserSignIn = { email, password };
+    const signinUser: IUserSignIn = { email, password };
     return signinUser;
   }
 
   public getUserInputValueRegistrate(email: string, password: string, name: string) {
-    let registrNewUser: INewUserRegistration = { email, password, name };
+    const registrNewUser: INewUserRegistration = { email, password, name };
     return registrNewUser;
   }
 
@@ -66,5 +74,11 @@ export class LoginController {
         this.newUserRegistrate(this.getUserInputValueRegistrate(emailForm.value, passwordForm.value, name.value));
       } else alert('Введите имя');
     }
+  }
+
+  public logOut(event: Event): void {
+    event.preventDefault();
+    localStorage.removeItem('user');
+    window.location.reload();
   }
 }
