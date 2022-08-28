@@ -79,27 +79,6 @@ button, input {
    }
 }
 
-.btn-out {
-   display: none;
-}
-.header {
-   &__wrap {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3rem;
-      box-shadow: 0px 1px 0 0 #d2d0cc;
-   }
-   &__link {
-      cursor: pointer;
-
-      &:hover h1{
-         color: #ffffff;
-      }
-   }
-}
-
 .root {
    padding-top: $header-height-normal;
    min-height: calc(100vh - 8rem);
@@ -116,15 +95,6 @@ button, input {
 }
 .link:hover {
    opacity: 1;
-}
-.rs-link {
-   width: 10rem;
-   background-image: url(../assets/img/RSSchool.svg);
-}
-.github-icon {
-   width: 5rem;
-   background-image: url(../assets/img/github.svg);
-   margin-right: 1rem;
 }
 
 @media (max-width: 768px) {
