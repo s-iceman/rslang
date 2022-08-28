@@ -8,6 +8,10 @@
   height: calc(100vh - 16rem);
   width: 100%;
   overflow-y: hidden;
+
+  @media (max-width: 768px) {
+    height: calc(100vh - 13rem);
+  }
 }
 
 #wrapper__aut,
@@ -132,6 +136,10 @@ input[type='password'] {
   height: calc(100vh - 16rem);
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
+
+  @media (max-width: 768px) {
+    height: calc(100vh - 13rem);
+  }
 }
 
 .after-aut {
