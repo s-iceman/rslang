@@ -103,8 +103,6 @@ export class TextBookView extends View implements ITextBookView {
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {
-    //const menu: HTMLElement = this.createMenu();
-
     const container: HTMLDivElement = document.createElement('div');
     container.classList.add('container');
     container.setAttribute('style', 'margin-top:90px');
@@ -112,16 +110,6 @@ export class TextBookView extends View implements ITextBookView {
     container.append(this.pagination.create());
 
     return [container];
-  }
-
-  private createMenu(): HTMLElement {
-    const btn: MenuBtnType = document.createElement('a');
-    btn.classList.add('go-to-btn');
-    btn.innerText = 'Main page';
-    btn.id = 'go-to-main';
-    btn.href = '/';
-    //this.btn = btn;
-    return btn;
   }
 
   private createUnitsNav(): HTMLDivElement {
