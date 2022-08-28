@@ -4,8 +4,6 @@ import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from '../views
 export class LoginController {
   private baseUrl: string;
 
-  //private loginModel: LoginModel;
-
   private urlSignin: string;
 
   private urlUserCreate: string;
@@ -18,8 +16,8 @@ export class LoginController {
 
   public newUserRegistrate(registrNewUser: INewUserRegistration) {
     LoginModel.createUser(registrNewUser, this.urlUserCreate)
-      .then((response: IAutentificatedUser): void => {
-        alert('Вы зарегистрированны'), this.userAfterSignIn(response);
+      .then((): void => {
+        alert('Вы зарегистрированны'), this.userSignIn(<IUserSignIn>registrNewUser);
       })
       .catch(() => alert('Пользователь с таким email уже существует'));
   }
@@ -42,6 +40,7 @@ export class LoginController {
     const loginText = document.querySelector('.login') as HTMLElement;
     loginText.innerHTML = autorizedUser.name;
     alert('Вы авторизированы');
+    autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
     window.location.reload();
   }
