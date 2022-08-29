@@ -124,7 +124,7 @@ export class TextBookController extends State implements ITextBookController {
       if (isDifficulty) {
         await this.model.postUserWord(wordId, DifficultyWord.Hard, isStudy);
       } else {
-        await this.model.updateUserWord(wordId, DifficultyWord.Simple, isStudy);
+        await this.model.postUserWord(wordId, DifficultyWord.Simple, isStudy);
       }
     }
   }
@@ -136,9 +136,7 @@ export class TextBookController extends State implements ITextBookController {
     const currentGroup = this.getUnit();
 
     let wordsData: IApiWords[];
-    if (this.isAuth() && currentGroup < MAX_GROUP_WORDS) {
-      wordsData = await this.getAggregatedWords(currentGroup, currentPage);
-    } else if (this.isAuth() && currentGroup === MAX_GROUP_WORDS) {
+    if (this.isAuth() && currentGroup <= MAX_GROUP_WORDS) {
       wordsData = await this.getAggregatedWords(currentGroup, currentPage);
     } else {
       wordsData = await this.model.getWords(currentGroup, currentPage);
@@ -180,7 +178,7 @@ export class TextBookController extends State implements ITextBookController {
     const keys = new Map(
       Object.entries(UnitLabels).map((entry) => entry.reverse()) as [string, keyof typeof UnitLabels][]
     );
-    return keys.get(unitName);
+    return Number(keys.get(unitName));
   }
 
   private updatePage(page: number): void {
