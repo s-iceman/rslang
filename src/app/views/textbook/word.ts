@@ -45,7 +45,7 @@ export default class Words extends CreateMarkup {
       </div>
     `;
     new CreateMarkup(parentNode, 'div', 'word__description', wordCardDesc);
-    const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
+    const wordButtons = new CreateMarkup(parentNode, 'div', 'word__control');
 
     if (this.textBookCtrl.isAuth()) {
       if (wordsItem.userWord) {
@@ -105,15 +105,31 @@ export default class Words extends CreateMarkup {
       toggleStyle(false);
       this.textBookCtrl.createUserWord(id, false, true).catch((err) => console.debug(err));
     });
+    this.addStatistics(parentNode);
   }
 
   addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string) {
-    const btnRemoveDiff = new CreateMarkup(parentNode, 'button', 'button btn-simple', 'Простое слово');
-
+    const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
+    const btnRemoveDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-simple', 'Простое слово');
     btnRemoveDiff.node.addEventListener('click', () => {
       cardNode.remove();
       this.textBookCtrl.createUserWord(id, false, false).catch((err) => console.debug(err));
       this.textBookCtrl.removeSound();
     });
+    this.addStatistics(parentNode);
+  }
+
+  addStatistics(parentNode: HTMLElement) {
+    const wordStatistics = `
+      <div title="Правильных ответов" class="word__counter word__correct-counter">
+        <span>&#10003</span>
+        <span>0</span>
+      </div>
+      <div title="Не правильных ответов" class="word__counter word__incorrect-counter">
+        <span>&#x2715</span>
+        <span>0</span>
+      </div>
+    `;
+    new CreateMarkup(parentNode, 'div', 'word__counters', wordStatistics);
   }
 }
