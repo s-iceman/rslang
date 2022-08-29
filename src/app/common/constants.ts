@@ -5,6 +5,8 @@ export enum ViewPath {
   LOGIN = '/login',
   ABOUT = '#about',
   TEAM = '#team',
+  SPRINT = '/sprint',
+  VOICECALL = '/voicecall',
 }
 
 const MIN_PAGE_WORDS = 0;

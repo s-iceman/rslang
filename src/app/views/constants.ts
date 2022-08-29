@@ -19,4 +19,9 @@ const enum PaginBtnType {
   Last,
 }
 
-export { UnitLabels, PaginBtnType };
+const enum AnswerBtnType {
+  Correct = 0,
+  Incorrect = 1,
+}
+
+export { UnitLabels, PaginBtnType, AnswerBtnType };

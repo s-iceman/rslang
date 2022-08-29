@@ -7,9 +7,8 @@ import Words from './word';
 import { IApiWords } from '../../models/interfaces';
 import { ITextBookController } from '../../controllers/interfaces';
 import { MAX_GROUP_WORDS } from './constants';
-import { UnitLevels } from '../../controllers/constants';
-
-const USER_UNITS = [String(UnitLevels.Hard)];
+import { UnitLevels, USER_UNITS } from '../../controllers/constants';
+import { renderSprintCard, renderVoiceCallCard } from '../mainPage/gameCards';
 
 export class TextBookView extends View implements ITextBookView {
   private unitsNav: HTMLDivElement | undefined;
@@ -130,6 +129,7 @@ export class TextBookView extends View implements ITextBookView {
     container.append(this.pagination.create(this.getActiveUnitName(), PaginType.TOP));
     container.append(this.createCardsBlock([]));
     container.append(this.pagination.create(this.getActiveUnitName(), PaginType.BOTTOM));
+    container.append(this.createGameBlock());
 
     return [container];
   }
@@ -150,6 +150,33 @@ export class TextBookView extends View implements ITextBookView {
         ${UnitLevels[unitId]}
       </div>
     `;
+  }
+
+  private createGameBlock(): HTMLElement {
+    const parent: HTMLDivElement = document.createElement('div');
+    parent.innerHTML = `
+      <div class='textbook__games'>
+        ${renderSprintCard()}
+        ${renderVoiceCallCard()}
+      </div>
+    `;
+    parent.addEventListener('click', (event) => {
+      const target = <HTMLElement>event.target;
+      const gameCard = target.closest('.game-card');
+      if (!gameCard) {
+        return;
+      }
+      window.dispatchEvent(
+        new CustomEvent('ShowGameEvent', {
+          detail: {
+            game: gameCard.id,
+            unit: this.ctrl?.getUnit(),
+            page: this.ctrl?.getPage(),
+          },
+        })
+      );
+    });
+    return parent;
   }
 
   private getAvailableUnits(): UnitLevels[] {
