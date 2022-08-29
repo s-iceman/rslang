@@ -3,7 +3,7 @@ import AppModel from '../../models/AppModel';
 import { StartGameOptions } from '../types';
 import { IApiWords } from '../../models/interfaces';
 import { UnitLevels } from '../constants';
-import { MAX_PAGE_WORDS } from '../../constants';
+import { MAX_PAGE_WORDS } from '../../common/constants';
 
 class ModelHelper implements IModelHelper {
   protected model: AppModel;
