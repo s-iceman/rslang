@@ -1,8 +1,8 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
 import { IApiWords, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
-import { MIN_PAGE_WORDS } from '../constants';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
+import { MIN_PAGE_WORDS } from '../common/constants';
 
 export default class AppModel extends State {
   signinUrl: string;

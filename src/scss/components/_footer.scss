@@ -1,0 +1,105 @@
+.footer{
+    height: 100%;
+    background: rgba(0, 0, 0);
+    color: aliceblue;
+    height: 8rem;
+    font-size: 1.6rem;
+    cursor: default;
+}
+
+.footer__rsshool_img{
+    width: 15rem;
+    height: 7.5rem;
+    background-size: 100%;
+}
+
+.gitHub{
+    color: aliceblue;
+    padding: .2rem;
+}
+
+.footer__body{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    min-height: 7rem;
+    align-items: center;
+    
+}
+
+.footer__list{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.contacts__project{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contacts__project__title{
+    margin-right: 1rem;
+    cursor: default;
+}
+
+.footer__link{
+    margin-left: 2rem;
+}
+
+.footer__list li{
+    list-style-type:none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.footer__rsshool_img img{
+    width: 90%;
+    height: 90%;
+    border-radius: 2rem;
+    box-shadow: .2rem .2rem .2rem .2rem rgba(235, 212, 9, 0.2);
+    margin-top: .2rem;
+}
+
+.footer__members{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer__members_git-hub{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: .5rem;
+    font-size: 1.2rem;
+    letter-spacing: .1rem;
+}
+
+.footer__git-img{
+    width: 10rem;
+    height: 6rem;
+    border-radius: 1rem;
+}
+
+@media(max-width:900px){
+    .contacts__project {
+    display: none;
+    }
+}
+
+@media(max-width:500px){
+    .footer__rsshool_img {
+        display: none;
+    }
+    .footer__members_git-hub{
+        gap: .1rem;
+        font-size: 1rem;
+    }
+}

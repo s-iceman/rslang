@@ -27,7 +27,7 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    height: 80px;
+    height: 8rem;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -38,12 +38,12 @@
     z-index: 3;
     text-decoration: none;
     color: #fff;
-    font-size: 28px;
+    font-size: 2.8rem;
     margin: 0;
     padding: 0;
     line-height: 1;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: .1rem;
     text-transform: uppercase;
 }
 
@@ -65,16 +65,16 @@
 
 .header__list li{
     list-style: none;
-    margin: 0px 0px 0px 10px;
+    margin: 0 0 0 1rem;
 }
 
 .header__link,.dropdown,.dropbtn{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 4px;
+    padding: 0 .4rem;
     font-family: "Roboto", sans-serif;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.7);
     white-space: nowrap;
@@ -85,13 +85,13 @@
 }
 
 .login{
-    padding: 8px 25px;
-    margin-left: 12px;
-    border-radius: 4px;
+    padding: .8rem 2.5rem;
+    margin-left: 1.2rem;
+    border-radius: .4rem;
     color: #fff;
     font-weight: 400;
     font-family: "Poppins", sans-serif;
-    border: 2px solid #5c9f24;
+    border: .2rem solid #5c9f24;
     background: rgba(0, 0, 0, 0.75);
 }
 
@@ -99,12 +99,12 @@
     content: "";
     position: absolute;
     width: 100%;
-    height: 2px;
-    bottom: -6px;
+    height: .2rem;
+    bottom: -.6rem;
     left: 0;
     background-color: #5c9f24;
     visibility: hidden;
-    width: 0px;
+    width: 0;
     transition: all 0.3s ease-in-out 0s;
     z-index: 999;
 }
@@ -121,15 +121,15 @@
     display: none;
 }
 
-@media(max-width:767px){
+@media(max-width:768px){
     .header__body{
-        height: 50px;
+        height: 5rem;
     }
     .header__burger{
         display: block;
         position: relative;
-        width: 30px;
-        height: 20px;
+        width: 3rem;
+        height: 2rem;
         z-index: 3;
     }
     .header__burger span{
@@ -137,8 +137,8 @@
         background-color: #fff;
         left: 0;
         width: 100%;
-        height: 2px;
-        top: 9px;
+        height: .2rem;
+        top: .9rem;
         transition: all 0.3s ease 0s;
     }
     .header__burger:before,
@@ -147,7 +147,7 @@
         background-color: #fff;
         position: absolute;
         width: 100%;
-        height: 2px;
+        height: .2rem;
         left: 0;
         transition: all 0.3s ease 0s;
     }
@@ -160,7 +160,7 @@
 
     .header__burger.active:before{
         transform:rotate(45deg);
-        top: 9px
+        top: .9rem
     }
 
     .header__burger.active span{
@@ -169,18 +169,18 @@
 
     .header__burger.active:after{
         transform:rotate(-45deg);
-        bottom: 9px;
+        bottom: .9rem;
     }
     .header__menu{
-     position: fixed;   
-     top: -100%;
-     right: 0px;
-     width: 150px;
-     height: 400px;
-     background: rgba(0, 0, 0, 0.75);
-     padding: 70px 15px 20px 15px;
-     transition: all 0.3s ease 0.3s;
-     color: #f1f1f1;
+        position: fixed;
+        top: -100%;
+        right: 0;
+        width: 15rem;
+        height: 40rem;
+        background: rgba(0, 0, 0, 0.75);
+        padding: 7rem 1.5rem 2rem 1.5remx;
+        transition: all 0.3s ease 0.3s;
+        color: #f1f1f1;
     }
 
     .header__menu.active{
@@ -192,7 +192,7 @@
         display: block;
     }
     .header__list li{
-        margin: 0px 0px 20px 0px;
+        margin: 0 0 2rem 0;
     }
 }
 
@@ -207,15 +207,14 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    top:-3px;
 }
 
 .dropdown_content {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 100px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    min-width: 10rem;
+    box-shadow: 0 .8rem 1.6rem 0 rgba(0,0,0,0.2);
     background: rgba(0, 0, 0, 0.75);
     color: #fff;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -225,7 +224,7 @@
 /* Links inside the dropdown */
 .dropdown_content a {
     color: white;
-    padding: 12px 16px;
+    padding: 1.2rem 1.6rem;
     text-decoration: none;
     display: block;
 }
