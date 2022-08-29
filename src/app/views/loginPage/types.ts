@@ -1,5 +1,4 @@
 export type INewUserRegistration = {
-  isAuth?: boolean;
   name: string;
   email: string;
   password: string;
@@ -11,10 +10,9 @@ export type IUserSignIn = {
 };
 
 export type IAutentificatedUser = {
-  isAuth?: boolean;
-  message?: string;
+  isAuth: boolean;
   name: string;
-  refreshToken?: string;
-  token?: string;
-  userId?: string;
+  refreshToken: string;
+  token: string;
+  userId: string;
 };
