@@ -25,6 +25,7 @@ interface ITextBookController extends IController {
 interface IGameController extends IController {
   startGame(level?: UnitLevels): void;
   processAnswer(answerOption: string): void;
+  getGameLength(): number;
 }
 
 interface IRouter {

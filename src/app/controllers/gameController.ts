@@ -7,6 +7,8 @@ import { GameType } from './constants';
 import { UnitLevels } from './constants';
 import { IApiWords } from '../models/interfaces';
 
+const GAME_LENGTH = 60;
+
 export class GameController extends State implements IGameController {
   private baseUrl: string;
 
@@ -41,6 +43,10 @@ export class GameController extends State implements IGameController {
     }
   }
 
+  getGameLength(): number {
+    return GAME_LENGTH;
+  }
+
   async updateView(): Promise<void> {
     if (this.gameView) {
       this.gameView.updateView();
@@ -56,7 +62,15 @@ export class GameController extends State implements IGameController {
     this.gameView?.startGame(this.gameWords[this.currentWordIdx]);
   }
 
+  private endGame(): void {
+    this.gameView?.endGame();
+  }
+
   processAnswer(answerOption: string): void {
+    if (this.currentWordIdx === this.gameWords.length - 1) {
+      this.endGame();
+      return;
+    }
     this.currentWordIdx += 1;
     this.gameView?.showWord(this.gameWords[this.currentWordIdx]);
   }

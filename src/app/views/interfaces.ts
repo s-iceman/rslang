@@ -24,6 +24,7 @@ interface IGameView extends IView {
   getGameType(): GameType;
   showWord(word?: IApiWords): void;
   startGame(word?: IApiWords): void;
+  endGame(): void;
 }
 
 type ViewOrNotInit = IView | null;
