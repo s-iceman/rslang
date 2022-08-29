@@ -84,24 +84,65 @@
         }
     }
 
+    &__control {
+        padding-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
     &__buttons {
         display: flex;
         align-items: center;
         gap: 1.5rem;
-        padding-top: 1rem;
         font-size: 1.6rem;
         transition: transform 0.2s;
 
         .button {
-            width: 20rem;
+            width: 17rem;
             height: 4rem;
-            font-weight: 500;
         }
+        
         .btn-simple {
-            width: 100%;
             background-color: #00c7ba;
-            margin-top: 1rem;
         }
+    }
+
+    &__counters {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding-right: 1rem;
+        height: 4rem;
+    }
+
+    &__counter {
+        height: 100%;
+        background-color: darkorange;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1.5rem;
+        border-radius: 0.3rem;
+        color: #ffffff;
+        box-shadow: 0 0 1rem rgb(0 0 0 / 35%), 0 0.1rem 0.3rem rgb(0 0 0 / 30%);
+        background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
+        opacity: 0.8;
+        gap: 0.7rem;
+
+        span {
+            display: flex;
+        }
+    }
+    &__correct-counter {
+        background-color: #41783f;
+    }
+    
+    &__incorrect-counter {
+        background-color: #c70026;
+        
     }
 }
 
@@ -109,7 +150,7 @@
     background-color: #c70026;
 }
 .btn-study:disabled {
-    background-color: #07c900;
+    background-color: #41783f;
 }
 
 .word__play:hover {
