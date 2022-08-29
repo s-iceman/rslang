@@ -160,6 +160,22 @@ export class TextBookView extends View implements ITextBookView {
         ${renderVoiceCallCard()}
       </div>
     `;
+    parent.addEventListener('click', (event) => {
+      const target = <HTMLElement>event.target;
+      const gameCard = target.closest('.game-card');
+      if (!gameCard) {
+        return;
+      }
+      window.dispatchEvent(
+        new CustomEvent('ShowGameEvent', {
+          detail: {
+            game: gameCard.id,
+            unit: this.ctrl?.getUnit(),
+            page: this.ctrl?.getPage(),
+          },
+        })
+      );
+    });
     return parent;
   }
 

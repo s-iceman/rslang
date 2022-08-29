@@ -27,7 +27,7 @@ export default class State {
   }
 
   isAuth() {
-    return true; //this._storage.isAuth || false;
+    return this._storage.isAuth || false;
   }
 
   setStorage(value: string) {

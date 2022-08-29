@@ -2,6 +2,7 @@ import { PaginBtnType } from './constants';
 import { IApiWords } from '../models/interfaces';
 import { IGameController, ITextBookController } from './../controllers/interfaces';
 import { GameType } from '../controllers/constants';
+import { GameCardData } from '../controllers/types';
 
 type MenuBtnType = HTMLAnchorElement;
 
@@ -22,9 +23,10 @@ interface IGameView extends IView {
   setController(ctrl: IGameController): void;
   updateView(): void;
   getGameType(): GameType;
-  showWord(word?: IApiWords): void;
-  startGame(word?: IApiWords): void;
-  endGame(): void;
+  showWord(data: GameCardData): void;
+  startGame(data: GameCardData): void;
+  endGame(results: string[][]): void;
+  updateScore(score: number): void;
 }
 
 type ViewOrNotInit = IView | null;

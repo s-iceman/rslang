@@ -5,6 +5,8 @@ import { IGameView } from '../../interfaces';
 import { GameType } from '../../../controllers/constants';
 import { IApiWords } from '../../../models/interfaces';
 import { DropDownTimer } from './timer';
+import { GameCardData } from '../../../controllers/types';
+import { createResults } from './results';
 
 export abstract class BaseGameView extends View implements IGameView {
   protected ctrl: IGameController | null;
@@ -23,6 +25,8 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected onProcessClick: (event: MouseEvent) => void;
 
+  protected onCloseResults: (event: MouseEvent) => void;
+
   constructor(baseUrl: string) {
     super(baseUrl);
     this.ctrl = null;
@@ -31,8 +35,10 @@ export abstract class BaseGameView extends View implements IGameView {
     this.timerBlock = null;
     this.gameControls = null;
     this.timer = new DropDownTimer();
+
     this.onProcessKey = this.processKey.bind(this);
     this.onProcessClick = this.processClick.bind(this);
+    this.onCloseResults = this.closeResults.bind(this);
   }
 
   setController(ctrl: IGameController): void {
@@ -46,22 +52,35 @@ export abstract class BaseGameView extends View implements IGameView {
 
   abstract getGameType(): GameType;
 
-  startGame(word?: IApiWords): void {
+  startGame(data: GameCardData): void {
     this.root.innerHTML = '';
-    this.root.append(this.createGameContent(word));
+    this.root.append(this.createGameContent(data.word));
     this.addProcessGameListeners();
     this.timer.startTimer(this.ctrl?.getGameLength() || 0);
   }
 
-  endGame(): void {
+  endGame(results: string[][]): void {
     this.removeProcessGameListeners();
     this.timer.stopTimer();
+    this.root.innerHTML = '';
+    const resultsOverlay = createResults(results);
+    document.body.append(resultsOverlay);
+    resultsOverlay.addEventListener('click', this.onCloseResults);
   }
 
-  abstract showWord(word?: IApiWords): void;
+  abstract showWord(data: GameCardData): void;
+
+  updateScore(score: number): void {
+    if (this.scoreBlock) {
+      this.scoreBlock.innerHTML = score.toString();
+    }
+  }
 
   updateView(): void {
-    this.startPage?.addControllsBlock(this.ctrl?.isAuth() || false);
+    if (!this.ctrl) {
+      return;
+    }
+    this.startPage?.addControllsBlock(this.ctrl.canSelectUnit());
     this.addListeners();
   }
 
@@ -91,13 +110,28 @@ export abstract class BaseGameView extends View implements IGameView {
   protected processClick(event: MouseEvent): void {
     const target = <HTMLElement>event.target;
     if (target.classList.contains('button')) {
-      this.ctrl?.processAnswer(target.id);
+      this.ctrl?.processAnswer(Number(target.id));
     }
   }
 
   protected abstract processKey(event: KeyboardEvent): void;
 
   protected abstract createWordCard(word?: IApiWords): HTMLElement;
+
+  private closeResults(event: MouseEvent): void {
+    const target = event.target;
+    if (!target || !(<HTMLElement>target).classList.contains('button')) {
+      return;
+    }
+
+    const overlay = document.getElementById('results');
+    if (!overlay) {
+      return;
+    }
+    overlay.removeEventListener('click', this.onCloseResults);
+    document.body.removeChild(overlay);
+    this.render();
+  }
 
   private createGameContent(word?: IApiWords): HTMLElement {
     const parent = document.createElement('div');

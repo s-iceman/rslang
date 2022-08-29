@@ -4,7 +4,8 @@ import { Router } from './router';
 import { TextBookController } from './textbookController';
 import { BaseContainer } from '../views/base/baseContainer';
 import AppModel from '../models/AppModel';
-import { GameController } from './gameController';
+import { GameController } from './games/gameController';
+import { StartGameOptions } from './types';
 
 class AppController implements IAppController {
   private model: AppModel;
@@ -42,14 +43,18 @@ class AppController implements IAppController {
     window.addEventListener('hashchange', () => {
       this.changeUrl().catch((err) => console.debug(err));
     });
+    window.addEventListener('ShowGameEvent', (event) => {
+      const options = (<CustomEvent>event).detail as StartGameOptions;
+      this.changeUrl(options.game, JSON.stringify(options)).catch((err) => console.debug(err));
+    });
   }
 
-  private async changeUrl(path?: string): Promise<void> {
+  private async changeUrl(path?: string, context?: string): Promise<void> {
     this.activeView = this.router.process(path ?? '');
     if (!this.activeView) {
       return;
     }
-    this.controllers.forEach((ctrl) => ctrl.registerView(this.activeView));
+    this.controllers.forEach((ctrl) => ctrl.registerView(this.activeView, context));
     this.activeView.render();
     for (const ctrl of this.controllers) {
       await ctrl.updateView().catch((err) => console.debug(err));

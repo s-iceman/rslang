@@ -2,6 +2,7 @@ import { ViewPath } from '../../common/constants';
 import { VoiceCallStartPage } from './common/startPage';
 import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
+import { GameCardData } from '../../controllers/types';
 import { IApiWords } from '../../models/interfaces';
 
 export class VoiceCallView extends BaseGameView {
@@ -24,7 +25,7 @@ export class VoiceCallView extends BaseGameView {
     return parent;
   }
 
-  showWord(word: IApiWords): void {
+  showWord(data: GameCardData): void {
     // todo
     return;
   }

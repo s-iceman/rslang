@@ -1,3 +1,4 @@
+import { IApiWords } from '../models/interfaces';
 import { UnitLevels } from './constants';
 
 type TextBookState = {
@@ -5,4 +6,20 @@ type TextBookState = {
   page: number;
 };
 
-export { TextBookState };
+type GameWordsData = {
+  options: ReadonlyArray<string>;
+  correctOption: number;
+};
+
+type GameCardData = {
+  word: IApiWords;
+  options: ReadonlyArray<string>;
+};
+
+type StartGameOptions = {
+  game: string;
+  unit: number;
+  page: number;
+};
+
+export { TextBookState, GameWordsData, GameCardData, StartGameOptions };

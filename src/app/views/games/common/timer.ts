@@ -30,6 +30,7 @@ export class DropDownTimer {
     window.clearInterval(this.timerId);
     this.currentTime = 0;
     this.timerId = -1;
+    this.timerBlock.textContent = '';
   }
 
   getTimerBlock(): HTMLElement {
