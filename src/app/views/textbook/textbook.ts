@@ -120,16 +120,15 @@ export class TextBookView extends View implements ITextBookView {
     }
     const words = new Words(this.baseUrl, this.ctrl, parent);
 
-    if (this.ctrl.isLearnedPage(wordsData) && !isHardUnit) {
-      this.toggleStyleLearnedPage(true);
-    } else {
-      this.toggleStyleLearnedPage(false);
+    if (!isHardUnit) {
+      this.ctrl.checkLearnedPage(wordsData) ? this.toggleStyleLearnedPage(true) : this.toggleStyleLearnedPage(false);
+      this.ctrl.checkLearnedWords(wordsData) ? this.toggleStyleGameBlock(true) : this.toggleStyleGameBlock(false);
     }
 
     wordsData.map((wordsItem) => words.addCardWord(wordsItem, isHardUnit));
   }
 
-  toggleStyleLearnedPage (isAddStyle: boolean) {
+  public toggleStyleLearnedPage(isAddStyle: boolean) {
     const wordList = document.querySelector('.words');
     const paginationActive = document.querySelectorAll('.pagination__item.active');
     if (wordList && paginationActive) {
@@ -141,6 +140,11 @@ export class TextBookView extends View implements ITextBookView {
         wordList.classList.remove('words--learned');
       }
     }
+  }
+
+  public toggleStyleGameBlock(isAddStyle: boolean) {
+    const textbookGames = document.querySelector('.textbook__games');
+    isAddStyle ? textbookGames?.classList.add('games--disabled') : textbookGames?.classList.remove('games--disabled')
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {

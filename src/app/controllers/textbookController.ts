@@ -102,7 +102,7 @@ export class TextBookController extends State implements ITextBookController {
     node.classList.remove('play--active');
   }
 
-  removeSound() {
+  public removeSound() {
     this.getSoundList().forEach((sound) => {
       sound.pause();
       sound.currentTime = 0;
@@ -129,19 +129,25 @@ export class TextBookController extends State implements ITextBookController {
         await this.model.postUserWord(wordId, DifficultyWord.Simple, isStudy);
       }
     }
-    await this.checkLearnedPage(currentGroup, currentPage);
+
+    const getWordsPage = await this.getAggregatedWords(currentGroup, currentPage);
+    const isWordsLearned = this.checkLearnedWords(getWordsPage);
+    const isLearnedPage = this.checkLearnedPage(getWordsPage);
+    isLearnedPage ? this.textBookView?.toggleStyleLearnedPage(true) : this.textBookView?.toggleStyleLearnedPage(false);
+    isWordsLearned ? this.textBookView?.toggleStyleGameBlock(true) : this.textBookView?.toggleStyleGameBlock(false);
   }
 
-  async checkLearnedPage(group: number, page: number) {
-    const getWordsPage = await this.getAggregatedWords(group, page);
-
-    if (this.textBookView) {
-      if (this.isLearnedPage(getWordsPage) && group !== MAX_GROUP_WORDS) {
-        this.textBookView.toggleStyleLearnedPage(true);
-      } else {
-        this.textBookView.toggleStyleLearnedPage(false);
+  public checkLearnedPage(wordsData: IApiWords[]) {
+    return wordsData.every((word) => {
+      if (word.userWord) {
+        const { difficulty, optional } = word.userWord;
+        return difficulty === DifficultyWord.Hard || optional.study;
       }
-    }
+    });
+  }
+
+  public checkLearnedWords(wordsData: IApiWords[]) {
+    return wordsData.every((word) => (word.userWord ? word.userWord.optional.study : false));
   }
 
   async getWords(page?: number): Promise<IApiWords[]> {
@@ -203,14 +209,5 @@ export class TextBookController extends State implements ITextBookController {
 
   private validatePage(page: number): boolean {
     return page >= MIN_PAGE_WORDS && page <= MAX_PAGE_WORDS;
-  }
-
-  public isLearnedPage(wordsData: IApiWords[]) {
-    return wordsData.every((word) => {
-      if (word.userWord) {
-        const { difficulty, optional } = word.userWord;
-        return difficulty === 'hard' || optional.study === true;
-      }
-    });
   }
 }
