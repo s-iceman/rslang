@@ -111,9 +111,11 @@ export default class Words extends CreateMarkup {
   addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string) {
     const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
     const btnRemoveDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-simple', 'Простое слово');
+    const TIME_OUT = 310;
+
     btnRemoveDiff.node.addEventListener('click', () => {
       cardNode.classList.add('word--hiden');
-      setTimeout(() => cardNode.remove(), 310);
+      setTimeout(() => cardNode.remove(), TIME_OUT);
       this.textBookCtrl.createUserWord(id, false, false).catch((err) => console.debug(err));
       this.textBookCtrl.removeSound();
     });
