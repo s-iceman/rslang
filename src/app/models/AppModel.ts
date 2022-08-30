@@ -1,6 +1,6 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
+import { IApiWords, IPaginatedResults, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 import { MIN_PAGE_WORDS } from '../common/constants';
 
@@ -17,19 +17,6 @@ export default class AppModel extends State {
     this.wordsUrl = `${this.baseUrl}/words`;
     this.usersUrl = `${this.baseUrl}/users`;
     this.signinUrl = `${this.baseUrl}/signin`;
-  }
-
-  async signIn(user: IUserAuth) {
-    const resp = await fetch(this.signinUrl, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    });
-
-    return <IUserAuth>await resp.json();
   }
 
   async createUser(user: INewUserRegistration) {

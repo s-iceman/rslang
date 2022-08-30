@@ -119,7 +119,28 @@ export class TextBookView extends View implements ITextBookView {
       return;
     }
     const words = new Words(this.baseUrl, this.ctrl, parent);
+
+    if (this.ctrl.isLearnedPage(wordsData) && !isHardUnit) {
+      this.toggleStyleLearnedPage(true);
+    } else {
+      this.toggleStyleLearnedPage(false);
+    }
+
     wordsData.map((wordsItem) => words.addCardWord(wordsItem, isHardUnit));
+  }
+
+  toggleStyleLearnedPage (isAddStyle: boolean) {
+    const wordList = document.querySelector('.words');
+    const paginationActive = document.querySelectorAll('.pagination__item.active');
+    if (wordList && paginationActive) {
+      if (isAddStyle) {
+        paginationActive.forEach((item) => item.classList.add('learned'));
+        wordList.classList.add('words--learned');
+      } else {
+        paginationActive.forEach((item) => item.classList.remove('learned'));
+        wordList.classList.remove('words--learned');
+      }
+    }
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {

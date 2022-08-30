@@ -113,6 +113,8 @@ export class TextBookController extends State implements ITextBookController {
   async createUserWord(wordId: string, isDifficulty = false, isStudy = false): Promise<void> {
     const getWords = await this.model.getUserWords();
     const filterWords = getWords?.filter((item) => item.wordId === wordId) || [];
+    const currentGroup = Number(this.getUnit());
+    const currentPage = this.getPage();
 
     if (filterWords.length) {
       if (isDifficulty) {
@@ -125,6 +127,19 @@ export class TextBookController extends State implements ITextBookController {
         await this.model.postUserWord(wordId, DifficultyWord.Hard, isStudy);
       } else {
         await this.model.postUserWord(wordId, DifficultyWord.Simple, isStudy);
+      }
+    }
+    await this.checkLearnedPage(currentGroup, currentPage);
+  }
+
+  async checkLearnedPage(group: number, page: number) {
+    const getWordsPage = await this.getAggregatedWords(group, page);
+
+    if (this.textBookView) {
+      if (this.isLearnedPage(getWordsPage) && group !== MAX_GROUP_WORDS) {
+        this.textBookView.toggleStyleLearnedPage(true);
+      } else {
+        this.textBookView.toggleStyleLearnedPage(false);
       }
     }
   }
@@ -188,5 +203,14 @@ export class TextBookController extends State implements ITextBookController {
 
   private validatePage(page: number): boolean {
     return page >= MIN_PAGE_WORDS && page <= MAX_PAGE_WORDS;
+  }
+
+  public isLearnedPage(wordsData: IApiWords[]) {
+    return wordsData.every((word) => {
+      if (word.userWord) {
+        const { difficulty, optional } = word.userWord;
+        return difficulty === 'hard' || optional.study === true;
+      }
+    });
   }
 }
