@@ -14,6 +14,7 @@ interface IView {
 
 interface ITextBookView extends IView {
   setController(ctrl: ITextBookController): void;
+  toggleStyleLearnedPage(isAddStyle: boolean): void;
   updateCards(unitName: string, cards: IApiWords[]): void;
   updateUnit(unitName: string, cards: IApiWords[]): void;
   updatePage(page: number): void;

@@ -14,6 +14,7 @@ interface IController {
 }
 
 interface ITextBookController extends IController {
+  isLearnedPage(wordsData: IApiWords[]): boolean;
   getUnit(): UnitLevels;
   getPage(): number;
   playSound(wordsItem: IApiWords, node: HTMLElement): Promise<void>;

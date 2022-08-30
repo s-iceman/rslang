@@ -112,7 +112,8 @@ export default class Words extends CreateMarkup {
     const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
     const btnRemoveDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-simple', 'Простое слово');
     btnRemoveDiff.node.addEventListener('click', () => {
-      cardNode.remove();
+      cardNode.classList.add('word--hiden');
+      setTimeout(() => cardNode.remove(), 310);
       this.textBookCtrl.createUserWord(id, false, false).catch((err) => console.debug(err));
       this.textBookCtrl.removeSound();
     });
@@ -125,7 +126,7 @@ export default class Words extends CreateMarkup {
         <span>&#10003</span>
         <span>0</span>
       </div>
-      <div title="Не правильных ответов" class="word__counter word__incorrect-counter">
+      <div title="Неправильных ответов" class="word__counter word__incorrect-counter">
         <span>&#x2715</span>
         <span>0</span>
       </div>
