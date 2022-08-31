@@ -144,7 +144,7 @@ export class TextBookView extends View implements ITextBookView {
 
   public toggleStyleGameBlock(isAddStyle: boolean) {
     const textbookGames = document.querySelector('.textbook__games');
-    isAddStyle ? textbookGames?.classList.add('games--disabled') : textbookGames?.classList.remove('games--disabled')
+    isAddStyle ? textbookGames?.classList.add('games--disabled') : textbookGames?.classList.remove('games--disabled');
   }
 
   private createContent(): ReadonlyArray<HTMLElement> {

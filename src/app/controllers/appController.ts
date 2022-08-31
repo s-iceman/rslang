@@ -46,6 +46,7 @@ class AppController implements IAppController {
     window.addEventListener('ShowGameEvent', (event) => {
       const options = (<CustomEvent>event).detail as StartGameOptions;
       this.changeUrl(options.game, JSON.stringify(options)).catch((err) => console.debug(err));
+      this.router.updateViewUrl(options.game.toString());
     });
   }
 

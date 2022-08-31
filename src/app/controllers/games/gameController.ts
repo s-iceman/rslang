@@ -8,7 +8,7 @@ import { UnitLevels } from './../constants';
 import { SprintEngine } from './gameEngines';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
-import { ModelHelper } from './modelHelpers';
+import { ModelHelper, UserModelHelper } from './modelHelpers';
 
 const GAME_LENGTH = 60;
 
@@ -46,7 +46,11 @@ export class GameController extends State implements IGameController {
       if (context) {
         this.context = <StartGameOptions>JSON.parse(context);
       }
-      this.modelHelper = new ModelHelper(this.model, this.context);
+      if (this.isAuth()) {
+        this.modelHelper = new UserModelHelper(this.model, this.context);
+      } else {
+        this.modelHelper = new ModelHelper(this.model, this.context);
+      }
     } else {
       this.clear();
     }
@@ -81,11 +85,14 @@ export class GameController extends State implements IGameController {
     this.gameView?.startGame(wordData);
   }
 
-  private endGame(): void {
+  private async endGame(): Promise<void> {
     if (!this.gameEngine) {
       return;
     }
     this.gameView?.endGame(this.gameEngine.getResults());
+    if (this.modelHelper instanceof UserModelHelper) {
+      await this.modelHelper.processGameResults(this.gameEngine.getFullResults());
+    }
     this.gameEngine.clear();
   }
 
@@ -99,7 +106,7 @@ export class GameController extends State implements IGameController {
     // await this.soundCtrl.play(isCorrect); // todo
     const nextWordData = this.gameEngine.getNextWord();
     if (!nextWordData) {
-      this.endGame();
+      this.endGame().catch((err) => console.debug(err));
     } else {
       this.gameView?.showWord(nextWordData);
     }

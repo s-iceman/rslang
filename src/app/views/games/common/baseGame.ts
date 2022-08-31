@@ -3,9 +3,8 @@ import { IGameController } from '../../../controllers/interfaces';
 import { IStartPage } from './../intefaces';
 import { IGameView } from '../../interfaces';
 import { GameType } from '../../../controllers/constants';
-import { IApiWords } from '../../../models/interfaces';
 import { DropDownTimer } from './timer';
-import { GameCardData } from '../../../controllers/types';
+import { GameCardData, GameWord } from '../../../controllers/types';
 import { createResults } from './results';
 
 export abstract class BaseGameView extends View implements IGameView {
@@ -125,7 +124,7 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected abstract processKey(event: KeyboardEvent): void;
 
-  protected abstract createWordCard(word?: IApiWords): HTMLElement;
+  protected abstract createWordCard(word?: GameWord): HTMLElement;
 
   private closeResults(event: MouseEvent): void {
     const target = event.target;
@@ -142,7 +141,7 @@ export abstract class BaseGameView extends View implements IGameView {
     this.render();
   }
 
-  private createGameContent(word?: IApiWords): HTMLElement {
+  private createGameContent(word?: GameWord): HTMLElement {
     const parent = document.createElement('div');
     parent.className = 'game__container';
     parent.append(this.timer.getTimerBlock());

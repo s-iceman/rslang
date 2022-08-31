@@ -2,9 +2,8 @@ import { ViewPath } from '../../common/constants';
 import { SprintStartPage } from './common/startPage';
 import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
-import { IApiWords } from '../../models/interfaces';
 import CreateMarkup from './../common/createMarkup';
-import { GameCardData } from '../../controllers/types';
+import { GameCardData, GameWord } from '../../controllers/types';
 import { AnswerBtnType } from '../constants';
 
 export class SprintView extends BaseGameView {
@@ -28,9 +27,11 @@ export class SprintView extends BaseGameView {
   }
 
   showWord(data: GameCardData): void {
-    if (this.word && this.translation) {
-      this.word.textContent = data.word.word;
+    if (this.word && this.translation && data.word) {
+      this.word.textContent = data.word.word.toString();
       this.translation.textContent = data.options[0];
+    } else {
+      console.debug('Incorrect input data for a card');
     }
   }
 
@@ -42,7 +43,7 @@ export class SprintView extends BaseGameView {
     }
   }
 
-  createWordCard(word: IApiWords): HTMLElement {
+  createWordCard(word: GameWord): HTMLElement {
     const card = document.createElement('div');
     card.className = 'game-card wrapper';
     const points = new CreateMarkup(card, 'div', 'points');

@@ -29,11 +29,18 @@ interface IUserAuth {
 
 interface IUserWord {
   difficulty: string;
-  id: string;
+  id?: string;
   wordId: string;
-  optional: {
-    study: boolean;
-  };
+  optional: IOptional;
+}
+
+interface IOptional {
+  study: boolean;
+  firstIntroducedDate?: string;
+  firstIntroducedGame?: string;
+  correctAnswers?: number;
+  incorrectAnswers?: number;
+  lastNCorrect?: number;
 }
 
 type TotalCount = {
@@ -55,9 +62,7 @@ interface IPaginatedResults {
   transcription: string;
   userWord: {
     difficulty: string;
-    optional: {
-      study: boolean;
-    };
+    optional: IOptional;
   };
   word: string;
   wordTranslate: string;
@@ -68,4 +73,4 @@ interface IUserAggregatedWords {
   sources: Array<TotalCount>;
 }
 
-export { IApiWords, IUserAuth, IUserWord, IUserAggregatedWords, IPaginatedResults };
+export { IApiWords, IUserAuth, IUserWord, IUserAggregatedWords, IPaginatedResults, IOptional };

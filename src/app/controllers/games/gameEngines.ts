@@ -1,6 +1,6 @@
-import { IApiWords } from '../../models/interfaces';
+import { GameType } from '../constants';
 import { IGameEngine } from './../interfaces';
-import { GameCardData } from './../types';
+import { GameCardData, GameWord, GameFullResultsData } from './../types';
 
 const COEF = 10;
 
@@ -24,7 +24,7 @@ function takeFirstNWithCondition<T>(arr: T[], startIdx: number, n: number, condi
 }
 
 abstract class GameEngine implements IGameEngine {
-  protected words: IApiWords[];
+  protected words: GameWord[];
 
   protected userAnswers: boolean[];
 
@@ -46,7 +46,7 @@ abstract class GameEngine implements IGameEngine {
 
   abstract getPoints(): number;
 
-  abstract preprocessWords(words: IApiWords[]): void;
+  abstract preprocessWords(words: GameWord[]): void;
 
   abstract checkAnswer(option: number): boolean;
 
@@ -65,6 +65,14 @@ abstract class GameEngine implements IGameEngine {
     return [correct, incorrect];
   }
 
+  getFullResults(): GameFullResultsData {
+    return {
+      game: this.getGameType(),
+      words: this.words,
+      answers: this.userAnswers,
+    };
+  }
+
   clear(): void {
     this.words = [];
     this.userAnswers = [];
@@ -72,6 +80,8 @@ abstract class GameEngine implements IGameEngine {
     this.correctOptions = [];
     this.idx = -1;
   }
+
+  protected abstract getGameType(): GameType;
 }
 
 class SprintEngine extends GameEngine {
@@ -91,7 +101,7 @@ class SprintEngine extends GameEngine {
     this.singleAnswerScore = 1;
   }
 
-  preprocessWords(words: IApiWords[]): void {
+  preprocessWords(words: GameWord[]): void {
     this.words = words;
     this.suggestedTranslations = words.map((w) => [w.wordTranslate]);
     this.correctOptions = words.map(() => (Math.random() >= 0.5 ? 0 : 1));
@@ -132,13 +142,12 @@ class SprintEngine extends GameEngine {
 
   getNextWord(): GameCardData | undefined {
     this.idx += 1;
-    if (this.idx === this.words.length - 1) {
-      return;
+    if (this.idx < this.words.length) {
+      return {
+        word: this.words[this.idx],
+        options: this.suggestedTranslations[this.idx],
+      };
     }
-    return {
-      word: this.words[this.idx],
-      options: this.suggestedTranslations[this.idx],
-    };
   }
 
   getScore(): number {
@@ -154,6 +163,16 @@ class SprintEngine extends GameEngine {
     this.streakLength = 0;
     this.total = 0;
     this.singleAnswerScore = 1;
+  }
+
+  getFullResults(): GameFullResultsData {
+    const result = super.getFullResults();
+    result.score = this.total;
+    return result;
+  }
+
+  protected getGameType(): GameType {
+    return GameType.Sprint;
   }
 }
 
