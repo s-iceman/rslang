@@ -47,6 +47,9 @@ export class SprintView extends BaseGameView {
     card.className = 'game-card wrapper';
     const points = new CreateMarkup(card, 'div', 'points');
     const guessedWords = new CreateMarkup(points.node, 'div', 'guessed-words');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
 
     const pointsСounter = new CreateMarkup(points.node, 'div', 'points-counter');
     const score = new CreateMarkup(pointsСounter.node, 'span', 'points__score', '10');

@@ -87,13 +87,6 @@
     font-size: 2.4rem;
     align-items: center;
     justify-content: space-between;
-
-    .points {
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      width: 100%;
-    }
   }
 
   .game-card__controls {
@@ -108,10 +101,42 @@
 
   .card--right {
     box-shadow: 0 0 10px 2px #00f7d2;
+    transition: all .3s;
   }
 
   .card--wrong {
     box-shadow: 0 0 10px 2px #c53107;
+    transition: all .3s;
+  }
+}
+
+.points {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.guessed-words {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  gap: .7rem;
+
+  &__item {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 100%;
+    background-color: #bfbfbf;
+  }
+
+  .item--active {
+    background-color: #1c97d9;
+    transition: all .3s;
   }
 }
 
