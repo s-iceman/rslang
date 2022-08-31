@@ -29,6 +29,7 @@ interface IGameView extends IView {
   startGame(data: GameCardData): void;
   endGame(results: string[][]): void;
   updateScore(score: number): void;
+  updatePoints(points: number): void;
 }
 
 type ViewOrNotInit = IView | null;

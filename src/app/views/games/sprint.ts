@@ -44,14 +44,26 @@ export class SprintView extends BaseGameView {
 
   createWordCard(word: IApiWords): HTMLElement {
     const card = document.createElement('div');
-    card.className = 'game-card';
-    const originWord = new CreateMarkup(card, 'div', 'game-card__word');
+    card.className = 'game-card wrapper';
+    const points = new CreateMarkup(card, 'div', 'points');
+    const guessedWords = new CreateMarkup(points.node, 'div', 'guessed-words');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+    new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+
+    const pointsСounter = new CreateMarkup(points.node, 'div', 'points-counter');
+    const score = new CreateMarkup(pointsСounter.node, 'span', 'points__score', '10');
+    pointsСounter.node.innerHTML = `+${pointsСounter.node.innerHTML} очков`;
+
+    const cardWord = new CreateMarkup(card, 'div', 'game-card__word game-word');
+    const originWord = new CreateMarkup(cardWord.node, 'h3', 'game-word__origin');
     originWord.node.textContent = word.word;
-    const translation = new CreateMarkup(card, 'div', 'game-card__translate');
+    const translation = new CreateMarkup(cardWord.node, 'span', 'game-word__translate');
     translation.node.textContent = word.wordTranslate;
 
     this.word = originWord.node;
     this.translation = translation.node;
+    this.pointsBlock = score.node;
 
     const controls = new CreateMarkup(card, 'div', 'game-card__controls');
     const isTrueBtn = new CreateMarkup(controls.node, 'button', 'button game-card__btn game-card__btn_true');

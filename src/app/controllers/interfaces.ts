@@ -38,6 +38,7 @@ interface IGameEngine {
   getNextWord(): GameCardData | undefined;
   getResults(): string[][];
   getScore(): number;
+  getPoints(): number;
   clear(): void;
 }
 

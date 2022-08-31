@@ -17,6 +17,8 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected scoreBlock: HTMLElement | null;
 
+  protected pointsBlock: HTMLElement | null;
+
   protected gameControls: HTMLElement | null;
 
   protected timer: DropDownTimer;
@@ -32,6 +34,7 @@ export abstract class BaseGameView extends View implements IGameView {
     this.ctrl = null;
     this.startPage = null;
     this.scoreBlock = null;
+    this.pointsBlock = null;
     this.timerBlock = null;
     this.gameControls = null;
     this.timer = new DropDownTimer();
@@ -73,6 +76,12 @@ export abstract class BaseGameView extends View implements IGameView {
   updateScore(score: number): void {
     if (this.scoreBlock) {
       this.scoreBlock.innerHTML = score.toString();
+    }
+  }
+
+  updatePoints(points: number): void {
+    if (this.pointsBlock) {
+      this.pointsBlock.innerHTML = points.toString();
     }
   }
 
@@ -153,9 +162,13 @@ export abstract class BaseGameView extends View implements IGameView {
 
   private createScoreBlock(): HTMLElement {
     const block: HTMLElement = document.createElement('div');
-    block.className = 'game__score';
-    block.textContent = '0';
-    this.scoreBlock = block;
+    const gameScore: HTMLElement = document.createElement('span');
+    gameScore.className = 'game__score';
+    gameScore.textContent = '0';
+    block.className = 'game__counter';
+    block.innerHTML = `Счёт`;
+    block.append(gameScore);
+    this.scoreBlock = gameScore;
     return block;
   }
 }

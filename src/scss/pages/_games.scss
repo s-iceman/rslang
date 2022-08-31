@@ -1,80 +1,185 @@
 .game__container {
-  position: relative;
-  top: $header-height-normal;
-  padding: 5rem 4rem;
+  padding: 3rem 5rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: white;
   opacity: 1;
+  background-image: url(../assets/img/bg-game.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: calc(100vh - 16rem);
+  cursor: default;
+  color: #4e4e4e;
+  gap: 3rem;
 
-
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     top: $header-height-min;
+    min-height: calc(100vh - 13rem);
+  }
+
+  .wrapper {
+    background-color: rgb(243 243 243 / 85%);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem 0.4rem rgb(68 68 68 / 25%);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
   }
 
   .instruction {
-    min-width: 300px;
-
-    &__description {
-      padding: 4rem 0;
-      font-size: 3rem;
-    }
+    font-size: 2.2rem;
+    transform: translateY(-20%);
 
     &__controls {
       display: flex;
       flex-direction: row;
-      gap: 20px;
+      justify-content: space-between;
+      gap: 2rem;
+      font-size: 1.8rem;
+      padding-top: 1rem;
+    }
+
+    h2 {
+      color: #033f5fd1;
+      font-size: 2.6rem;
+      text-align: center;
     }
   }
 
-  .game__score {
-    font-size: 6rem;
+  .ways-control {
+    font-size: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .ways-control__options {
+    padding-left: 2.1rem;
+    font-size: 2rem;
+
+    li {
+      list-style: initial;
+    }
+
+  }
+
+  .game__counter {
+    font-size: 4rem;
     font-weight: 700;
-    padding: 2rem;
+    color: rgba(3, 63, 95, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    filter: drop-shadow(0 0 0.5rem white);
   }
 
   .game__timer {
     font-size: 4rem;
-    padding-bottom: 5rem;
   }
 
   .game-card {
-    min-height: 300px;
-    font-size: 3rem;
-    padding: 5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    min-height: 40rem;
+    min-width: 40rem;
+    font-size: 2.4rem;
     align-items: center;
-    border-radius: 10px;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1));
-    box-shadow: 0 0 1.5rem 0.4rem rgb(68 68 68 / 25%);
+    justify-content: space-between;
   }
 
   .game-card__controls {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    padding-top: 5rem;
+    justify-content: space-evenly;
+    gap: 2rem;
+    box-shadow: 0 -1px 0 0 #919191;
+    padding-top: 1.2rem;
+    width: 100%;
+  }
 
+  .card--right {
+    box-shadow: 0 0 10px 2px #00f7d2;
+    transition: all .3s;
+  }
 
-    .game-card__btn {
-      width: 120px;
-      padding: 1rem 2rem;
-
-      &_true {
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 225, 0, 0.1));
-      }
-
-      &_false {
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 255, 21, 0.1));
-      }
-    }
+  .card--wrong {
+    box-shadow: 0 0 10px 2px #c53107;
+    transition: all .3s;
   }
 }
 
+.points {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.guessed-words {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  gap: .7rem;
+
+  &__item {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 100%;
+    background-color: #bfbfbf;
+  }
+
+  .item--active {
+    background-color: #1c97d9;
+    transition: all .3s;
+  }
+}
+
+.game-word {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  flex-grow: 1;
+}
+.level {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  label {
+    font-weight: 600;
+  }
+
+  select {
+    border-radius: .3rem;
+    width: 6rem;
+  }
+
+  option {
+    cursor: pointer;
+  }
+}
+
+.game-card__btn {
+  background-color: #1c97d9;
+  font-size: 1.8rem;
+}
+
+.game-card__btn_true {
+  background-color: #41783f;
+}
+
+.game-card__btn_false {
+  background-color: #c70026;
+}
 .result-page {
   position: fixed;
   width: 100%;
