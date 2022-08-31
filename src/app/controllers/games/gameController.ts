@@ -5,7 +5,7 @@ import { IGameView, ViewOrNotInit } from './../../views/interfaces';
 import { BaseGameView } from '../../views/games/common/baseGame';
 import { GameType } from './../constants';
 import { UnitLevels } from './../constants';
-import { SprintEngine } from './gameEngines';
+import { SprintEngine, AudioCallEngine } from './gameEngines';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
 import { ModelHelper } from './modelHelpers';
@@ -108,9 +108,9 @@ export class GameController extends State implements IGameController {
   private createEngine(): IGameEngine {
     if (this.gameType === GameType.Sprint) {
       return new SprintEngine();
+    } else {
+      return new AudioCallEngine();
     }
-    // todo
-    return new SprintEngine();
   }
 
   private clear(): void {
