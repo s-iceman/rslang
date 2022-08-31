@@ -44,6 +44,8 @@ abstract class GameEngine implements IGameEngine {
 
   abstract getScore(): number;
 
+  abstract getPoints(): number;
+
   abstract preprocessWords(words: IApiWords[]): void;
 
   abstract checkAnswer(option: number): boolean;
@@ -77,12 +79,15 @@ class SprintEngine extends GameEngine {
 
   private total: number;
 
+  private totalPoints: number;
+
   private singleAnswerScore: number;
 
   constructor() {
     super();
     this.streakLength = 0;
     this.total = 0;
+    this.totalPoints = COEF;
     this.singleAnswerScore = 1;
   }
 
@@ -121,6 +126,7 @@ class SprintEngine extends GameEngine {
       this.streakLength = 0;
       this.singleAnswerScore = 1;
     }
+    this.totalPoints = this.singleAnswerScore * COEF;
     return isCorrect;
   }
 
@@ -137,6 +143,10 @@ class SprintEngine extends GameEngine {
 
   getScore(): number {
     return this.total;
+  }
+
+  getPoints(): number {
+    return this.totalPoints;
   }
 
   clear(): void {

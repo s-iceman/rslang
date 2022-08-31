@@ -48,14 +48,14 @@ class StartPage implements IStartPage {
 
   private createContent(): HTMLElement {
     const parent: HTMLDivElement = document.createElement('div');
-    parent.className = 'instruction';
+    parent.className = 'instruction wrapper';
     parent.append(this.createHeader());
     parent.append(this.createDescription());
     return parent;
   }
 
   private createHeader(): HTMLElement {
-    const parent: HTMLElement = document.createElement('h1');
+    const parent: HTMLElement = document.createElement('h2');
     parent.textContent = this.getTitle();
     return parent;
   }
@@ -69,6 +69,7 @@ class StartPage implements IStartPage {
 
   private createUnitBlock(): HTMLElement {
     const parent: HTMLElement = document.createElement('div');
+    parent.classList.add('level');
 
     const form: HTMLFormElement = document.createElement('form');
     const select = document.createElement('select');
@@ -84,7 +85,7 @@ class StartPage implements IStartPage {
     form.append(select);
 
     const label: HTMLLabelElement = document.createElement('label');
-    label.innerHTML = 'Раздел:';
+    label.innerHTML = 'Уровень:';
     label.htmlFor = 'units';
 
     parent.append(label, form);
@@ -93,7 +94,7 @@ class StartPage implements IStartPage {
 
   private createButton(): HTMLButtonElement {
     const btn: HTMLButtonElement = document.createElement('button');
-    btn.classList.add('button');
+    btn.className = 'button game-card__btn';
     btn.textContent = 'Играть';
     this.startBtn = btn;
     return btn;
@@ -107,12 +108,11 @@ class SprintStartPage extends StartPage {
 
   protected fillDescription(): string {
     return `
-      <div>
-        <p>Выберите, соответствует ли перевод предложенному слову.</p>
-        <p>Вы можете использовать:</p>
-        <ul>
-         <li>мышь</li>
-         <li>стрелки "влево" и "вправо"</li>
+      <div class="ways-control">
+        <span>Выберите, соответствует ли перевод предложенному слову.</span>
+        <ul class="ways-control__options">
+          <li>Используйте мышь</li>
+          <li>Используйте клавиши "влево" и "вправо"</li>
         </ul>
       </div>
     `;
@@ -126,12 +126,11 @@ class VoiceCallStartPage extends StartPage {
 
   protected fillDescription(): string {
     return `
-      <div>
-        <p>Прослушайте слово и выберите его правильный перевод.</p>
-        <p>Вы можете использовать:</p>
-        <ul>
-         <li>мышь</li>
-         <li>клавиши с цифрами 1 - 5</li>
+      <div class="ways-control">
+        <span>Прослушайте слово и выберите его правильный перевод.</span>
+        <ul class="ways-control__options">
+          <li>Используйте мышь</li>
+          <li>Используйте клавиши "влево" и "вправо"</li>
         </ul>
       </div>
     `;
