@@ -1,6 +1,6 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAggregatedWords, IUserWord, IOptional } from './interfaces';
+import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics, IStatisticsOptional } from './interfaces';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 import { MIN_PAGE_WORDS } from '../common/constants';
 
@@ -149,6 +149,35 @@ export default class AppModel extends State {
     `;
     const aggregatedWordsData = await this.aggregatedWords(aggregatedWordUrl);
     return aggregatedWordsData;
+  }
+
+  async getUserStatistics(): Promise<IStatistics> {
+    const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
+
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error('Invalid results');
+    }
+    return <IStatistics>await resp.json();
+  }
+
+  async setUserStatistics(optional: IStatisticsOptional) {
+    const url = `${this.usersUrl}/${this.getUserId()}`;
+    const statistics = {
+      learnedWords: 0,
+      optional: optional,
+    };
+    const resp = await fetch(url, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: `Bearer ${this.getToken() || ''}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics),
+    });
+    return <IStatistics>await resp.json();
   }
 
   private formatOptional(optional: IOptional): IOptional {

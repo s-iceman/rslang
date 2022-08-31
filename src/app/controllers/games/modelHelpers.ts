@@ -129,11 +129,6 @@ class UserModelHelper extends BaseModelHelper {
     return optional;
   }
 
-  private saveWordUpdates(): boolean {
-    //   public async postUserWord(id: string, difficulty: string, optional: IOptional)
-    return true;
-  }
-
   private dateToString(date: Date): string {
     return date.toJSON().slice(0, 10);
   }

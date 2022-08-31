@@ -43,6 +43,23 @@ interface IOptional {
   lastNCorrect?: number;
 }
 
+interface IGameStatistics {
+  nNew: number;
+  nCorrect: number;
+  nTotal: number;
+  streak: number;
+}
+
+interface IStatisticsOptional {
+  games: Map<string, IGameStatistics>;
+  deltaComplete: Map<string, number>;
+}
+
+interface IStatistics {
+  learnedWords?: number;
+  optional: IStatisticsOptional;
+}
+
 type TotalCount = {
   count: number;
 };
@@ -73,4 +90,13 @@ interface IUserAggregatedWords {
   sources: Array<TotalCount>;
 }
 
-export { IApiWords, IUserAuth, IUserWord, IUserAggregatedWords, IPaginatedResults, IOptional };
+export {
+  IApiWords,
+  IUserAuth,
+  IUserWord,
+  IUserAggregatedWords,
+  IPaginatedResults,
+  IOptional,
+  IStatistics,
+  IStatisticsOptional,
+};

@@ -1,6 +1,6 @@
 import { PaginBtnType } from './constants';
 import { IApiWords } from '../models/interfaces';
-import { IGameController, ITextBookController } from './../controllers/interfaces';
+import { IGameController, ITextBookController, IStatisticsController } from './../controllers/interfaces';
 import { GameType } from '../controllers/constants';
 import { GameCardData } from '../controllers/types';
 
@@ -32,8 +32,14 @@ interface IGameView extends IView {
   updatePoints(points: number): void;
 }
 
+interface IStatisticsView extends IView {
+  setController(ctrl: IStatisticsController): void;
+  setError(): void;
+}
+
 type ViewOrNotInit = IView | null;
 type TextBookViewOrNotInit = ITextBookView | null;
+type StatisticsViewOrNotInit = IStatisticsView | null;
 
 interface IViewConstructor {
   new (baseUrl: string): IView;
@@ -67,5 +73,7 @@ export {
   ITextBookView,
   TextBookViewOrNotInit,
   IGameView,
+  IStatisticsView,
+  StatisticsViewOrNotInit,
   PaginType,
 };
