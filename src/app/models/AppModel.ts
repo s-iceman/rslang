@@ -1,6 +1,6 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IPaginatedResults, IUserAggregatedWords, IUserAuth, IUserWord } from './interfaces';
+import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics, IStatisticsOptional } from './interfaces';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 import { MIN_PAGE_WORDS } from '../common/constants';
 
@@ -51,13 +51,11 @@ export default class AppModel extends State {
     return <IApiWords[]>await resp.json();
   }
 
-  private async setUserWord(method: string, id: string, difficulty: string, isStudy = false) {
+  private async setUserWord(method: string, id: string, difficulty: string, optional: IOptional) {
     const setUserWords = `${this.usersUrl}/${this.getUserId()}/words/${id}`;
     const word = {
       difficulty: `${difficulty}`,
-      optional: {
-        study: isStudy,
-      },
+      optional: this.formatOptional(optional),
     };
     const resp = await fetch(setUserWords, {
       method: `${method}`,
@@ -72,13 +70,13 @@ export default class AppModel extends State {
     return <IUserWord[]>await resp.json();
   }
 
-  public async postUserWord(id: string, difficulty: string, isStudy = false) {
-    const userWordData = await this.setUserWord('POST', id, difficulty, isStudy);
+  public async postUserWord(id: string, difficulty: string, optional: IOptional) {
+    const userWordData = await this.setUserWord('POST', id, difficulty, optional);
     return userWordData;
   }
 
-  public async updateUserWord(id: string, difficulty: string, isStudy = false) {
-    const userWordData = await this.setUserWord('PUT', id, difficulty, isStudy);
+  public async updateUserWord(id: string, difficulty: string, optional: IOptional) {
+    const userWordData = await this.setUserWord('PUT', id, difficulty, optional);
     return userWordData;
   }
 
@@ -142,5 +140,51 @@ export default class AppModel extends State {
     `;
     const aggregatedWordsData = await this.aggregatedWords(aggregatedWordUrl);
     return aggregatedWordsData;
+  }
+
+  public async getAllUserAggregatedWords(groupId: number) {
+    const limit = 600;
+    const aggregatedWordUrl = `
+      ${this.usersUrl}/${this.getUserId()}/aggregatedWords?wordsPerPage=${limit}&filter={"group":${groupId}}
+    `;
+    const aggregatedWordsData = await this.aggregatedWords(aggregatedWordUrl);
+    return aggregatedWordsData;
+  }
+
+  async getUserStatistics(): Promise<IStatistics> {
+    const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
+
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error('Invalid results');
+    }
+    return <IStatistics>await resp.json();
+  }
+
+  async setUserStatistics(optional: IStatisticsOptional) {
+    const url = `${this.usersUrl}/${this.getUserId()}`;
+    const statistics = {
+      learnedWords: 0,
+      optional: optional,
+    };
+    const resp = await fetch(url, {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: `Bearer ${this.getToken() || ''}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics),
+    });
+    return <IStatistics>await resp.json();
+  }
+
+  private formatOptional(optional: IOptional): IOptional {
+    optional.firstIntroducedDate = optional.firstIntroducedDate ?? '-';
+    optional.correctAnswers = optional.correctAnswers ?? 0;
+    optional.incorrectAnswers = optional.incorrectAnswers ?? 0;
+    optional.lastNCorrect = optional.lastNCorrect ?? 0;
+    return optional;
   }
 }

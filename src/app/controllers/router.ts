@@ -6,6 +6,7 @@ import { TextBookView } from '../views/textbook/textbook';
 import { StatisticsView } from '../views/statistics/statistics';
 import { SprintView } from '../views/games/sprint';
 import { VoiceCallView } from '../views/games/voiceCall';
+import { IRouter } from './interfaces';
 
 type MyType = Map<string, IViewConstructor>;
 
@@ -15,7 +16,7 @@ const ANCHORS = {
   [ViewPath.TEAM]: ViewPath.MAIN,
 };
 
-export class Router {
+export class Router implements IRouter {
   private routes: MyType;
 
   private baseUrl: string;
@@ -39,6 +40,10 @@ export class Router {
       }
       return view;
     }
+  }
+
+  updateViewUrl(path: string): void {
+    window.location.href = window.location.origin + `/#${path}`;
   }
 
   private initRoutes(): MyType {

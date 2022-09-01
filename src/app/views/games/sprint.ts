@@ -2,7 +2,6 @@ import { ViewPath } from '../../common/constants';
 import { SprintStartPage } from './common/startPage';
 import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
-import { IApiWords } from '../../models/interfaces';
 import CreateMarkup from './../common/createMarkup';
 import { GameCardData } from '../../controllers/types';
 import { AnswerBtnType } from '../constants';
@@ -28,9 +27,11 @@ export class SprintView extends BaseGameView {
   }
 
   showWord(data: GameCardData): void {
-    if (this.word && this.translation) {
-      this.word.textContent = data.word.word;
+    if (this.word && this.translation && data.word) {
+      this.word.textContent = data.word.word.toString();
       this.translation.textContent = data.options[0];
+    } else {
+      console.debug('Incorrect input data for a card');
     }
   }
 
@@ -42,7 +43,7 @@ export class SprintView extends BaseGameView {
     }
   }
 
-  createWordCard(word: IApiWords): HTMLElement {
+  createWordCard(data: GameCardData): HTMLElement {
     const card = document.createElement('div');
     card.className = 'game-card wrapper';
     const points = new CreateMarkup(card, 'div', 'points');
@@ -57,9 +58,9 @@ export class SprintView extends BaseGameView {
 
     const cardWord = new CreateMarkup(card, 'div', 'game-card__word game-word');
     const originWord = new CreateMarkup(cardWord.node, 'h3', 'game-word__origin');
-    originWord.node.textContent = word.word;
+    originWord.node.textContent = data.word.word.toString();
     const translation = new CreateMarkup(cardWord.node, 'span', 'game-word__translate');
-    translation.node.textContent = word.wordTranslate;
+    translation.node.textContent = data.options[0];
 
     this.word = originWord.node;
     this.translation = translation.node;

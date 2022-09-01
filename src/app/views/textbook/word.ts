@@ -1,5 +1,5 @@
 import CreateMarkup from '../common/createMarkup';
-import { IApiWords, IUserWord } from '../../models/interfaces';
+import { IApiWords, IUserWord, IOptional } from '../../models/interfaces';
 import { ITextBookController } from '../../controllers/interfaces';
 
 export default class Words extends CreateMarkup {
@@ -105,7 +105,7 @@ export default class Words extends CreateMarkup {
       toggleStyle(false);
       this.textBookCtrl.createUserWord(id, false, true).catch((err) => console.debug(err));
     });
-    this.addStatistics(parentNode);
+    this.addStatistics(parentNode, userWord?.optional);
   }
 
   addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string) {
@@ -122,15 +122,15 @@ export default class Words extends CreateMarkup {
     this.addStatistics(parentNode);
   }
 
-  addStatistics(parentNode: HTMLElement) {
+  addStatistics(parentNode: HTMLElement, optional?: IOptional) {
     const wordStatistics = `
       <div title="Правильных ответов" class="word__counter word__correct-counter">
         <span>&#10003</span>
-        <span>0</span>
+        <span>${optional?.correctAnswers || 0}</span>
       </div>
       <div title="Неправильных ответов" class="word__counter word__incorrect-counter">
         <span>&#x2715</span>
-        <span>0</span>
+        <span>${optional?.incorrectAnswers || 0}</span>
       </div>
     `;
     new CreateMarkup(parentNode, 'div', 'word__counters', wordStatistics);

@@ -1,10 +1,11 @@
 import { ViewOrNotInit } from '../views/interfaces';
-import { IAppController, IGameController, IRouter, ITextBookController } from './interfaces';
+import { IAppController, IGameController, IRouter, IStatisticsController, ITextBookController } from './interfaces';
 import { Router } from './router';
 import { TextBookController } from './textbookController';
 import { BaseContainer } from '../views/base/baseContainer';
 import AppModel from '../models/AppModel';
 import { GameController } from './games/gameController';
+import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
 
 class AppController implements IAppController {
@@ -16,7 +17,7 @@ class AppController implements IAppController {
 
   private baseContainer: BaseContainer;
 
-  private controllers: Array<ITextBookController | IGameController>;
+  private controllers: Array<ITextBookController | IGameController | IStatisticsController>;
 
   private activeView: ViewOrNotInit;
 
@@ -26,7 +27,11 @@ class AppController implements IAppController {
     this.model = new AppModel(this.baseUrl);
 
     this.activeView = null;
-    this.controllers = [new TextBookController(this.baseUrl, this.model), new GameController(this.baseUrl, this.model)];
+    this.controllers = [
+      new TextBookController(this.baseUrl, this.model),
+      new GameController(this.baseUrl, this.model),
+      new StatisticsController(this.baseUrl, this.model),
+    ];
 
     this.baseContainer = new BaseContainer();
   }
@@ -46,6 +51,7 @@ class AppController implements IAppController {
     window.addEventListener('ShowGameEvent', (event) => {
       const options = (<CustomEvent>event).detail as StartGameOptions;
       this.changeUrl(options.game, JSON.stringify(options)).catch((err) => console.debug(err));
+      this.router.updateViewUrl(options.game.toString());
     });
   }
 

@@ -3,7 +3,6 @@ import { IGameController } from '../../../controllers/interfaces';
 import { IStartPage } from './../intefaces';
 import { IGameView } from '../../interfaces';
 import { GameType } from '../../../controllers/constants';
-import { IApiWords } from '../../../models/interfaces';
 import { DropDownTimer } from './timer';
 import { GameCardData } from '../../../controllers/types';
 import { createResults } from './results';
@@ -57,7 +56,7 @@ export abstract class BaseGameView extends View implements IGameView {
 
   startGame(data: GameCardData): void {
     this.root.innerHTML = '';
-    this.root.append(this.createGameContent(data.word));
+    this.root.append(this.createGameContent(data));
     this.addProcessGameListeners();
     this.timer.startTimer(this.ctrl?.getGameLength() || 0);
   }
@@ -125,7 +124,7 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected abstract processKey(event: KeyboardEvent): void;
 
-  protected abstract createWordCard(word?: IApiWords): HTMLElement;
+  protected abstract createWordCard(data: GameCardData): HTMLElement;
 
   private closeResults(event: MouseEvent): void {
     const target = event.target;
@@ -142,12 +141,12 @@ export abstract class BaseGameView extends View implements IGameView {
     this.render();
   }
 
-  private createGameContent(word?: IApiWords): HTMLElement {
+  private createGameContent(data: GameCardData): HTMLElement {
     const parent = document.createElement('div');
     parent.className = 'game__container';
     parent.append(this.timer.getTimerBlock());
     parent.append(this.createScoreBlock());
-    parent.append(this.createWordCard(word));
+    parent.append(this.createWordCard(data));
     return parent;
   }
 

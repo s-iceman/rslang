@@ -19,7 +19,7 @@ export class VoiceCallView extends BaseGameView {
     return GameType.VoiceCall;
   }
 
-  createWordCard(word?: IApiWords): HTMLElement {
+  createWordCard(data?: GameCardData): HTMLElement {
     const parent: HTMLElement = document.createElement('div');
     parent.textContent = 'HELLO';
     return parent;

@@ -1,5 +1,5 @@
-import { IApiWords } from '../models/interfaces';
-import { UnitLevels } from './constants';
+import { IApiWords, IPaginatedResults } from '../models/interfaces';
+import { GameType, UnitLevels } from './constants';
 
 type TextBookState = {
   unit: UnitLevels;
@@ -12,7 +12,7 @@ type GameWordsData = {
 };
 
 type GameCardData = {
-  word: IApiWords;
+  word: GameWord;
   options: ReadonlyArray<string>;
 };
 
@@ -22,4 +22,13 @@ type StartGameOptions = {
   page: number;
 };
 
-export { TextBookState, GameWordsData, GameCardData, StartGameOptions };
+type GameWord = IApiWords | IPaginatedResults;
+
+type GameFullResultsData = {
+  game: GameType;
+  words: GameWord[];
+  answers: boolean[];
+  score?: number;
+};
+
+export { TextBookState, GameWordsData, GameCardData, StartGameOptions, GameWord, GameFullResultsData };

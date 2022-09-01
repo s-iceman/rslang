@@ -1,7 +1,7 @@
 import { ViewOrNotInit } from '../views/interfaces';
 import { UnitLevels } from './constants';
-import { IApiWords } from './../models/interfaces';
-import { GameCardData } from './types';
+import { IApiWords, IStatistics } from './../models/interfaces';
+import { GameCardData, GameWord, GameFullResultsData } from './types';
 
 interface IAppController {
   start(): void;
@@ -32,22 +32,36 @@ interface IGameController extends IController {
   canSelectUnit(): boolean;
 }
 
+interface IStatisticsController extends IController {
+  getStatistics(): Promise<IStatistics>;
+}
+
 interface IGameEngine {
-  preprocessWords(words: IApiWords[]): void;
+  preprocessWords(words: GameWord[]): void;
   checkAnswer(option: number): boolean;
   getNextWord(): GameCardData | undefined;
   getResults(): string[][];
+  getFullResults(): GameFullResultsData;
   getScore(): number;
   getPoints(): number;
   clear(): void;
 }
 
 interface IModelHelper {
-  getWords(level?: UnitLevels): Promise<IApiWords[]>;
+  getWords(level?: UnitLevels): Promise<GameWord[]>;
 }
 
 interface IRouter {
   process(newPath?: string): ViewOrNotInit;
+  updateViewUrl(path: string): void;
 }
 
-export { IAppController, IRouter, ITextBookController, IGameController, IGameEngine, IModelHelper };
+export {
+  IAppController,
+  IRouter,
+  ITextBookController,
+  IGameController,
+  IGameEngine,
+  IModelHelper,
+  IStatisticsController,
+};
