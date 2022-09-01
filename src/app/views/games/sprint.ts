@@ -3,7 +3,7 @@ import { SprintStartPage } from './common/startPage';
 import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
 import CreateMarkup from './../common/createMarkup';
-import { GameCardData, GameWord } from '../../controllers/types';
+import { GameCardData } from '../../controllers/types';
 import { AnswerBtnType } from '../constants';
 
 export class SprintView extends BaseGameView {
@@ -43,7 +43,7 @@ export class SprintView extends BaseGameView {
     }
   }
 
-  createWordCard(word: GameWord): HTMLElement {
+  createWordCard(data: GameCardData): HTMLElement {
     const card = document.createElement('div');
     card.className = 'game-card wrapper';
     const points = new CreateMarkup(card, 'div', 'points');
@@ -58,9 +58,9 @@ export class SprintView extends BaseGameView {
 
     const cardWord = new CreateMarkup(card, 'div', 'game-card__word game-word');
     const originWord = new CreateMarkup(cardWord.node, 'h3', 'game-word__origin');
-    originWord.node.textContent = word.word;
+    originWord.node.textContent = data.word.word.toString();
     const translation = new CreateMarkup(cardWord.node, 'span', 'game-word__translate');
-    translation.node.textContent = word.wordTranslate;
+    translation.node.textContent = data.options[0];
 
     this.word = originWord.node;
     this.translation = translation.node;
