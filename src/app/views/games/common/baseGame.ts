@@ -6,6 +6,7 @@ import { GameType } from '../../../controllers/constants';
 import { DropDownTimer } from './timer';
 import { GameCardData } from '../../../controllers/types';
 import { createResults } from './results';
+import { ProgressBar } from '../../components/progressBar/progressBar';
 
 export abstract class BaseGameView extends View implements IGameView {
   protected ctrl: IGameController | null;
@@ -20,7 +21,7 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected gameControls: HTMLElement | null;
 
-  protected timer: DropDownTimer;
+  protected timer: ProgressBar | null;
 
   protected onProcessKey: (event: KeyboardEvent) => void;
 
@@ -36,7 +37,7 @@ export abstract class BaseGameView extends View implements IGameView {
     this.pointsBlock = null;
     this.timerBlock = null;
     this.gameControls = null;
-    this.timer = new DropDownTimer();
+    this.timer = null;
 
     this.onProcessKey = this.processKey.bind(this);
     this.onProcessClick = this.processClick.bind(this);
@@ -58,12 +59,12 @@ export abstract class BaseGameView extends View implements IGameView {
     this.root.innerHTML = '';
     this.root.append(this.createGameContent(data));
     this.addProcessGameListeners();
-    this.timer.startTimer(this.ctrl?.getGameLength() || 0);
+    this.timer?.startTimer();
   }
 
   endGame(results: string[][]): void {
     this.removeProcessGameListeners();
-    this.timer.stopTimer();
+    this.timer?.stopTimer();
     this.root.innerHTML = '';
     const resultsOverlay = createResults(results);
     document.body.append(resultsOverlay);
@@ -144,7 +145,8 @@ export abstract class BaseGameView extends View implements IGameView {
   private createGameContent(data: GameCardData): HTMLElement {
     const parent = document.createElement('div');
     parent.className = 'game__container';
-    parent.append(this.timer.getTimerBlock());
+    this.timer = new ProgressBar(parent);
+    // parent.append(this.timer.getTimerBlock());
     parent.append(this.createScoreBlock());
     parent.append(this.createWordCard(data));
     return parent;

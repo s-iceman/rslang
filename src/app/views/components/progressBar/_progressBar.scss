@@ -1,0 +1,54 @@
+.progress-bar {
+  position: relative;
+  width: 14rem;
+  height: 14rem;
+  color: white;
+}
+
+.progress-bar__svg {
+  transform: scaleX(-1);
+}
+
+.progress-bar__stroke {
+  fill: none;
+  stroke: none;
+}
+
+.progress-bar__circle {
+  stroke-width: .8rem;
+  stroke: #919191;
+}
+
+.progress-bar__path {
+  stroke-width: .8rem;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.progress-bar__path.green {
+  color: rgb(65, 184, 131);
+}
+
+.progress-bar__path.orange {
+  color: rgb(245, 137, 60);
+}
+
+.progress-bar__path.red {
+  color: #c70026;
+}
+
+.progress-bar__timer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  filter: drop-shadow(0.2rem 0.4rem 0.6rem black);
+}
