@@ -89,7 +89,7 @@ export class GameController extends State implements IGameController {
     if (!this.gameEngine) {
       return;
     }
-    this.gameView?.endGame(this.gameEngine.getResults());
+    this.gameView?.endGame(this.gameEngine.getResults(), this.gameEngine.getScore());
     if (this.modelHelper instanceof UserModelHelper) {
       await this.modelHelper.processGameResults(this.gameEngine.getFullResults());
     }

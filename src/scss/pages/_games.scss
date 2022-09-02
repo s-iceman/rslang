@@ -1,5 +1,5 @@
 .game__container {
-  padding: 3rem 5rem 5rem;
+  padding: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +12,7 @@
   min-height: calc(100vh - 16rem);
   cursor: default;
   color: #4e4e4e;
-  gap: 3rem;
+  gap: 2.2rem;
 
   @media screen and (max-width: 768px) {
     top: $header-height-min;
@@ -43,7 +43,7 @@
     }
 
     h2 {
-      color: #033f5fd1;
+      color: rgba(3, 63, 95, 0.82);
       font-size: 2.6rem;
       text-align: center;
     }
@@ -67,7 +67,7 @@
   }
 
   .game__counter {
-    font-size: 4rem;
+    font-size: 3.6rem;
     font-weight: 700;
     color: rgba(3, 63, 95, 0.82);
     display: flex;
@@ -180,14 +180,102 @@
 .game-card__btn_false {
   background-color: #c70026;
 }
+
 .result-page {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 2;
+  align-items: center;
+  margin-top: 2rem;
+
+  ol {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    gap: 0.5rem;
+    list-style-position: inside;
+    padding: 0;
+    margin: 0;
+  }
+
+  h2 {
+    color: rgba(3, 63, 95, 0.82);
+    font-size: 2.4rem;
+  }
+
+  .answers {
+    display: flex;
+    gap: 5rem;
+    padding: 0 2rem;
+    align-items: flex-start;
+    height: 24.5rem;
+    overflow: auto;
+    margin: 1rem 0 3rem;
+    width: 100%;
+
+    @media(max-width:768px){
+      flex-direction: column;
+      padding: 0 2rem 0 0;
+      gap: 3rem;
+    }
+
+    &::-webkit-scrollbar {
+      width: 1.2rem;
+      background-color: #f9f9fd;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #1c97d9;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 .6rem rgba(0,0,0,0.2);
+      background-color: #f9f9fd;
+    }
+
+    &__list {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-right: 2rem;
+      font-weight: 600;
+    }
+    h3 { 
+      font-size: 2.1rem;
+      color: #7c7c7c;
+    }
+  }
+
+  .game-card__btn {
+    width: 35%;
+  }
+
+}
+
+.correct-answers {
+
+  &__list {
+    li::marker {
+      color: #41783f;
+    }
+  }
+
+  h3 {
+    span {
+      color: #41783f;
+    }
+  }
+}
+
+.wrong-answers {
+
+  &__list {
+    li::marker {
+      color: #c70026;
+    }
+  }
+
+  h3 {
+    span {
+      color: #c70026;
+    }
+  }
 }

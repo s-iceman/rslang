@@ -11,11 +11,14 @@ export class SprintView extends BaseGameView {
 
   private translation: HTMLElement | undefined;
 
+  protected pointsBlock: HTMLElement | null;
+
   constructor(baseUrl: string) {
     super(baseUrl);
     this.startPage = new SprintStartPage();
     this.word = undefined;
     this.translation = undefined;
+    this.pointsBlock = null;
   }
 
   static getPath(): string {
@@ -40,6 +43,13 @@ export class SprintView extends BaseGameView {
     if (key == 'ArrowLeft' || key == 'ArrowRight') {
       const selectedOption = key === 'ArrowLeft' ? AnswerBtnType.Correct : AnswerBtnType.Incorrect;
       this.ctrl?.processAnswer(selectedOption);
+    }
+  }
+
+  updatePoints(points: number): void {
+    this.pointsBlock = document.querySelector('.points__score');
+    if (this.pointsBlock) {
+      this.pointsBlock.innerHTML = points.toString();
     }
   }
 
