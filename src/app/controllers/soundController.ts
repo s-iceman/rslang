@@ -8,11 +8,18 @@ export class SoundController {
     this.playerIncorrect = new Audio('../../assets/sound/wrong-answer.wav');
   }
 
-  async play(isCorrect: boolean): Promise<void> {
+  async startPlay(isCorrect: boolean): Promise<void> {
     if (isCorrect) {
       await this.playerCorrect.play();
     } else {
       await this.playerIncorrect.play();
     }
+  }
+
+  stopPlay() {
+    this.playerCorrect.currentTime = 0;
+    this.playerCorrect.pause();
+    this.playerIncorrect.currentTime = 0;
+    this.playerIncorrect.pause();
   }
 }
