@@ -18,7 +18,7 @@ interface ITextBookController extends IController {
   checkLearnedPage(wordsData: IApiWords[]): boolean;
   getUnit(): UnitLevels;
   getPage(): number;
-  playSound(wordsItem: IApiWords, node: HTMLElement): Promise<void>;
+  playSound(wordsItem: IApiWords, node?: HTMLElement): Promise<void>;
   createUserWord(wordId: string, isDifficulty: boolean, isStudy?: boolean): Promise<void>;
   selectUnit(unitName: string): Promise<void>;
   changeUnitPage(page: number): Promise<void>;

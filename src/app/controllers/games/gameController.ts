@@ -94,6 +94,7 @@ export class GameController extends State implements IGameController {
       return;
     }
     const isCorrect = this.gameEngine.checkAnswer(answerOption);
+    // console.log(answerOption);
     this.gameView?.updateScore(this.gameEngine.getScore());
     this.gameView?.updatePoints(this.gameEngine.getPoints());
     // await this.soundCtrl.play(isCorrect); // todo
