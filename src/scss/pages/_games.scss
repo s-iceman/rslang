@@ -63,7 +63,6 @@
     li {
       list-style: initial;
     }
-
   }
 
   .game__counter {
@@ -101,12 +100,12 @@
 
   .card--right {
     box-shadow: 0 0 10px 2px #00f7d2;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 
   .card--wrong {
     box-shadow: 0 0 10px 2px #c53107;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 }
 
@@ -125,7 +124,7 @@
   justify-content: center;
   align-content: center;
   width: 100%;
-  gap: .7rem;
+  gap: 0.7rem;
 
   &__item {
     width: 2.2rem;
@@ -136,7 +135,7 @@
 
   .item--active {
     background-color: #1c97d9;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 }
 
@@ -159,7 +158,7 @@
   }
 
   select {
-    border-radius: .3rem;
+    border-radius: 0.3rem;
     width: 6rem;
   }
 
@@ -171,6 +170,7 @@
 .game-card__btn {
   background-color: #1c97d9;
   font-size: 1.8rem;
+  min-width: 21rem;
 }
 
 .game-card__btn_true {
@@ -210,7 +210,7 @@
     margin: 1rem 0 3rem;
     width: 100%;
 
-    @media(max-width:768px){
+    @media (max-width: 768px) {
       flex-direction: column;
       padding: 0 2rem 0 0;
       gap: 3rem;
@@ -227,6 +227,7 @@
 
     &::-webkit-scrollbar-track {
       box-shadow: inset 0 0 .6rem rgba(0,0,0,0.2);
+      -webkit-box-shadow: inset 0 0 0.6rem rgba(0, 0, 0, 0.2);
       background-color: #f9f9fd;
     }
 
@@ -238,7 +239,7 @@
       padding-right: 2rem;
       font-weight: 600;
     }
-    h3 { 
+    h3 {
       font-size: 2.1rem;
       color: #7c7c7c;
     }
@@ -251,11 +252,9 @@
       width: 70%;
     }
   }
-
 }
 
 .correct-answers {
-
   &__list {
     li::marker {
       color: #41783f;
@@ -270,7 +269,6 @@
 }
 
 .wrong-answers {
-
   &__list {
     li::marker {
       color: #c70026;
