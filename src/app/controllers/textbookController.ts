@@ -120,7 +120,13 @@ export class TextBookController extends State implements ITextBookController {
       if (isDifficulty) {
         await this.model.updateUserWord(wordId, DifficultyWord.Hard, { study: isStudy });
       } else {
-        await this.model.updateUserWord(wordId, DifficultyWord.Simple, { study: isStudy });
+        let optional = getWords.find((w) => w.wordId === wordId)?.optional;
+        if (optional) {
+          optional.study = isStudy;
+        } else {
+          optional = { study: isStudy };
+        }
+        await this.model.updateUserWord(wordId, DifficultyWord.Simple, optional);
       }
     } else if (!filterWords.length) {
       if (isDifficulty) {
