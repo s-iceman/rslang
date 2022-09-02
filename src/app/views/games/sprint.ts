@@ -46,16 +46,10 @@ export class SprintView extends BaseGameView {
     }
   }
 
-  updatePoints(points: number): void {
-    this.pointsBlock = document.querySelector('.points__score');
-    if (this.pointsBlock) {
-      this.pointsBlock.innerHTML = points.toString();
-    }
-  }
-
   createWordCard(data: GameCardData): HTMLElement {
     const card = document.createElement('div');
     card.className = 'game-card wrapper';
+    this.gameCard = card;
     const points = new CreateMarkup(card, 'div', 'points');
     const guessedWords = new CreateMarkup(points.node, 'div', 'guessed-words');
     new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');

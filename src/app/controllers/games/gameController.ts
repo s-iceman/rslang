@@ -96,14 +96,17 @@ export class GameController extends State implements IGameController {
     this.gameEngine.clear();
   }
 
-  processAnswer(answerOption: number): void {
+  async processAnswer(answerOption: number): Promise<void> {
     if (!this.gameEngine) {
       return;
     }
     const isCorrect = this.gameEngine.checkAnswer(answerOption);
+    this.soundCtrl.stopPlay();
+    await this.soundCtrl.startPlay(isCorrect);
     this.gameView?.updateScore(this.gameEngine.getScore());
     this.gameView?.updatePoints(this.gameEngine.getPoints());
-    // await this.soundCtrl.play(isCorrect); // todo
+    this.gameView?.toggleStileCard(isCorrect);
+
     const nextWordData = this.gameEngine.getNextWord();
     if (!nextWordData) {
       this.endGame().catch((err) => console.debug(err));

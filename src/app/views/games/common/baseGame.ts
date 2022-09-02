@@ -24,6 +24,8 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected parentNode: HTMLElement | null;
 
+  protected gameCard: HTMLElement | null;
+
   protected onProcessKey: (event: KeyboardEvent) => void;
 
   protected onProcessClick: (event: MouseEvent) => void;
@@ -40,10 +42,23 @@ export abstract class BaseGameView extends View implements IGameView {
     this.gameControls = null;
     this.timer = null;
     this.parentNode = null;
+    this.gameCard = null;
 
     this.onProcessKey = this.processKey.bind(this);
     this.onProcessClick = this.processClick.bind(this);
     this.onCloseResults = this.closeResults.bind(this);
+  }
+
+  toggleStileCard(isCorrect: boolean) {
+    const TIME_OUT = 300;
+
+    if (isCorrect) {
+      this.gameCard?.classList.add('card--right');
+      setTimeout(() => this.gameCard?.classList.remove('card--right'), TIME_OUT);
+    } else {
+      this.gameCard?.classList.add('card--wrong');
+      setTimeout(() => this.gameCard?.classList.remove('card--wrong'), TIME_OUT);
+    }
   }
 
   setController(ctrl: IGameController): void {
