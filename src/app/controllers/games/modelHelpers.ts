@@ -7,9 +7,9 @@ import { MAX_PAGE_WORDS } from '../../common/constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
 
-const LAST_N_CORRECT_TO_COMPLETE = 3;
+const LAST_N_CORRECT_TO_COMPLETE = 1;
 
-const LAST_N_CORRECT_TO_COMPLETE_HARD = 5;
+const LAST_N_CORRECT_TO_COMPLETE_HARD = 2;
 
 abstract class BaseModelHelper implements IModelHelper {
   protected model: AppModel;
@@ -74,7 +74,7 @@ class UserModelHelper extends BaseModelHelper {
         const optional = this.updateUserWordOptional(word, answers[i], game, dateString);
         updatedWords.push({
           wordId: word._id,
-          difficulty: word.userWord.difficulty,
+          difficulty: optional.study ? DifficultyWord.Simple : word.userWord.difficulty,
           optional: optional,
         });
       }
@@ -86,13 +86,16 @@ class UserModelHelper extends BaseModelHelper {
   }
 
   private createNewWordOptional(word: GameWord, answer: boolean, game: string, date: string): IOptional {
+    const correctAnswers = +answer;
+    const lastNCorrect = correctAnswers;
+    const study = lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE;
     const optional: IOptional = {
-      study: false,
+      study,
       firstIntroducedGame: game,
       firstIntroducedDate: date,
-      correctAnswers: +answer,
+      correctAnswers,
       incorrectAnswers: answer ? 0 : 1,
-      lastNCorrect: +answer,
+      lastNCorrect,
     };
     return optional;
   }
@@ -107,8 +110,8 @@ class UserModelHelper extends BaseModelHelper {
       correctAnswers += 1;
       if (!study) {
         if (
-          (word.userWord.difficulty === DifficultyWord.Hard && lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE_HARD) ||
-          lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE
+          (word.userWord.difficulty == DifficultyWord.Simple && lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE) ||
+          (word.userWord.difficulty == DifficultyWord.Hard && lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE_HARD)
         ) {
           study = true;
         }
@@ -126,6 +129,7 @@ class UserModelHelper extends BaseModelHelper {
       incorrectAnswers,
       lastNCorrect,
     };
+    console.log(optional);
     return optional;
   }
 

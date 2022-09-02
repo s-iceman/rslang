@@ -162,6 +162,7 @@ export class TextBookController extends State implements ITextBookController {
     } else {
       wordsData = await this.model.getWords(currentGroup, currentPage);
     }
+
     return wordsData;
   }
 

@@ -45,7 +45,10 @@ export class LoginController {
   public userAfterSignIn(autorizedUser: IAutentificatedUser) {
     const loginText = document.querySelector('.login') as HTMLElement;
     loginText.innerHTML = autorizedUser.name;
+<<<<<<< HEAD
     this.showPopUpWindow('Вы авторизированы', true);
+=======
+>>>>>>> f40a476 (fix: fix a bug with change word status when the game is over)
     autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
   }

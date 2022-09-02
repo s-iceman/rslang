@@ -58,7 +58,7 @@ export default class Words extends CreateMarkup {
           cardNode.classList.add('word--study');
         }
         if (isHardUnit) {
-          this.addCardButtonHard(cardNode, wordButtons.node, id);
+          this.addCardButtonHard(cardNode, wordButtons.node, id, wordsItem.userWord.optional);
         } else if (!isHardUnit) {
           this.addCardButton(cardNode, wordButtons.node, id, wordsItem.userWord);
         }
@@ -108,7 +108,7 @@ export default class Words extends CreateMarkup {
     this.addStatistics(parentNode, userWord?.optional);
   }
 
-  addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string) {
+  addCardButtonHard(cardNode: HTMLElement, parentNode: HTMLElement, id: string, optional?: IOptional) {
     const wordButtons = new CreateMarkup(parentNode, 'div', 'word__buttons');
     const btnRemoveDiff = new CreateMarkup(wordButtons.node, 'button', 'button btn-simple', 'Простое слово');
     const TIME_OUT = 310;
@@ -119,7 +119,7 @@ export default class Words extends CreateMarkup {
       this.textBookCtrl.createUserWord(id, false, false).catch((err) => console.debug(err));
       this.textBookCtrl.removeSound();
     });
-    this.addStatistics(parentNode);
+    this.addStatistics(parentNode, optional);
   }
 
   addStatistics(parentNode: HTMLElement, optional?: IOptional) {
