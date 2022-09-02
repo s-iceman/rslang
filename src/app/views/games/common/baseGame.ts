@@ -61,7 +61,10 @@ export abstract class BaseGameView extends View implements IGameView {
     this.root.innerHTML = '';
     this.root.append(this.createGameContent(data));
     this.addProcessGameListeners();
-    this.timer?.startTimer();
+
+    if (this.getGameType() !== GameType.VoiceCall) {
+      this.timer.startTimer(this.ctrl?.getGameLength() || 0);
+    }
   }
 
   endGame(results: string[][], score: number): void {
@@ -130,7 +133,7 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected abstract processKey(event: KeyboardEvent): void;
 
-  protected abstract createWordCard(data: GameCardData): HTMLElement;
+  protected abstract createWordCard(word?: IApiWords, data?: GameCardData): HTMLElement;
 
   private closeResults(event: MouseEvent): void {
     const target = event.target;
@@ -150,10 +153,12 @@ export abstract class BaseGameView extends View implements IGameView {
   private createGameContent(data: GameCardData): HTMLElement {
     const parent = document.createElement('div');
     parent.className = 'game__container';
-    this.parentNode = parent;
-    this.timer = new ProgressBar(parent);
+    if (GameType.VoiceCall !== this.getGameType()) {
+      this.parentNode = parent;
+      this.timer = new ProgressBar(parent);
+    }
     parent.append(this.createScoreBlock());
-    parent.append(this.createWordCard(data));
+    parent.append(this.createWordCard(data.word, data));
     return parent;
   }
 

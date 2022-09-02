@@ -5,7 +5,7 @@ import { IGameView, ViewOrNotInit } from './../../views/interfaces';
 import { BaseGameView } from '../../views/games/common/baseGame';
 import { GameType } from './../constants';
 import { UnitLevels } from './../constants';
-import { SprintEngine } from './gameEngines';
+import { SprintEngine, AudioCallEngine } from './gameEngines';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
 import { ModelHelper, UserModelHelper } from './modelHelpers';
@@ -101,6 +101,7 @@ export class GameController extends State implements IGameController {
       return;
     }
     const isCorrect = this.gameEngine.checkAnswer(answerOption);
+    // console.log(answerOption);
     this.gameView?.updateScore(this.gameEngine.getScore());
     this.gameView?.updatePoints(this.gameEngine.getPoints());
     // await this.soundCtrl.play(isCorrect); // todo
@@ -115,9 +116,9 @@ export class GameController extends State implements IGameController {
   private createEngine(): IGameEngine {
     if (this.gameType === GameType.Sprint) {
       return new SprintEngine();
+    } else {
+      return new AudioCallEngine();
     }
-    // todo
-    return new SprintEngine();
   }
 
   private clear(): void {
