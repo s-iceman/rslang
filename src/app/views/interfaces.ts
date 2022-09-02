@@ -27,7 +27,7 @@ interface IGameView extends IView {
   getGameType(): GameType;
   showWord(data: GameCardData): void;
   startGame(data: GameCardData): void;
-  endGame(results: string[][]): void;
+  endGame(results: string[][], score: number): void;
   updateScore(score: number): void;
   updatePoints(points: number): void;
 }

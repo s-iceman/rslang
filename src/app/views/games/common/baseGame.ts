@@ -3,7 +3,6 @@ import { IGameController } from '../../../controllers/interfaces';
 import { IStartPage } from './../intefaces';
 import { IGameView } from '../../interfaces';
 import { GameType } from '../../../controllers/constants';
-import { DropDownTimer } from './timer';
 import { GameCardData } from '../../../controllers/types';
 import { createResults } from './results';
 import { ProgressBar } from '../../components/progressBar/progressBar';
@@ -23,6 +22,8 @@ export abstract class BaseGameView extends View implements IGameView {
 
   protected timer: ProgressBar | null;
 
+  protected parentNode: HTMLElement | null;
+
   protected onProcessKey: (event: KeyboardEvent) => void;
 
   protected onProcessClick: (event: MouseEvent) => void;
@@ -38,6 +39,7 @@ export abstract class BaseGameView extends View implements IGameView {
     this.timerBlock = null;
     this.gameControls = null;
     this.timer = null;
+    this.parentNode = null;
 
     this.onProcessKey = this.processKey.bind(this);
     this.onProcessClick = this.processClick.bind(this);
@@ -62,13 +64,15 @@ export abstract class BaseGameView extends View implements IGameView {
     this.timer?.startTimer();
   }
 
-  endGame(results: string[][]): void {
+  endGame(results: string[][], score: number): void {
     this.removeProcessGameListeners();
     this.timer?.stopTimer();
-    this.root.innerHTML = '';
-    const resultsOverlay = createResults(results);
-    document.body.append(resultsOverlay);
-    resultsOverlay.addEventListener('click', this.onCloseResults);
+    if (this.parentNode) {
+      this.parentNode.innerHTML = '';
+      const resultsOverlay = createResults(results, score, this.parentNode);
+      this.parentNode.append(resultsOverlay);
+      resultsOverlay.addEventListener('click', this.onCloseResults);
+    }
   }
 
   abstract showWord(data: GameCardData): void;
@@ -80,6 +84,7 @@ export abstract class BaseGameView extends View implements IGameView {
   }
 
   updatePoints(points: number): void {
+    this.pointsBlock = document.querySelector('.points__score');
     if (this.pointsBlock) {
       this.pointsBlock.innerHTML = points.toString();
     }
@@ -138,15 +143,15 @@ export abstract class BaseGameView extends View implements IGameView {
       return;
     }
     overlay.removeEventListener('click', this.onCloseResults);
-    document.body.removeChild(overlay);
+    this.parentNode?.removeChild(overlay);
     this.render();
   }
 
   private createGameContent(data: GameCardData): HTMLElement {
     const parent = document.createElement('div');
     parent.className = 'game__container';
+    this.parentNode = parent;
     this.timer = new ProgressBar(parent);
-    // parent.append(this.timer.getTimerBlock());
     parent.append(this.createScoreBlock());
     parent.append(this.createWordCard(data));
     return parent;
