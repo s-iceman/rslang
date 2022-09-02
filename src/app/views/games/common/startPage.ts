@@ -130,7 +130,7 @@ class VoiceCallStartPage extends StartPage {
         <span>Прослушайте слово и выберите его правильный перевод.</span>
         <ul class="ways-control__options">
           <li>Используйте мышь</li>
-          <li>Используйте клавиши "влево" и "вправо"</li>
+          <li>Используйте цифры на клавиатуре от 1 до 5 для правильных ответов</li>
         </ul>
       </div>
     `;
