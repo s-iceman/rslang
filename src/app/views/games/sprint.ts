@@ -11,7 +11,7 @@ export class SprintView extends BaseGameView {
 
   private translation: HTMLElement | undefined;
 
-  protected pointsBlock: HTMLElement | null;
+  private guessedWords: HTMLElement | null;
 
   constructor(baseUrl: string) {
     super(baseUrl);
@@ -19,6 +19,7 @@ export class SprintView extends BaseGameView {
     this.word = undefined;
     this.translation = undefined;
     this.pointsBlock = null;
+    this.guessedWords = null;
   }
 
   static getPath(): string {
@@ -55,6 +56,7 @@ export class SprintView extends BaseGameView {
     new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
     new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
     new CreateMarkup(guessedWords.node, 'div', 'guessed-words__item');
+    this.guessedWords = guessedWords.node;
 
     const pointsСounter = new CreateMarkup(points.node, 'div', 'points-counter');
     const score = new CreateMarkup(pointsСounter.node, 'span', 'points__score', '10');
@@ -82,5 +84,25 @@ export class SprintView extends BaseGameView {
     this.gameControls = controls.node;
 
     return card;
+  }
+
+  updatePoints(points: number, isCorrect?: boolean): void {
+    super.updatePoints(points);
+    const guessed = this.guessedWords?.childNodes;
+    if (!guessed) {
+      return;
+    }
+    const htmlGuessed = Array.from(guessed);
+    if (!isCorrect) {
+      htmlGuessed.forEach((e) => (<HTMLElement>e).classList.remove('item--active'));
+    } else {
+      const availableItems = htmlGuessed.filter((elem) => !(<HTMLElement>elem).classList.contains('item--active'));
+      if (availableItems.length > 0 && availableItems.length < 3) {
+        (<HTMLElement>availableItems[0]).classList.add('item--active');
+      } else {
+        htmlGuessed.forEach((e) => (<HTMLElement>e).classList.remove('item--active'));
+        (<HTMLElement>htmlGuessed[0]).classList.add('item--active');
+      }
+    }
   }
 }

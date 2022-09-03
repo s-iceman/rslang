@@ -104,7 +104,7 @@ export class GameController extends State implements IGameController {
     this.soundCtrl.stopPlay();
     await this.soundCtrl.startPlay(isCorrect);
     this.gameView?.updateScore(this.gameEngine.getScore());
-    this.gameView?.updatePoints(this.gameEngine.getPoints());
+    this.gameView?.updatePoints(this.gameEngine.getPoints(), isCorrect);
     this.gameView?.toggleStileCard(isCorrect);
 
     const nextWordData = this.gameEngine.getNextWord();
