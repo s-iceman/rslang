@@ -26,7 +26,7 @@ export class GameController extends State implements IGameController {
 
   private context: StartGameOptions | undefined;
 
-  private onEndGame: () => Promise<void>;
+  private onEndGame: () => void;
 
   constructor(baseUrl: string, model: AppModel) {
     super();
@@ -35,7 +35,7 @@ export class GameController extends State implements IGameController {
     this.gameType = undefined;
     this.gameEngine = null;
     this.modelHelper = null;
-    this.onEndGame = this.endGame.bind(this);
+    this.onEndGame = this.endGameByTimer.bind(this);
     this.soundCtrl = new SoundController();
   }
 
@@ -113,6 +113,10 @@ export class GameController extends State implements IGameController {
     } else {
       this.gameView?.showWord(nextWordData);
     }
+  }
+
+  private endGameByTimer(): void {
+    return void this.endGame();
   }
 
   private createEngine(): IGameEngine {
