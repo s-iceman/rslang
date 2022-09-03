@@ -51,7 +51,7 @@ interface IGameStatistics {
 }
 
 interface IStatisticsOptional {
-  games: Map<string, IGameStatistics>;
+  games: Map<string, Map<string, IGameStatistics>>;
   deltaComplete: Map<string, number>;
 }
 
@@ -99,4 +99,5 @@ export {
   IOptional,
   IStatistics,
   IStatisticsOptional,
+  IGameStatistics,
 };

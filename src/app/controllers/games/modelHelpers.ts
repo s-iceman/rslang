@@ -1,15 +1,40 @@
 import { IModelHelper } from '../interfaces';
 import AppModel from '../../models/AppModel';
 import { StartGameOptions, GameWord, GameFullResultsData } from '../types';
-import { IApiWords, IOptional, IPaginatedResults, IUserWord } from '../../models/interfaces';
+import {
+  IApiWords,
+  IOptional,
+  IPaginatedResults,
+  IStatistics,
+  IUserWord,
+  IGameStatistics,
+} from '../../models/interfaces';
 import { UnitLevels } from '../constants';
 import { MAX_PAGE_WORDS } from '../../common/constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
 
-const LAST_N_CORRECT_TO_COMPLETE = 1;
+const LAST_N_CORRECT_TO_COMPLETE = 5;
 
-const LAST_N_CORRECT_TO_COMPLETE_HARD = 2;
+const LAST_N_CORRECT_TO_COMPLETE_HARD = 7;
+
+const longestStreak = (statuses: boolean[]) => {
+  let i = 0;
+  let j = 0;
+  let maxLength = 0;
+  statuses.forEach((status, k) => {
+    if (status === true) {
+      j += 1;
+      if (j - i > maxLength) {
+        maxLength = j - i;
+      }
+    } else {
+      i = k;
+      j = k;
+    }
+  });
+  return maxLength;
+};
 
 abstract class BaseModelHelper implements IModelHelper {
   protected model: AppModel;
@@ -42,7 +67,22 @@ class ModelHelper extends BaseModelHelper {
 }
 
 class UserModelHelper extends BaseModelHelper {
+  private statistics: IStatistics | null;
+
+  constructor(model: AppModel, context?: StartGameOptions) {
+    super(model, context);
+    this.statistics = null;
+  }
+
   async getWords(level?: UnitLevels): Promise<GameWord[]> {
+    try {
+      const statistics = await this.model.getUserStatistics();
+      console.log('!!!! STATISTICS', statistics);
+      this.statistics = statistics;
+    } catch (err) {
+      console.log('ERROR');
+      this.statistics = this.createEmptyStatistics();
+    }
     const group = level !== undefined ? level : this.context?.unit || MIN_GROUP_WORDS;
     const wordsData = await this.model.getAllUserAggregatedWords(group);
     let words = wordsData.map((w) => w.paginatedResults).flat(1);
@@ -60,6 +100,7 @@ class UserModelHelper extends BaseModelHelper {
     const words = data.words as IPaginatedResults[];
     const updatedWords: IUserWord[] = [];
     const newWords: IUserWord[] = [];
+    this.updateEmptyStatistics(data, dateString);
 
     for (let i = 0; i < data.answers.length; i += 1) {
       const word: IPaginatedResults = words[i];
@@ -79,8 +120,23 @@ class UserModelHelper extends BaseModelHelper {
         });
       }
     }
+
+    const gameStatistics = this.getTmpGameStatistics(game, dateString);
+    if (gameStatistics) {
+      gameStatistics.nCorrect += answers.filter((x) => x === true).length;
+      gameStatistics.nTotal += answers.length;
+      const streak = longestStreak(answers);
+      if (streak > gameStatistics.streak) {
+        gameStatistics.streak = streak;
+      }
+    }
+
+    console.log('!!!!', JSON.stringify(this.statistics));
     await Promise.all(newWords.map(async (w) => this.model.postUserWord(w.wordId, w.difficulty, w.optional)));
     await Promise.all(updatedWords.map(async (w) => this.model.updateUserWord(w.wordId, w.difficulty, w.optional)));
+    if (this.statistics) {
+      await this.model.setUserStatistics(this.statistics.optional);
+    }
 
     return true;
   }
@@ -97,14 +153,23 @@ class UserModelHelper extends BaseModelHelper {
       incorrectAnswers: answer ? 0 : 1,
       lastNCorrect,
     };
+
+    const gameStatistics: IGameStatistics | undefined = this.getTmpGameStatistics(game, date);
+    if (this.statistics && gameStatistics) {
+      gameStatistics.nNew += 1;
+      this.updateDeltaComplete(date, 1);
+    }
+
     return optional;
   }
 
   private updateUserWordOptional(word: GameWord, answer: boolean, game: string, date: string): IOptional {
-    let lastNCorrect = word.userWord.optional.lastNCorrect || 0;
-    let study = word.userWord.optional.study;
-    let correctAnswers = word.userWord.optional.correctAnswers || 0;
-    let incorrectAnswers = word.userWord.optional.incorrectAnswers || 0;
+    const wordOptional = word.userWord.optional;
+    let correctAnswers = wordOptional.correctAnswers || 0;
+    let incorrectAnswers = wordOptional.incorrectAnswers || 0;
+    let lastNCorrect = wordOptional.lastNCorrect || 0;
+    let { study, firstIntroducedDate, firstIntroducedGame } = wordOptional;
+
     if (answer) {
       lastNCorrect += 1;
       correctAnswers += 1;
@@ -114,27 +179,95 @@ class UserModelHelper extends BaseModelHelper {
           (word.userWord.difficulty == DifficultyWord.Hard && lastNCorrect >= LAST_N_CORRECT_TO_COMPLETE_HARD)
         ) {
           study = true;
+          this.updateDeltaComplete(date, 1);
         }
       }
     } else {
       lastNCorrect = 0;
       incorrectAnswers += 1;
-      study = false;
+      if (study) {
+        this.updateDeltaComplete(date, -1);
+        study = false;
+      }
     }
+
+    const gameStatistics: IGameStatistics | undefined = this.getTmpGameStatistics(game, date);
+    if (!firstIntroducedDate || firstIntroducedDate == '-') {
+      firstIntroducedDate = date;
+      firstIntroducedGame = game;
+      if (gameStatistics) {
+        gameStatistics.nNew += 1;
+      }
+    }
+
     const optional: IOptional = {
-      study: study,
-      firstIntroducedDate: date,
-      firstIntroducedGame: game,
+      study,
+      firstIntroducedDate,
+      firstIntroducedGame,
       correctAnswers,
       incorrectAnswers,
       lastNCorrect,
     };
-    console.log(optional);
     return optional;
   }
 
   private dateToString(date: Date): string {
     return date.toJSON().slice(0, 10);
+  }
+
+  private createEmptyStatistics(): IStatistics {
+    return {
+      learnedWords: 0,
+      optional: {
+        games: new Map(),
+        deltaComplete: new Map(),
+      },
+    };
+  }
+
+  private updateEmptyStatistics(data: GameFullResultsData, dateString: string): void {
+    if (!this.statistics) {
+      return;
+    }
+    const { game } = data;
+    const games = this.statistics.optional.games;
+    console.log(game, games);
+    if (!games.has(game)) {
+      games.set(game, new Map());
+      console.log('set', games, this.statistics);
+    }
+    const gameData = games.get(game);
+    console.log('3:', JSON.stringify(gameData));
+    if (gameData && !gameData.has(dateString)) {
+      console.log('4 - in if:', JSON.stringify(gameData));
+      gameData.set(dateString, {
+        nNew: 0,
+        nCorrect: 0,
+        nTotal: 0,
+        streak: 0,
+      });
+    }
+    console.log('HERE-1', gameData);
+    console.log('HERE-2', this.statistics);
+    if (!this.statistics.optional.deltaComplete.has(dateString)) {
+      this.statistics.optional.deltaComplete[dateString] = 0;
+    }
+  }
+
+  private updateDeltaComplete(date: string, diff: number): void {
+    const deltaComplete = this.getDeltaComplete();
+    const value = deltaComplete?.get(date);
+    if (deltaComplete && value !== undefined) {
+      deltaComplete.set(date, value + diff);
+    }
+  }
+
+  private getTmpGameStatistics(game: string, date: string): IGameStatistics | undefined {
+    return this.statistics?.optional.games.get(game)?.get(date);
+  }
+
+  private getDeltaComplete(): Map<string, number> | undefined {
+    return this.statistics?.optional.deltaComplete;
   }
 }
 
