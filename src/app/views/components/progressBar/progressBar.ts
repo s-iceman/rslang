@@ -2,6 +2,7 @@ import CreateMarkup from '../../common/createMarkup';
 import './_progressBar.scss';
 import { WARNING_TIME, ALERT_TIME, FULL_DASHARRAY, TIME_LIMIT, TIME_INTERVAL } from './constants';
 import { ColorPath } from './interfaces';
+import { GameCustomEvents } from '../../../common/constants';
 
 export class ProgressBar extends CreateMarkup {
   timerInterval: null | number;
@@ -76,7 +77,10 @@ export class ProgressBar extends CreateMarkup {
       if (this.progressBarTimer) this.progressBarTimer.innerHTML = this.setTime(this.timeLeft);
       this.setStrokeDasharray();
       this.setPathColor();
-      if (this.timeLeft === 0) this.stopTimer();
+      if (this.timeLeft === 0) {
+        this.stopTimer();
+        window.dispatchEvent(new CustomEvent(GameCustomEvents.EndGame));
+      }
     }, TIME_INTERVAL);
   }
 

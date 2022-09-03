@@ -28,7 +28,6 @@ interface ITextBookController extends IController {
 interface IGameController extends IController {
   startGame(level?: UnitLevels): void;
   processAnswer(answerOption: number): void;
-  getGameLength(): number;
   canSelectUnit(): boolean;
 }
 

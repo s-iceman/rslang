@@ -70,7 +70,6 @@ const getGameShortStat = (stat: IStatistics, gameName: GameType): IGameShortStat
   const date = dateToString(new Date());
   if (stat && 'optional' in stat && gameName in stat.optional.games && date in stat.optional.games[gameName]) {
     const gameStat = stat?.optional?.games[gameName][date];
-    console.log(gameStat);
     const correctAnswers = gameStat?.nCorrect || 0;
     const total = gameStat?.nTotal || 1;
     return {

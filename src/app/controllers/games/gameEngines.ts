@@ -1,4 +1,3 @@
-import { IApiWords } from '../../models/interfaces';
 import { GameType } from '../constants';
 import { IGameEngine } from './../interfaces';
 import { GameCardData, GameWord, GameFullResultsData } from './../types';

@@ -9,6 +9,7 @@ import { ITextBookController } from '../../controllers/interfaces';
 import { MAX_GROUP_WORDS } from './constants';
 import { UnitLevels, USER_UNITS } from '../../controllers/constants';
 import { renderSprintCard, renderVoiceCallCard } from '../mainPage/gameCards';
+import { GameCustomEvents } from '../../common/constants';
 
 export class TextBookView extends View implements ITextBookView {
   private unitsNav: HTMLDivElement | undefined;
@@ -192,7 +193,7 @@ export class TextBookView extends View implements ITextBookView {
         return;
       }
       window.dispatchEvent(
-        new CustomEvent('ShowGameEvent', {
+        new CustomEvent(GameCustomEvents.ShowGame, {
           detail: {
             game: gameCard.id,
             unit: this.ctrl?.getUnit(),
