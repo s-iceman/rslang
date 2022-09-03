@@ -1,4 +1,5 @@
 import { LoginModel } from '../models/loginModel';
+import { LoginView } from '../views/loginPage/login';
 import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 
 export class LoginController {
@@ -17,9 +18,14 @@ export class LoginController {
   public newUserRegistrate(registrNewUser: INewUserRegistration) {
     LoginModel.createUser(registrNewUser, this.urlUserCreate)
       .then((): void => {
-        alert('Вы зарегистрированны'), this.userSignIn(<IUserSignIn>registrNewUser);
+        this.showPopUpWindow('Вы зарегистрированы', true);
       })
-      .catch(() => alert('Пользователь с таким email уже существует'));
+      .then((): void => {
+        this.userSignIn(<IUserSignIn>registrNewUser);
+      })
+      .catch((): void => {
+        this.showPopUpWindow('Пользователь с таким email уже существует');
+      });
   }
 
   public userSignIn(signInUser: IUserSignIn) {
@@ -29,9 +35,9 @@ export class LoginController {
       })
       .catch((response: Error) => {
         if (response.message === 'Failed to fetch') {
-          alert('Нету подключения к серверу');
+          this.showPopUpWindow('Нету подключения к серверу');
         } else {
-          alert('Incorrect e-mail or password');
+          this.showPopUpWindow('Incorrect e-mail or password');
         }
       });
   }
@@ -39,10 +45,9 @@ export class LoginController {
   public userAfterSignIn(autorizedUser: IAutentificatedUser) {
     const loginText = document.querySelector('.login') as HTMLElement;
     loginText.innerHTML = autorizedUser.name;
-    alert('Вы авторизированы');
+    this.showPopUpWindow('Вы авторизированы', true);
     autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
-    window.location.reload();
   }
 
   public getUserInputValueSignIn(email: string, password: string) {
@@ -64,15 +69,21 @@ export class LoginController {
     const name = document.getElementById('name') as HTMLInputElement;
 
     if (userSignIn.checked) {
-      //если входит пользователь
       this.userSignIn(this.getUserInputValueSignIn(emailForm.value, passwordForm.value));
     }
     if (userSignUp.checked) {
-      // если регистрируется новый
       if (name.value.toString() !== '') {
         this.newUserRegistrate(this.getUserInputValueRegistrate(emailForm.value, passwordForm.value, name.value));
-      } else alert('Введите имя');
+      } else {
+        this.showPopUpWindow('Вы не ввели свое имя');
+        // alert('Введите имя');
+      }
     }
+  }
+
+  private showPopUpWindow(text: string, reload?: boolean) {
+    const root = document.querySelector('.autorization');
+    root?.append(LoginView.popUpWindowAut(text, reload));
   }
 
   public logOut(event: Event): void {

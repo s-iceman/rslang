@@ -3,6 +3,7 @@ import { IView } from '../interfaces';
 import { View } from '../view';
 import { LoginController } from '../../controllers/loginController';
 import { IAutentificatedUser } from './types';
+
 export class LoginView extends View implements IView {
   private logincontroller: LoginController;
 
@@ -86,10 +87,29 @@ export class LoginView extends View implements IView {
     return [messageAfterAut];
   }
 
-  public popUpWindowAut() {
-    const popUp = `
+  static popUpWindowAut(text = '', reload?: boolean) {
+    const popUp1 = document.createElement('div');
+    popUp1.id = 'popup1';
+    popUp1.classList.add('overlay');
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
+    const h2 = document.createElement('h2');
+    h2.textContent = text;
+    const a = document.createElement('button');
+    a.classList.add('close');
+    a.innerHTML = 'ok';
+    a.addEventListener('click', () => {
+      console.log('da');
+      document.querySelector('.pop-up')?.remove();
+      reload ? window.location.reload() : 0;
+    });
 
-    `;
-    return popUp;
+    popup.appendChild(h2);
+    popup.appendChild(a);
+    popUp1.appendChild(popup);
+    const popUpDiv = document.createElement('div');
+    popUpDiv.classList.add('pop-up');
+    popUpDiv.append(popUp1);
+    return popUpDiv;
   }
 }

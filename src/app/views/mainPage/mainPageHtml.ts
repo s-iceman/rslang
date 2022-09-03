@@ -11,11 +11,11 @@ export function innerText(): string {
           <h4>SpeakLang - английский это просто !</h4>
           <p>Приложение позволяет учить английские слова в 2 раза быстрее. В нашем приложении есть учебник для изучения и запоминания английских слов.
             В нем вы можете не только прочитать, но и услышать их правильное произношение.
-            <a class="content__link" href="#">Пробуй!</a>
+            <a class="content__link" href="#/textbook">Пробуй!</a>
           </p>
           <ul class="content__games">В нашем приложении разработаны активные игры для изучения языка
-            <li><a class="content__game" href="#">Савана</a></li>
-            <li><a class="content__game" href="#">Спринт</a></li> 
+            <li><a class="content__game" href="#/voicecall">Аудиовызов</a></li>
+            <li><a class="content__game" href="#/sprint"">Спринт</a></li> 
           </ul>
           <p>Так же что бы получить полный доступ к функция приложения вам необходимо быть верефицированным пользователем
             <a class="content__link__reg" href="#">Пробуй!</a>
@@ -39,8 +39,9 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Учебник</h4>
-              <div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div>
-              <p>Слушай и запоминай.</p>
+             <a class="content__game" href="#/textbook"><div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div></a>
+             
+              <p>Увеличивай свой словарь</p>
             </div>
           </div>
 
@@ -48,8 +49,8 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Аудиовызов</h4>
-              <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="statistic"></div>
-              <p>Играй и учись</p>
+             <a class="content__game" href="#/voicecall"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
+              <p>Слушай и запоминай</p>
             </div>
           </div>
 
@@ -57,7 +58,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Спринт</h4>
-              <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="statistic"></div>
+             <a class="content__game" href="#/sprint"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
               <p>Пробуй запоминанть быстрее.</p>
             </div>
           </div>
@@ -66,7 +67,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Статистика</h4>
-              <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div>
+             <a class="content__game" href="#/statistics"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div></a>
               <p>Отслеживайте свой прогресс.</p>
             </div>
           </div>
