@@ -195,11 +195,10 @@ class AudioCallEngine extends GameEngine {
   }
 
   preprocessWords(words: GameWord[]): void {
-    //console.log(words);
     this.words = words;
     const correctWord = new Array<string>();
-    const suggestedTranslations2 = words.map((w) => [w.wordTranslate]);
-    suggestedTranslations2.forEach((element) => {
+    const optionsBtnTranslation = words.map((w) => [w.wordTranslate]);
+    optionsBtnTranslation.forEach((element) => {
       correctWord.push(element[0]);
       const allWordsExcludetCurrent = words.filter((w) => w.wordTranslate !== element[0]);
       const wordsForOptions = shuffle(allWordsExcludetCurrent).slice(0, 4);
@@ -207,7 +206,7 @@ class AudioCallEngine extends GameEngine {
         element.push(el.wordTranslate);
       });
     });
-    suggestedTranslations2.forEach((element) => {
+    optionsBtnTranslation.forEach((element) => {
       this.suggestedTranslations.push(shuffle(element));
     });
     this.suggestedTranslations.forEach((element, index) => {
