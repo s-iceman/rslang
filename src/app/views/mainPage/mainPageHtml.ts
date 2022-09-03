@@ -1,4 +1,6 @@
 /* eslint-disable max-lines-per-function */
+import { ViewPath } from '../../common/constants';
+
 export function innerText(): string {
   return `
     <!-- ======= About Section ======= -->
@@ -11,11 +13,11 @@ export function innerText(): string {
           <h4>SpeakLang - английский это просто !</h4>
           <p>Приложение позволяет учить английские слова в 2 раза быстрее. В нашем приложении есть учебник для изучения и запоминания английских слов.
             В нем вы можете не только прочитать, но и услышать их правильное произношение.
-            <a class="content__link" href="#/textbook">Пробуй!</a>
+            <a class="content__link" href='#${ViewPath.TEXTBOOK}'>Учебник</a>
           </p>
           <ul class="content__games">В нашем приложении разработаны активные игры для изучения языка
-            <li><a class="content__game" href="#/voicecall">Аудиовызов</a></li>
-            <li><a class="content__game" href="#/sprint"">Спринт</a></li> 
+            <li><a class="content__game" href='#/${ViewPath.VOICECALL}>Аудиовызов</a></li>
+            <li><a class="content__game" href='#/${ViewPath.SPRINT}>Спринт</a></li> 
           </ul>
           <p>Так же что бы получить полный доступ к функция приложения вам необходимо быть верефицированным пользователем
             <a class="content__link__reg" href="#">Пробуй!</a>
@@ -39,7 +41,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Учебник</h4>
-             <a class="content__game" href="#/textbook"><div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div></a>
+             <a class="content__game" href='#${ViewPath.TEXTBOOK}'><div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div></a>
              
               <p>Увеличивай свой словарь</p>
             </div>
@@ -49,7 +51,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Аудиовызов</h4>
-             <a class="content__game" href="#/voicecall"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
+             <a class="content__game" href='#/${ViewPath.VOICECALL}> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
               <p>Слушай и запоминай</p>
             </div>
           </div>
@@ -58,7 +60,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Спринт</h4>
-             <a class="content__game" href="#/sprint"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
+             <a class="content__game" href='#/${ViewPath.SPRINT}> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
               <p>Пробуй запоминанть быстрее.</p>
             </div>
           </div>
