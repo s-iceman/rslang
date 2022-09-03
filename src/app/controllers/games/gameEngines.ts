@@ -1,3 +1,4 @@
+import { IApiWords } from '../../models/interfaces';
 import { GameType } from '../constants';
 import { IGameEngine } from './../interfaces';
 import { GameCardData, GameWord, GameFullResultsData } from './../types';
@@ -176,4 +177,91 @@ class SprintEngine extends GameEngine {
   }
 }
 
-export { SprintEngine };
+class AudioCallEngine extends GameEngine {
+  private streakLength: number;
+
+  private total: number;
+
+  private totalPoints: number;
+
+  private singleAnswerScore: number;
+
+  constructor() {
+    super();
+    this.streakLength = 0;
+    this.total = 0;
+    this.totalPoints = COEF;
+    this.singleAnswerScore = 1;
+  }
+
+  preprocessWords(words: GameWord[]): void {
+    this.words = words;
+    const correctWord = new Array<string>();
+    const optionsBtnTranslation = words.map((w) => [w.wordTranslate]);
+    optionsBtnTranslation.forEach((element) => {
+      correctWord.push(element[0]);
+      const allWordsExcludetCurrent = words.filter((w) => w.wordTranslate !== element[0]);
+      const wordsForOptions = shuffle(allWordsExcludetCurrent).slice(0, 4);
+      wordsForOptions.forEach((el) => {
+        element.push(el.wordTranslate);
+      });
+    });
+    optionsBtnTranslation.forEach((element) => {
+      this.suggestedTranslations.push(shuffle(element));
+    });
+    this.suggestedTranslations.forEach((element, index) => {
+      this.correctOptions.push(element.indexOf(correctWord[index]));
+    });
+    this.idx = -1;
+  }
+
+  checkAnswer(option: number): boolean {
+    const isCorrect = option === this.correctOptions[this.idx];
+
+    this.userAnswers.push(isCorrect);
+    if (isCorrect) {
+      this.streakLength += 1;
+      this.total += this.singleAnswerScore * COEF;
+      if (this.streakLength % 3 === 0) {
+        this.streakLength = 0;
+        this.singleAnswerScore *= 2;
+      }
+    } else {
+      this.streakLength = 0;
+      this.singleAnswerScore = 1;
+    }
+    this.totalPoints = this.singleAnswerScore * COEF;
+    return isCorrect;
+  }
+
+  getNextWord(): GameCardData | undefined {
+    this.idx += 1;
+    if (this.idx < this.words.length) {
+      return {
+        word: this.words[this.idx],
+        options: this.suggestedTranslations[this.idx],
+      };
+    }
+  }
+
+  getScore(): number {
+    return this.total;
+  }
+
+  getPoints(): number {
+    return this.totalPoints;
+  }
+
+  clear(): void {
+    super.clear();
+    this.streakLength = 0;
+    this.total = 0;
+    this.singleAnswerScore = 1;
+  }
+
+  protected getGameType(): GameType {
+    return GameType.VoiceCall;
+  }
+}
+
+export { SprintEngine, AudioCallEngine };

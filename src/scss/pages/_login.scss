@@ -23,7 +23,7 @@
 
 #wrapper__aut {
   overflow: hidden;
-  padding: .2rem;
+  padding: 0.2rem;
 }
 
 #signin:checked ~ #wrapper__aut {
@@ -84,7 +84,7 @@ input[type='email'],
 input[type='password'] {
   background: #fff;
   border: none;
-  border-radius: .8rem;
+  border-radius: 0.8rem;
   font-size: 2rem;
   font-family: 'Raleway', sans-serif;
   height: 7.2rem;
@@ -97,7 +97,7 @@ input[type='password'] {
 .btn-login {
   background: rgba(0, 0, 0, 0.75);
   border: none;
-  border-radius: .8rem;
+  border-radius: 0.8rem;
   color: #fff;
   cursor: pointer;
   font-family: 'Raleway', sans-serif;
@@ -112,7 +112,7 @@ input[type='password'] {
   display: block;
   line-height: 7.2rem;
   position: relative;
-  top: -.2rem;
+  top: -0.2rem;
   transform: translate3d(0, 0, 0);
 }
 .btn-login:hover {
@@ -166,7 +166,7 @@ input[type='password'] {
   align-items: center;
   height: 5rem;
   width: 8rem;
-  border: #5c9f24 .2rem solid;
+  border: #5c9f24 0.2rem solid;
   border-radius: 1rem;
 }
 
@@ -174,4 +174,111 @@ input[type='password'] {
   cursor: pointer;
   color: red;
   transform: scale(1.1);
+}
+
+.pop-up {
+  display: flex;
+  width: 100%;
+  height: 500px;
+}
+
+h1 {
+  text-align: center;
+  font-family: Tahoma, Arial, sans-serif;
+  color: #06d85f;
+  margin: 80px 0;
+}
+
+.login_back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  position: absolute;
+  left: 45%;
+  top: 45%;
+  transform: ease 1;
+  color: #5c9f24;
+  font-size: 3rem;
+}
+
+.box {
+  width: 40%;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 35px;
+  border: 2px solid #fff;
+  border-radius: 20px/50px;
+  background-clip: padding-box;
+  text-align: center;
+}
+
+.button {
+  font-size: 1em;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #06d85f;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button:hover {
+  background: #06d85f;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(228, 203, 203, 0.363);
+  transition: opacity 500ms;
+}
+
+.popup {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5rem;
+  background: #fff;
+  border-radius: 2rem;
+  width: 20%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  color: #333;
+}
+.popup .close {
+  transition: all 200ms;
+  font-size: 3rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  border-radius: 2rem;
+}
+.popup .close:hover {
+  color: #06d85f;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px) {
+  .box {
+    width: 70%;
+  }
+  .popup {
+    width: 70%;
+  }
 }

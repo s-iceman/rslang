@@ -51,7 +51,6 @@ export abstract class BaseGameView extends View implements IGameView {
 
   toggleStileCard(isCorrect: boolean) {
     const TIME_OUT = 300;
-
     if (isCorrect) {
       this.gameCard?.classList.add('card--right');
       setTimeout(() => this.gameCard?.classList.remove('card--right'), TIME_OUT);
@@ -166,7 +165,9 @@ export abstract class BaseGameView extends View implements IGameView {
     const parent = document.createElement('div');
     parent.className = 'game__container';
     this.parentNode = parent;
-    this.timer = new ProgressBar(parent);
+    if (this.getGameType() === GameType.Sprint) {
+      this.timer = new ProgressBar(parent);
+    }
     parent.append(this.createScoreBlock());
     parent.append(this.createWordCard(data));
     return parent;
