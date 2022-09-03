@@ -4,6 +4,7 @@ import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
 import { GameCardData } from '../../controllers/types';
 import CreateMarkup from '../common/createMarkup';
+import { DropDownTimer } from './common/timer';
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -58,19 +59,19 @@ export class VoiceCallView extends BaseGameView {
     this.translation = translation.node;
 
     this.controls = new CreateMarkup(card, 'div', 'game-card__controls');
-
+    this.optionsBtn = [];
     for (let i = 0; i < 5; i++) {
       const newOptionBtn = new CreateMarkup(this.controls.node, 'button', 'button game-card__btn');
-      this.optionsBtn!.push(newOptionBtn);
+      this.optionsBtn.push(newOptionBtn);
     }
     this.createOptionBtn(data);
     this.gameControls = this.controls.node;
-    this.optionsBtn = [];
     return card;
   }
 
   createOptionBtn(data: GameCardData) {
-    this.optionsBtn!.forEach((element, index) => {
+    this.optionsBtn?.forEach((element, index) => {
+      console.log(element);
       element.node.textContent = `${index + 1}. ` + capitalizeFirstLetter(data.options[index]);
       this.optionsBtn![index].node.id = String(index);
     });
