@@ -33,7 +33,7 @@ const dateToString = (date: Date): string => {
   return date.toJSON().slice(0, 10);
 };
 
-const iterLastNDays = (n: number, d = new Date()) => {
+const getLastNDays = (n: number, d = new Date()): string[] => {
   d.setDate(d.getDate() - n);
   const lastNDays: string[] = [];
   for (let i = 0; i < n; i += 1) {
@@ -86,4 +86,51 @@ const getGameShortStat = (stat: IStatistics, gameName: GameType): IGameShortStat
   };
 };
 
-export { longestStreak, createEmptyStatistics, dateToString, iterLastNDays, getDayShortStat, getGameShortStat };
+const partialSums = (arr: number[]): number[] => {
+  const output: number[] = [];
+  for (const x of arr) {
+    if (output.length === 0) {
+      output.push(x);
+    } else {
+      output.push(x + output[output.length - 1]);
+    }
+  }
+  return output;
+};
+
+const getDeltaWordsLongStat = (stat: IStatistics, n: number): number[] => {
+  const dates = getLastNDays(n);
+  const deltasAll = stat.optional.deltaComplete;
+  const deltas = dates.map((d) => (d in deltasAll ? deltasAll[d] : 0));
+  const res = partialSums(deltas);
+  return res;
+};
+
+const getNewWordsLongStat = (stat: IStatistics, n: number): number[] => {
+  const dates = getLastNDays(n);
+  const res = {};
+  for (const key of dates) {
+    res[key] = 0;
+  }
+  if (stat && 'optional' in stat && 'games' in stat.optional) {
+    for (const gameName in stat.optional.games) {
+      dates.forEach((date) => {
+        if (date in stat.optional.games[gameName]) {
+          res[date] += stat.optional.games[gameName][date].nNew;
+        }
+      });
+    }
+  }
+  return Object.values(res);
+};
+
+export {
+  longestStreak,
+  createEmptyStatistics,
+  dateToString,
+  getLastNDays,
+  getDayShortStat,
+  getGameShortStat,
+  getNewWordsLongStat,
+  getDeltaWordsLongStat,
+};
