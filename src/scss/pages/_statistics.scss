@@ -1,0 +1,35 @@
+.stat__container {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15%;
+
+  .stat__block {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+    padding-bottom: 5rem;
+
+    .stat__title {
+      font-size: 4rem;
+      text-align: center;
+      flex-basis: 100%;
+      padding: 3rem;
+    }
+
+    .stat__chart {
+      max-height: 400px;
+      width: 60%;
+    }
+  
+    .stat__chart_doughnut {
+      width: 40%;
+      max-width: 200px;
+    }
+  }
+}

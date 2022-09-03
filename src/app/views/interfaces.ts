@@ -1,5 +1,5 @@
 import { PaginBtnType } from './constants';
-import { IApiWords } from '../models/interfaces';
+import { IApiWords, IStatistics } from '../models/interfaces';
 import { IGameController, ITextBookController, IStatisticsController } from './../controllers/interfaces';
 import { GameType } from '../controllers/constants';
 import { GameCardData } from '../controllers/types';
@@ -36,6 +36,7 @@ interface IGameView extends IView {
 interface IStatisticsView extends IView {
   setController(ctrl: IStatisticsController): void;
   setError(): void;
+  fillStatistics(stat: IStatistics): void;
 }
 
 type ViewOrNotInit = IView | null;

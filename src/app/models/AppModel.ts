@@ -1,28 +1,8 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics, IStatisticsOptional } from './interfaces';
+import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics } from './interfaces';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 import { MIN_PAGE_WORDS } from '../common/constants';
-
-function replacer(key, value) {
-  if (value instanceof Map) {
-    return {
-      dataType: 'Map',
-      value: Array.from(value.entries()), // or with spread: value: [...value]
-    };
-  } else {
-    return value;
-  }
-}
-
-function reviver(key, value) {
-  if (typeof value === 'object' && value !== null) {
-    if (value.dataType === 'Map') {
-      return new Map(value.value);
-    }
-  }
-  return value;
-}
 
 export default class AppModel extends State {
   signinUrl: string;
@@ -184,21 +164,20 @@ export default class AppModel extends State {
       });
 
       if (!resp.ok) {
-        throw new Error('Invalid results');
+        throw new Error('Invalid statistics');
       }
-
       return <IStatistics>await resp.json();
     } catch {
-      throw new Error('Invalid results');
+      throw new Error('Invalid statistics');
     }
   }
 
-  async setUserStatistics(optional: IStatisticsOptional) {
-    console.log(JSON.stringify(optional));
+  async setUserStatistics(userStatistics: IStatistics) {
+    console.log(JSON.stringify(userStatistics));
     const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
     const statistics = {
       learnedWords: 0,
-      optional: optional,
+      optional: userStatistics.optional,
     };
     const resp = await fetch(url, {
       method: 'PUT',
@@ -208,7 +187,7 @@ export default class AppModel extends State {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(statistics, replacer),
+      body: JSON.stringify(statistics),
     });
     return <IStatistics>await resp.json();
   }

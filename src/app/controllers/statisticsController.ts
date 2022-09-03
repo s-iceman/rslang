@@ -31,8 +31,8 @@ export class StatisticsController extends State implements IStatisticsController
   async updateView(): Promise<void> {
     if (this.statisticsView) {
       try {
-        const data = await this.getStatistics();
-        console.log('!!!', data);
+        const data: IStatistics = await this.getStatistics();
+        this.statisticsView.fillStatistics(data);
       } catch (err) {
         this.statisticsView.setError();
       }

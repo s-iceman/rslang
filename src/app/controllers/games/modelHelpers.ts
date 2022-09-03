@@ -1,5 +1,6 @@
 import { IModelHelper } from '../interfaces';
 import AppModel from '../../models/AppModel';
+import { longestStreak, createEmptyStatistics, dateToString } from './gameUtis';
 import { StartGameOptions, GameWord, GameFullResultsData } from '../types';
 import {
   IApiWords,
@@ -17,24 +18,6 @@ import { DifficultyWord } from './../constants';
 const LAST_N_CORRECT_TO_COMPLETE = 5;
 
 const LAST_N_CORRECT_TO_COMPLETE_HARD = 7;
-
-const longestStreak = (statuses: boolean[]) => {
-  let i = 0;
-  let j = 0;
-  let maxLength = 0;
-  statuses.forEach((status, k) => {
-    if (status === true) {
-      j += 1;
-      if (j - i > maxLength) {
-        maxLength = j - i;
-      }
-    } else {
-      i = k;
-      j = k;
-    }
-  });
-  return maxLength;
-};
 
 abstract class BaseModelHelper implements IModelHelper {
   protected model: AppModel;
@@ -77,11 +60,9 @@ class UserModelHelper extends BaseModelHelper {
   async getWords(level?: UnitLevels): Promise<GameWord[]> {
     try {
       const statistics = await this.model.getUserStatistics();
-      console.log('!!!! STATISTICS', statistics);
       this.statistics = statistics;
     } catch (err) {
-      console.log('ERROR');
-      this.statistics = this.createEmptyStatistics();
+      this.statistics = createEmptyStatistics();
     }
     const group = level !== undefined ? level : this.context?.unit || MIN_GROUP_WORDS;
     const wordsData = await this.model.getAllUserAggregatedWords(group);
@@ -95,7 +76,7 @@ class UserModelHelper extends BaseModelHelper {
   }
 
   async processGameResults(data: GameFullResultsData): Promise<boolean> {
-    const dateString = this.dateToString(new Date());
+    const dateString = dateToString(new Date());
     const { game, answers } = data;
     const words = data.words as IPaginatedResults[];
     const updatedWords: IUserWord[] = [];
@@ -135,7 +116,7 @@ class UserModelHelper extends BaseModelHelper {
     await Promise.all(newWords.map(async (w) => this.model.postUserWord(w.wordId, w.difficulty, w.optional)));
     await Promise.all(updatedWords.map(async (w) => this.model.updateUserWord(w.wordId, w.difficulty, w.optional)));
     if (this.statistics) {
-      await this.model.setUserStatistics(this.statistics.optional);
+      await this.model.setUserStatistics(this.statistics);
     }
 
     return true;
@@ -211,20 +192,6 @@ class UserModelHelper extends BaseModelHelper {
     return optional;
   }
 
-  private dateToString(date: Date): string {
-    return date.toJSON().slice(0, 10);
-  }
-
-  private createEmptyStatistics(): IStatistics {
-    return {
-      learnedWords: 0,
-      optional: {
-        games: new Map(),
-        deltaComplete: new Map(),
-      },
-    };
-  }
-
   private updateEmptyStatistics(data: GameFullResultsData, dateString: string): void {
     if (!this.statistics) {
       return;
@@ -232,41 +199,40 @@ class UserModelHelper extends BaseModelHelper {
     const { game } = data;
     const games = this.statistics.optional.games;
     console.log(game, games);
-    if (!games.has(game)) {
-      games.set(game, new Map());
-      console.log('set', games, this.statistics);
+    if (!(game in games)) {
+      games[game] = {};
     }
-    const gameData = games.get(game);
-    console.log('3:', JSON.stringify(gameData));
-    if (gameData && !gameData.has(dateString)) {
-      console.log('4 - in if:', JSON.stringify(gameData));
-      gameData.set(dateString, {
+    const gameData = games[game];
+    if (gameData && !(dateString in gameData)) {
+      gameData[dateString] = {
         nNew: 0,
         nCorrect: 0,
         nTotal: 0,
         streak: 0,
-      });
+      };
     }
-    console.log('HERE-1', gameData);
-    console.log('HERE-2', this.statistics);
-    if (!this.statistics.optional.deltaComplete.has(dateString)) {
+    console.log('STAT', this.statistics);
+    if (!(dateString in this.statistics.optional.deltaComplete)) {
       this.statistics.optional.deltaComplete[dateString] = 0;
     }
   }
 
   private updateDeltaComplete(date: string, diff: number): void {
     const deltaComplete = this.getDeltaComplete();
-    const value = deltaComplete?.get(date);
-    if (deltaComplete && value !== undefined) {
-      deltaComplete.set(date, value + diff);
+    if (!deltaComplete) {
+      return;
+    }
+    const value = deltaComplete[date];
+    if (value !== undefined) {
+      deltaComplete[date] = value + diff;
     }
   }
 
   private getTmpGameStatistics(game: string, date: string): IGameStatistics | undefined {
-    return this.statistics?.optional.games.get(game)?.get(date);
+    return this.statistics?.optional.games[game][date];
   }
 
-  private getDeltaComplete(): Map<string, number> | undefined {
+  private getDeltaComplete(): Record<string, number> | undefined {
     return this.statistics?.optional.deltaComplete;
   }
 }

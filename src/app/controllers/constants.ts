@@ -20,4 +20,6 @@ enum GameType {
   VoiceCall = 'voicecall',
 }
 
-export { UnitLevels, DifficultyWord, USER_UNITS, GameType };
+const EMPTY_GAME_DATA = -1;
+
+export { UnitLevels, DifficultyWord, USER_UNITS, GameType, EMPTY_GAME_DATA };

@@ -51,13 +51,25 @@ interface IGameStatistics {
 }
 
 interface IStatisticsOptional {
-  games: Map<string, Map<string, IGameStatistics>>;
-  deltaComplete: Map<string, number>;
+  games: Record<string, Record<string, IGameStatistics>>;
+  deltaComplete: Record<string, number>;
 }
 
 interface IStatistics {
   learnedWords?: number;
   optional: IStatisticsOptional;
+}
+
+interface ICommonShortStat {
+  correctAnswers: number;
+  nNew: number;
+  nStudy: number;
+}
+
+interface IGameShortStat {
+  nNew: number;
+  correctAnswers: number;
+  streak: number;
 }
 
 type TotalCount = {
@@ -100,4 +112,6 @@ export {
   IStatistics,
   IStatisticsOptional,
   IGameStatistics,
+  ICommonShortStat,
+  IGameShortStat,
 };

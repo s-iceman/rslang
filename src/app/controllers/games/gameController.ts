@@ -101,8 +101,8 @@ export class GameController extends State implements IGameController {
       return;
     }
     const isCorrect = this.gameEngine.checkAnswer(answerOption);
-    // this.soundCtrl.stopPlay();
-    // await this.soundCtrl.startPlay(isCorrect);
+    this.soundCtrl.stopPlay();
+    await this.soundCtrl.startPlay(isCorrect);
     this.gameView?.updateScore(this.gameEngine.getScore());
     this.gameView?.updatePoints(this.gameEngine.getPoints());
     this.gameView?.toggleStileCard(isCorrect);
