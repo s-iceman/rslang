@@ -97,7 +97,7 @@ export class SprintView extends BaseGameView {
       htmlGuessed.forEach((e) => (<HTMLElement>e).classList.remove('item--active'));
     } else {
       const availableItems = htmlGuessed.filter((elem) => !(<HTMLElement>elem).classList.contains('item--active'));
-      if (availableItems.length > 0 && availableItems.length < 3) {
+      if (availableItems.length > 0 && availableItems.length < guessed.length) {
         (<HTMLElement>availableItems[0]).classList.add('item--active');
       } else {
         htmlGuessed.forEach((e) => (<HTMLElement>e).classList.remove('item--active'));
