@@ -1,6 +1,6 @@
 import State from './State';
 import { MIN_GROUP_WORDS, MIN_LIMIT_WORDS, MAX_LIMIT_WORDS } from './constants';
-import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics, IStatisticsOptional } from './interfaces';
+import { IApiWords, IUserAggregatedWords, IUserWord, IOptional, IStatistics } from './interfaces';
 import { INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
 import { MIN_PAGE_WORDS } from '../common/constants';
 
@@ -154,18 +154,30 @@ export default class AppModel extends State {
   async getUserStatistics(): Promise<IStatistics> {
     const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
 
-    const resp = await fetch(url);
-    if (!resp.ok) {
-      throw new Error('Invalid results');
+    try {
+      const resp = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.getToken() || ''}`,
+          Accept: 'application/json',
+        },
+      });
+
+      if (!resp.ok) {
+        throw new Error('Invalid statistics');
+      }
+      return <IStatistics>await resp.json();
+    } catch {
+      throw new Error('Invalid statistics');
     }
-    return <IStatistics>await resp.json();
   }
 
-  async setUserStatistics(optional: IStatisticsOptional) {
-    const url = `${this.usersUrl}/${this.getUserId()}`;
+  async setUserStatistics(userStatistics: IStatistics) {
+    console.log(JSON.stringify(userStatistics));
+    const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
     const statistics = {
       learnedWords: 0,
-      optional: optional,
+      optional: userStatistics.optional,
     };
     const resp = await fetch(url, {
       method: 'PUT',
@@ -181,6 +193,7 @@ export default class AppModel extends State {
   }
 
   private formatOptional(optional: IOptional): IOptional {
+    optional.firstIntroducedGame = optional.firstIntroducedGame ?? '-';
     optional.firstIntroducedDate = optional.firstIntroducedDate ?? '-';
     optional.correctAnswers = optional.correctAnswers ?? 0;
     optional.incorrectAnswers = optional.incorrectAnswers ?? 0;

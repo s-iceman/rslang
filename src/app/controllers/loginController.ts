@@ -76,7 +76,6 @@ export class LoginController {
         this.newUserRegistrate(this.getUserInputValueRegistrate(emailForm.value, passwordForm.value, name.value));
       } else {
         this.showPopUpWindow('Вы не ввели свое имя');
-        // alert('Введите имя');
       }
     }
   }
