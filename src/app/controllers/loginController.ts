@@ -45,10 +45,7 @@ export class LoginController {
   public userAfterSignIn(autorizedUser: IAutentificatedUser) {
     const loginText = document.querySelector('.login') as HTMLElement;
     loginText.innerHTML = autorizedUser.name;
-<<<<<<< HEAD
     this.showPopUpWindow('Вы авторизированы', true);
-=======
->>>>>>> f40a476 (fix: fix a bug with change word status when the game is over)
     autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
   }
@@ -79,7 +76,6 @@ export class LoginController {
         this.newUserRegistrate(this.getUserInputValueRegistrate(emailForm.value, passwordForm.value, name.value));
       } else {
         this.showPopUpWindow('Вы не ввели свое имя');
-        // alert('Введите имя');
       }
     }
   }
