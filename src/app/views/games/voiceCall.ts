@@ -3,7 +3,6 @@ import { VoiceCallStartPage } from './common/startPage';
 import { BaseGameView } from './common/baseGame';
 import { GameType } from '../../controllers/constants';
 import { GameCardData } from '../../controllers/types';
-import { IApiWords } from '../../models/interfaces';
 import CreateMarkup from '../common/createMarkup';
 
 function capitalizeFirstLetter(string: string) {
@@ -43,6 +42,7 @@ export class VoiceCallView extends BaseGameView {
     this.audioFileName = data.word.audio;
     const card = document.createElement('div');
     card.className = 'game-card wrapper';
+    this.gameCard = card;
     const points = new CreateMarkup(card, 'div', 'play-btn');
 
     const playAudioBtn = new CreateMarkup(points.node, 'div', 'word__play');
@@ -59,25 +59,25 @@ export class VoiceCallView extends BaseGameView {
 
     this.controls = new CreateMarkup(card, 'div', 'game-card__controls');
 
+    for (let i = 0; i < 5; i++) {
+      const newOptionBtn = new CreateMarkup(this.controls.node, 'button', 'button game-card__btn');
+      this.optionsBtn!.push(newOptionBtn);
+    }
     this.createOptionBtn(data);
     this.gameControls = this.controls.node;
-
+    this.optionsBtn = [];
     return card;
   }
 
   createOptionBtn(data: GameCardData) {
-    for (let i = 0; i < 5; i++) {
-      const newOptionBtn = new CreateMarkup(this.controls!.node, 'button', 'button game-card__btn');
-      this.optionsBtn!.push(newOptionBtn);
-      this.optionsBtn![i].node.textContent = `${i + 1}. ` + capitalizeFirstLetter(data.options[i]);
-      this.optionsBtn![i].node.id = String(i);
-    }
+    this.optionsBtn!.forEach((element, index) => {
+      element.node.textContent = `${index + 1}. ` + capitalizeFirstLetter(data.options[index]);
+      this.optionsBtn![index].node.id = String(index);
+    });
   }
 
   showWord(data: GameCardData): void {
-    this.optionsBtn!.forEach((element, index) => {
-      element.node.textContent = `${index + 1}. ` + capitalizeFirstLetter(data.options[index]);
-    });
+    this.createOptionBtn(data);
     if (this.word && this.translation) {
       this.word.textContent = data.word.word;
       this.translation.textContent = `${data.word.transcription}`;

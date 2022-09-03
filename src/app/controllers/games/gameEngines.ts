@@ -1,3 +1,4 @@
+import { IApiWords } from '../../models/interfaces';
 import { GameType } from '../constants';
 import { IGameEngine } from './../interfaces';
 import { GameCardData, GameWord, GameFullResultsData } from './../types';
@@ -193,7 +194,8 @@ class AudioCallEngine extends GameEngine {
     this.singleAnswerScore = 1;
   }
 
-  preprocessWords(words: IApiWords[]): void {
+  preprocessWords(words: GameWord[]): void {
+    //console.log(words);
     this.words = words;
     const correctWord = new Array<string>();
     const suggestedTranslations2 = words.map((w) => [w.wordTranslate]);
@@ -235,13 +237,12 @@ class AudioCallEngine extends GameEngine {
 
   getNextWord(): GameCardData | undefined {
     this.idx += 1;
-    if (this.idx === this.words.length - 1) {
-      return;
+    if (this.idx < this.words.length) {
+      return {
+        word: this.words[this.idx],
+        options: this.suggestedTranslations[this.idx],
+      };
     }
-    return {
-      word: this.words[this.idx],
-      options: this.suggestedTranslations[this.idx],
-    };
   }
 
   getScore(): number {
@@ -257,6 +258,10 @@ class AudioCallEngine extends GameEngine {
     this.streakLength = 0;
     this.total = 0;
     this.singleAnswerScore = 1;
+  }
+
+  protected getGameType(): GameType {
+    return GameType.VoiceCall;
   }
 }
 
