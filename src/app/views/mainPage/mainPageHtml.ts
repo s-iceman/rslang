@@ -130,7 +130,7 @@ export function innerText(): string {
                <li><span>Список слов</span></li>
                <li><span>Прогресс изучения</span></li>
                <li><span>Изученные слова</span></li>
-                <li><span>Стилизация приложения и игр</span></li>
+                <li><span>Стилизация игр</span></li>
             </ul>
            </div>
            <div class="social">
@@ -153,6 +153,7 @@ export function innerText(): string {
                <li><span>Главная страница приложения</span></li>
                <li><span>Авторизация</span></li>
                <li><span>Игра Аудиовызов</span></li>
+               <li><span>Стилизация приложения</span></li>
             </ul>
            </div>
             <div class="social">
