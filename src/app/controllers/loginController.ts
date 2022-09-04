@@ -1,6 +1,7 @@
 import { LoginModel } from '../models/loginModel';
 import { LoginView } from '../views/loginPage/login';
 import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
+import { dateToString } from './games/gameUtis';
 
 export class LoginController {
   private baseUrl: string;
@@ -48,6 +49,8 @@ export class LoginController {
     this.showPopUpWindow('Вы авторизированы', true);
     autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
+    const date = Date.now();
+    console.log(date);
   }
 
   public getUserInputValueSignIn(email: string, password: string) {
@@ -87,7 +90,7 @@ export class LoginController {
 
   public logOut(event: Event): void {
     event.preventDefault();
-    localStorage.removeItem('user');
+    localStorage.clear();
     window.location.reload();
   }
 }
