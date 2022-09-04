@@ -10,19 +10,18 @@ export function innerText(): string {
           <img src="./assets/img/about.jpg" alt="about" class="content__img">
         </div>
         <div class="content__text">
-          <h4>SpeakLang - английский это просто !</h4>
-          <p>Приложение позволяет учить английские слова в 2 раза быстрее. В нашем приложении есть учебник для изучения и запоминания английских слов.
+          <h2>SpeakLang - английский это просто !</h2>
+          <p>Приложение позволяет учить английские слова в 2 раза быстрее. В нем собрано 3600 самых используемых в повседневной жизни
+            <br> В нашем приложении есть <a class="content__link" href='#${ViewPath.TEXTBOOK}'>учебник</a> для изучения и запоминания английских слов.
             В нем вы можете не только прочитать, но и услышать их правильное произношение.
-            <a class="content__link" href='#${ViewPath.TEXTBOOK}'>Учебник</a>
           </p>
           <ul class="content__games">В нашем приложении разработаны активные игры для изучения языка
-            <li><a class="content__game" href='#/${ViewPath.VOICECALL}>Аудиовызов</a></li>
-            <li><a class="content__game" href='#/${ViewPath.SPRINT}>Спринт</a></li> 
+            <a class="content__game" href='#${ViewPath.VOICECALL}'>Аудиовызов</a></li>
+            <a class="content__game" href='#${ViewPath.SPRINT}'>Спринт</a></li> 
           </ul>
           <p>Так же что бы получить полный доступ к функция приложения вам необходимо быть верефицированным пользователем
-            <a class="content__link__reg" href="#">Пробуй!</a>
           </p>
-          <p>После верефикации вам будут доступна статистика и прогресс обучения, что сделает изучение еще более увлекательным!</p>
+          <p>После  <a class="content__link__reg" href="#${ViewPath.LOGIN}">регистрации</a> вам будут доступна статистика и прогресс обучения, что сделает изучение еще более увлекательным!</p>
         </div>
     </div>
   </section><!-- End About Section -->
@@ -32,7 +31,10 @@ export function innerText(): string {
 
         <div class="why-us__title">
           <h2>Why Us ?</h2>
-          <p>SpeakLang является одним из лучших инструментов для изучения, повторения и запоминания английских слов.С помощью интарактивных игр и статистики вы всегда сможете тренироватся и отслеживать ваш прогесс в изучении.</p>
+          <div class="why-us__content">
+          <span> Почему мы ? SpeakLang - это бесплатно и без рекламы ! </span>
+          <p>SpeakLang является одним из аналогов популярного приложения  Lingualeo, для повторения и запоминания английских слов. С помощью интарактивных игр, учебника и  статистики вы всегда сможете тренироватся и отслеживать ваш прогесс в изучении.</p>
+          </div>
         </div>
 
         <div class="why-us__boxs">
@@ -51,7 +53,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Аудиовызов</h4>
-             <a class="content__game" href='#/${ViewPath.VOICECALL}> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
+             <a class="content__game" href='#${ViewPath.VOICECALL}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
               <p>Слушай и запоминай</p>
             </div>
           </div>
@@ -60,8 +62,8 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Спринт</h4>
-             <a class="content__game" href='#/${ViewPath.SPRINT}> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
-              <p>Пробуй запоминанть быстрее.</p>
+             <a class="content__game" href='#${ViewPath.SPRINT}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
+              <p>Пробуй запоминать быстрее.</p>
             </div>
           </div>
 
@@ -69,7 +71,7 @@ export function innerText(): string {
             <div class="why-us__box">
               <span></span>
               <h4>Статистика</h4>
-             <a class="content__game" href="#/statistics"> <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div></a>
+             <a class="content__game" href='#${ViewPath.STATISTICS}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div></a>
               <p>Отслеживайте свой прогресс.</p>
             </div>
           </div>
@@ -98,14 +100,19 @@ export function innerText(): string {
           </div>
           <div class="member__info">
           <div class="member__info__content">
+            <h5>Team Lead</h5>
             <h4>Okasana Zavadskaya</h4>
-            <span>Team Lead</span>
-            <span>what have done</span>
-            <a target="_blank" href="https://github.com/s-iceman"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
-            <div class="social">
-              <a href=""><i class="twitter"></i></a>
-            </div>
+            <ul>
+              <li><span>Общая структура приложения</span></li>
+              <li><span>Общие компоненты для игр</span></li>
+              <li><span>Электронный учебник</span></li>
+              <li><span>Игра Спринт</span></li>
+              <li><span>Статистика</span></li>
+            </ul>
            </div>
+           <div class="social">
+              <a target="_blank" href="https://github.com/s-iceman"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
+            </div>
           </div>
 
       </div>
@@ -117,14 +124,18 @@ export function innerText(): string {
           </div>
           <div class="member__info">
           <div class="member__info__content">
+            <h5>Programmer</h5> 
             <h4>Boris Nizameev</h4>
-            <span>Programmer</span>
-            <span>what have done</span>
-            <a target="_blank" href="https://github.com/Boffin-ux"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
-            <div class="social">
-              <a href=""><i class="twitter"></i></a>
-            </div>
+             <ul>
+               <li><span>Список слов</span></li>
+               <li><span>Прогресс изучения</span></li>
+               <li><span>Изученные слова</span></li>
+                <li><span>Стилизация игр</span></li>
+            </ul>
            </div>
+           <div class="social">
+            <a target="_blank" href="https://github.com/Boffin-ux"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
+            </div>
           </div>
 
       </div>
@@ -136,14 +147,18 @@ export function innerText(): string {
           </div>
           <div class="member__info">
           <div class="member__info__content">
+           <h5>Programmer</h5> 
             <h4>Andrei Darapiyevich</h4>
-            <span>Programmer</span>
-            <span>what have done</span>
-            <a target="_blank" href="https://github.com/darap1"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
-            <div class="social">
-              <a href=""><i class="twitter"></i></a>
-            </div>
+             <ul>
+               <li><span>Главная страница приложения</span></li>
+               <li><span>Авторизация</span></li>
+               <li><span>Игра Аудиовызов</span></li>
+               <li><span>Стилизация приложения</span></li>
+            </ul>
            </div>
+            <div class="social">
+              <a target="_blank" href="https://github.com/darap1"><img src="./assets/img/GitHub-Logo.png" alt="gihub"></a>
+            </div>
           </div>
 
       </div>

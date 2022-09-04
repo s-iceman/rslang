@@ -31,7 +31,7 @@ export class LoginView extends View implements IView {
       this.root.append(...this.createAutorizedForm(user.name));
       this.root.addEventListener('click', (e: Event) => {
         const target = e.target as HTMLElement;
-        if (target.classList.contains('go-to-main-button')) this.logincontroller.logOut(e);
+        if (target.classList.contains('go-to-main-button')) LoginController.logOut(e);
       });
     }
   }

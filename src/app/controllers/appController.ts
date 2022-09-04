@@ -7,6 +7,7 @@ import AppModel from '../models/AppModel';
 import { GameController } from './games/gameController';
 import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
+import { LoginController } from './loginController';
 import { GameCustomEvents } from '../common/constants';
 
 class AppController implements IAppController {
@@ -66,6 +67,7 @@ class AppController implements IAppController {
     for (const ctrl of this.controllers) {
       await ctrl.updateView().catch((err) => console.debug(err));
     }
+    LoginController.checkTimeToken();
   }
 }
 

@@ -24,8 +24,8 @@ class Header extends Component {
             <li><div class="dropdown">
                 <button class="dropbtn">ИГРЫ</button>
                   <div class="dropdown_content">
-                    <a href="#${ViewPath.VOICECALL}">Аудиовызов</a>
-                    <a href="#${ViewPath.SPRINT}">Спринт</a>
+                    <a class="header__link" href="#${ViewPath.VOICECALL}">Аудиовызов</a>
+                    <a class="header__link" href="#${ViewPath.SPRINT}">Спринт</a>
                   </div>
               </div>
             </li>
@@ -44,6 +44,13 @@ class Header extends Component {
         eventTarget.classList.toggle('active');
         const menu = document.getElementsByClassName('header__menu') as HTMLCollection;
         menu[0].classList.toggle('active');
+      }
+      //console.log(eventTarget);
+      if (eventTarget.classList.contains('header__link')) {
+        const closeBurger = document.querySelector('.header__burger');
+        const closeMenu = document.querySelector('.header__menu');
+        closeBurger?.classList.remove('active');
+        closeMenu?.classList.remove('active');
       }
     });
 

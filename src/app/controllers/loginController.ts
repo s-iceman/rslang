@@ -48,6 +48,7 @@ export class LoginController {
     this.showPopUpWindow('Вы авторизированы', true);
     autorizedUser.isAuth = true;
     localStorage.setItem('user', JSON.stringify(autorizedUser));
+    localStorage.setItem('dateSignIn', Date.now().toString());
   }
 
   public getUserInputValueSignIn(email: string, password: string) {
@@ -85,9 +86,19 @@ export class LoginController {
     root?.append(LoginView.popUpWindowAut(text, reload));
   }
 
-  public logOut(event: Event): void {
-    event.preventDefault();
-    localStorage.removeItem('user');
+  static logOut(event?: Event): void {
+    event?.preventDefault();
+    localStorage.clear();
     window.location.reload();
+  }
+
+  static checkTimeToken() {
+    const timeSignIn = localStorage.getItem('dateSignIn');
+    if (timeSignIn !== null) {
+      console.log(timeSignIn);
+      if (Number(timeSignIn) + 14400000 < Date.now()) {
+        LoginController.logOut();
+      }
+    }
   }
 }
