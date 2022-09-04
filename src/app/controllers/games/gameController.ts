@@ -5,12 +5,13 @@ import { IGameView, ViewOrNotInit } from './../../views/interfaces';
 import { BaseGameView } from '../../views/games/common/baseGame';
 import { GameType } from './../constants';
 import { UnitLevels } from './../constants';
-import { SprintEngine, AudioCallEngine } from './gameEngines';
+import { AudioCallEngine } from './gameEngines';
+import { SprintEngine } from './sprintEngine';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
-import { ModelHelper, UserModelHelper } from './modelHelpers';
-
-const GAME_LENGTH = 60;
+import { ModelHelper } from './modelHelper';
+import { UserModelHelper } from './userModelHelper';
+import { GameCustomEvents } from '../../common/constants';
 
 export class GameController extends State implements IGameController {
   private model: AppModel;
@@ -27,6 +28,8 @@ export class GameController extends State implements IGameController {
 
   private context: StartGameOptions | undefined;
 
+  private onEndGame: () => void;
+
   constructor(baseUrl: string, model: AppModel) {
     super();
     this.gameView = null;
@@ -34,6 +37,7 @@ export class GameController extends State implements IGameController {
     this.gameType = undefined;
     this.gameEngine = null;
     this.modelHelper = null;
+    this.onEndGame = this.endGameByTimer.bind(this);
     this.soundCtrl = new SoundController();
   }
 
@@ -56,10 +60,6 @@ export class GameController extends State implements IGameController {
     }
   }
 
-  getGameLength(): number {
-    return GAME_LENGTH;
-  }
-
   canSelectUnit(): boolean {
     return this.context === undefined;
   }
@@ -72,7 +72,8 @@ export class GameController extends State implements IGameController {
   }
 
   async startGame(level?: UnitLevels): Promise<void> {
-    const words = await this.modelHelper?.getWords(level);
+    window.addEventListener(GameCustomEvents.EndGame, this.onEndGame);
+    const words = await this.modelHelper?.getWords(this.gameType, level);
     if (!words || words.length === 0 || !this.gameEngine) {
       throw new Error('Invalid list of the words');
     }
@@ -94,6 +95,7 @@ export class GameController extends State implements IGameController {
       await this.modelHelper.processGameResults(this.gameEngine.getFullResults());
     }
     this.gameEngine.clear();
+    window.removeEventListener(GameCustomEvents.EndGame, this.onEndGame);
   }
 
   async processAnswer(answerOption: number): Promise<void> {
@@ -104,7 +106,7 @@ export class GameController extends State implements IGameController {
     this.soundCtrl.stopPlay();
     await this.soundCtrl.startPlay(isCorrect);
     this.gameView?.updateScore(this.gameEngine.getScore());
-    this.gameView?.updatePoints(this.gameEngine.getPoints());
+    this.gameView?.updatePoints(this.gameEngine.getPoints(), isCorrect);
     this.gameView?.toggleStileCard(isCorrect);
 
     const nextWordData = this.gameEngine.getNextWord();
@@ -113,6 +115,10 @@ export class GameController extends State implements IGameController {
     } else {
       this.gameView?.showWord(nextWordData);
     }
+  }
+
+  private endGameByTimer(): void {
+    return void this.endGame();
   }
 
   private createEngine(): IGameEngine {

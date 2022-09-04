@@ -5,7 +5,7 @@ import { DifficultyWord, UnitLevels } from './constants';
 import { TextBookState } from './types';
 import { ITextBookController } from './interfaces';
 import AppModel from '../models/AppModel';
-import { IApiWords, IUserAggregatedWords } from '../models/interfaces';
+import { IApiWords, IOptional, IUserAggregatedWords, IUserWord } from '../models/interfaces';
 import State from '../models/State';
 import { UnitLabels } from '../views/constants';
 import { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS } from '../common/constants';
@@ -118,14 +118,10 @@ export class TextBookController extends State implements ITextBookController {
 
     if (filterWords.length) {
       if (isDifficulty) {
-        await this.model.updateUserWord(wordId, DifficultyWord.Hard, { study: isStudy });
+        const optional = this.updateUserOptional(getWords, wordId, isStudy);
+        await this.model.updateUserWord(wordId, DifficultyWord.Hard, optional);
       } else {
-        let optional = getWords.find((w) => w.wordId === wordId)?.optional;
-        if (optional) {
-          optional.study = isStudy;
-        } else {
-          optional = { study: isStudy };
-        }
+        const optional = this.updateUserOptional(getWords, wordId, isStudy);
         await this.model.updateUserWord(wordId, DifficultyWord.Simple, optional);
       }
     } else if (!filterWords.length) {
@@ -200,6 +196,16 @@ export class TextBookController extends State implements ITextBookController {
     const words = await this.getWords();
     this.textBookView?.updateCards(unitName, words);
     this.textBookView?.updatePage(this.textBookState.page);
+  }
+
+  private updateUserOptional(words: IUserWord[], wordId: string, isStudy: boolean): IOptional {
+    let optional = words.find((w) => w.wordId === wordId)?.optional;
+    if (optional) {
+      optional.study = isStudy;
+    } else {
+      optional = { study: isStudy };
+    }
+    return optional;
   }
 
   private getUnitLevelByName(unitName: string): UnitLevels | undefined {

@@ -1,55 +1,17 @@
-import { IModelHelper } from '../interfaces';
+import { BaseModelHelper } from './modelHelper';
 import AppModel from '../../models/AppModel';
 import { longestStreak, createEmptyStatistics, dateToString } from './gameUtis';
 import { StartGameOptions, GameWord, GameFullResultsData } from '../types';
-import {
-  IApiWords,
-  IOptional,
-  IPaginatedResults,
-  IStatistics,
-  IUserWord,
-  IGameStatistics,
-} from '../../models/interfaces';
-import { UnitLevels } from '../constants';
-import { MAX_PAGE_WORDS } from '../../common/constants';
+import { IOptional, IPaginatedResults, IStatistics, IUserWord, IGameStatistics } from '../../models/interfaces';
+import { UnitLevels, GameType } from '../constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
 
-const LAST_N_CORRECT_TO_COMPLETE = 5;
+const LAST_N_CORRECT_TO_COMPLETE = 3;
 
-const LAST_N_CORRECT_TO_COMPLETE_HARD = 7;
+const LAST_N_CORRECT_TO_COMPLETE_HARD = 5;
 
-abstract class BaseModelHelper implements IModelHelper {
-  protected model: AppModel;
-
-  protected context: StartGameOptions | undefined;
-
-  constructor(model: AppModel, context?: StartGameOptions) {
-    this.model = model;
-    this.context = context;
-  }
-
-  abstract getWords(level?: UnitLevels): Promise<GameWord[]>;
-
-  protected getRandomPage(): number {
-    return Math.random() * MAX_PAGE_WORDS;
-  }
-}
-
-class ModelHelper extends BaseModelHelper {
-  async getWords(level?: UnitLevels): Promise<GameWord[]> {
-    let words: IApiWords[];
-    if (level !== undefined) {
-      const page = this.getRandomPage();
-      words = await this.model.getWords(level, page);
-    } else {
-      words = await this.model.getWords(this.context?.unit, this.context?.page);
-    }
-    return words;
-  }
-}
-
-class UserModelHelper extends BaseModelHelper {
+export class UserModelHelper extends BaseModelHelper {
   private statistics: IStatistics | null;
 
   constructor(model: AppModel, context?: StartGameOptions) {
@@ -57,22 +19,50 @@ class UserModelHelper extends BaseModelHelper {
     this.statistics = null;
   }
 
-  async getWords(level?: UnitLevels): Promise<GameWord[]> {
-    try {
-      const statistics = await this.model.getUserStatistics();
-      this.statistics = statistics;
-    } catch (err) {
-      this.statistics = createEmptyStatistics();
-    }
+  async getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]> {
+    await this.getSavedUserStatistics();
+
     const group = level !== undefined ? level : this.context?.unit || MIN_GROUP_WORDS;
     const wordsData = await this.model.getAllUserAggregatedWords(group);
-    let words = wordsData.map((w) => w.paginatedResults).flat(1);
+    const words = wordsData.map((w) => w.paginatedResults).flat(1);
+    if (gameType === GameType.VoiceCall) {
+      return this.getVoiceCallWords(words);
+    } else if (gameType === GameType.Sprint) {
+      return this.getSprintWords(words);
+    }
+    throw new Error('Invalid game type');
+  }
+
+  private getSprintWords(words: IPaginatedResults[]): GameWord[][] {
+    let other: IPaginatedResults[] = [];
+    let targetWords: IPaginatedResults[] = [];
+
     if (this.context) {
       // go from the Textbook, use only subset of pages and don't use learned words
       const page = this.context.page;
-      words = words.filter((w) => w.page === page && (w.userWord === undefined || !w.userWord.optional.study));
+      targetWords = this.getUnstudiedWords(words, page);
+      other = words.filter((w) => w.page < page && (w.userWord === undefined || !w.userWord.optional.study));
+    } else {
+      const page = Math.round(this.getRandomPage());
+      targetWords = words.filter((w) => w.page === page);
+      other = words.filter((w) => w.page < page);
     }
-    return words;
+    return [targetWords, other];
+  }
+
+  private getVoiceCallWords(words: IPaginatedResults[]): GameWord[][] {
+    let targetWords: IPaginatedResults[] = [];
+    if (this.context) {
+      targetWords = this.getUnstudiedWords(words, this.context.page);
+    } else {
+      const page = Math.round(this.getRandomPage());
+      targetWords = words.filter((w) => w.page === page);
+    }
+    return [targetWords, []];
+  }
+
+  private getUnstudiedWords(words: IPaginatedResults[], page: number): IPaginatedResults[] {
+    return words.filter((w) => w.page === page && (w.userWord === undefined || !w.userWord.optional.study));
   }
 
   async processGameResults(data: GameFullResultsData): Promise<boolean> {
@@ -84,6 +74,10 @@ class UserModelHelper extends BaseModelHelper {
     this.updateEmptyStatistics(data, dateString);
 
     for (let i = 0; i < data.answers.length; i += 1) {
+      if (i >= words.length) {
+        console.debug('Invalid length of the word sequence');
+        break;
+      }
       const word: IPaginatedResults = words[i];
       if (words[i].userWord === undefined) {
         const optional = this.createNewWordOptional(word, answers[i], game, dateString);
@@ -112,7 +106,6 @@ class UserModelHelper extends BaseModelHelper {
       }
     }
 
-    console.log('!!!!', JSON.stringify(this.statistics));
     await Promise.all(newWords.map(async (w) => this.model.postUserWord(w.wordId, w.difficulty, w.optional)));
     await Promise.all(updatedWords.map(async (w) => this.model.updateUserWord(w.wordId, w.difficulty, w.optional)));
     if (this.statistics) {
@@ -138,7 +131,9 @@ class UserModelHelper extends BaseModelHelper {
     const gameStatistics: IGameStatistics | undefined = this.getTmpGameStatistics(game, date);
     if (this.statistics && gameStatistics) {
       gameStatistics.nNew += 1;
-      this.updateDeltaComplete(date, 1);
+      if (study) {
+        this.updateDeltaComplete(date, 1);
+      }
     }
 
     return optional;
@@ -198,7 +193,6 @@ class UserModelHelper extends BaseModelHelper {
     }
     const { game } = data;
     const games = this.statistics.optional.games;
-    console.log(game, games);
     if (!(game in games)) {
       games[game] = {};
     }
@@ -211,7 +205,6 @@ class UserModelHelper extends BaseModelHelper {
         streak: 0,
       };
     }
-    console.log('STAT', this.statistics);
     if (!(dateString in this.statistics.optional.deltaComplete)) {
       this.statistics.optional.deltaComplete[dateString] = 0;
     }
@@ -235,6 +228,13 @@ class UserModelHelper extends BaseModelHelper {
   private getDeltaComplete(): Record<string, number> | undefined {
     return this.statistics?.optional.deltaComplete;
   }
-}
 
-export { ModelHelper, UserModelHelper };
+  private async getSavedUserStatistics(): Promise<void> {
+    try {
+      const statistics = await this.model.getUserStatistics();
+      this.statistics = statistics;
+    } catch (err) {
+      this.statistics = createEmptyStatistics();
+    }
+  }
+}

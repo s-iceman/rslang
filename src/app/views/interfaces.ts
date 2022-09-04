@@ -29,7 +29,7 @@ interface IGameView extends IView {
   startGame(data: GameCardData): void;
   endGame(results: string[][], score: number): void;
   updateScore(score: number): void;
-  updatePoints(points: number): void;
+  updatePoints(points: number, isCorrect?: boolean): void;
   toggleStileCard(isCorrect: boolean): void;
 }
 
