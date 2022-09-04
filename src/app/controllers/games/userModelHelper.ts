@@ -131,7 +131,9 @@ export class UserModelHelper extends BaseModelHelper {
     const gameStatistics: IGameStatistics | undefined = this.getTmpGameStatistics(game, date);
     if (this.statistics && gameStatistics) {
       gameStatistics.nNew += 1;
-      this.updateDeltaComplete(date, 1);
+      if (study) {
+        this.updateDeltaComplete(date, 1);
+      }
     }
 
     return optional;
