@@ -173,7 +173,6 @@ export default class AppModel extends State {
   }
 
   async setUserStatistics(userStatistics: IStatistics) {
-    console.log(JSON.stringify(userStatistics));
     const url = `${this.usersUrl}/${this.getUserId()}/statistics`;
     const statistics = {
       learnedWords: 0,

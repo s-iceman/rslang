@@ -1,4 +1,4 @@
-export enum ViewPath {
+enum ViewPath {
   MAIN = '/',
   TEXTBOOK = '/textbook',
   STATISTICS = '/statistics',
@@ -13,4 +13,9 @@ const MIN_PAGE_WORDS = 0;
 const MAX_PAGE_WORDS = 29;
 const MAX_GROUP_WORDS = 6;
 
-export { MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS };
+enum GameCustomEvents {
+  ShowGame = 'ShowGameEvent',
+  EndGame = 'EndGame',
+}
+
+export { ViewPath, GameCustomEvents, MIN_PAGE_WORDS, MAX_GROUP_WORDS, MAX_PAGE_WORDS };

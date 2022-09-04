@@ -7,6 +7,7 @@ import AppModel from '../models/AppModel';
 import { GameController } from './games/gameController';
 import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
+import { GameCustomEvents } from '../common/constants';
 
 class AppController implements IAppController {
   private model: AppModel;
@@ -48,7 +49,7 @@ class AppController implements IAppController {
     window.addEventListener('hashchange', () => {
       this.changeUrl().catch((err) => console.debug(err));
     });
-    window.addEventListener('ShowGameEvent', (event) => {
+    window.addEventListener(GameCustomEvents.ShowGame, (event) => {
       const options = (<CustomEvent>event).detail as StartGameOptions;
       this.changeUrl(options.game, JSON.stringify(options)).catch((err) => console.debug(err));
       this.router.updateViewUrl(options.game.toString());

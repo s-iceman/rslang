@@ -112,7 +112,6 @@ class UserModelHelper extends BaseModelHelper {
       }
     }
 
-    console.log('!!!!', JSON.stringify(this.statistics));
     await Promise.all(newWords.map(async (w) => this.model.postUserWord(w.wordId, w.difficulty, w.optional)));
     await Promise.all(updatedWords.map(async (w) => this.model.updateUserWord(w.wordId, w.difficulty, w.optional)));
     if (this.statistics) {
@@ -198,7 +197,6 @@ class UserModelHelper extends BaseModelHelper {
     }
     const { game } = data;
     const games = this.statistics.optional.games;
-    console.log(game, games);
     if (!(game in games)) {
       games[game] = {};
     }
@@ -211,7 +209,6 @@ class UserModelHelper extends BaseModelHelper {
         streak: 0,
       };
     }
-    console.log('STAT', this.statistics);
     if (!(dateString in this.statistics.optional.deltaComplete)) {
       this.statistics.optional.deltaComplete[dateString] = 0;
     }

@@ -1,9 +1,10 @@
-import { IApiWords } from '../../models/interfaces';
 import { GameType } from '../constants';
 import { IGameEngine } from './../interfaces';
 import { GameCardData, GameWord, GameFullResultsData } from './../types';
 
 const COEF = 10;
+
+const MAX_POINTS = 80;
 
 function shuffle<T>(arr: T[]): T[] {
   return arr
@@ -131,7 +132,9 @@ class SprintEngine extends GameEngine {
       this.total += this.singleAnswerScore * COEF;
       if (this.streakLength % 3 === 0) {
         this.streakLength = 0;
-        this.singleAnswerScore *= 2;
+        if (this.singleAnswerScore * COEF <= MAX_POINTS / 2) {
+          this.singleAnswerScore *= 2;
+        }
       }
     } else {
       this.streakLength = 0;

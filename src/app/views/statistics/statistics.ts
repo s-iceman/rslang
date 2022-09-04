@@ -4,9 +4,17 @@ import { IStatistics } from '../../models/interfaces';
 import { View } from '../view';
 import { IStatisticsController } from '../../controllers/interfaces';
 import CreateMarkup from '../common/createMarkup';
-import { getDayShortStat, getGameShortStat } from '../../controllers/games/gameUtis';
+import {
+  getDayShortStat,
+  getGameShortStat,
+  getLastNDays,
+  getNewWordsLongStat,
+  getDeltaWordsLongStat,
+} from '../../controllers/games/gameUtis';
 import { Chart, registerables } from 'chart.js';
 import { EMPTY_GAME_DATA, GameType } from '../../controllers/constants';
+
+const N_DAYS = 7;
 
 export class StatisticsView extends View implements IStatisticsView {
   private ctrl: IStatisticsController | null;
@@ -49,6 +57,8 @@ export class StatisticsView extends View implements IStatisticsView {
       this.createWordsShortStat(stat);
       this.createSprintShortStat(stat);
       this.createVoiceCallShortStat(stat);
+      this.createNewWordsLongStat(stat);
+      this.createDeltaWordsLongStat(stat);
     }
   }
 
@@ -68,7 +78,6 @@ export class StatisticsView extends View implements IStatisticsView {
 
     this.createDaysShortStat(block, [data.nNew, data.nStudy], ['Новых слов', 'Изученных слов']);
     this.createAnswersShortStat(block, data.correctAnswers);
-    console.log('HERE');
     this.container?.append(block);
   }
 
@@ -94,11 +103,48 @@ export class StatisticsView extends View implements IStatisticsView {
     this.container?.append(block);
   }
 
+  private createNewWordsLongStat(stat: IStatistics): void {
+    const block: HTMLElement = document.createElement('div');
+    block.className = 'stat__block';
+    new CreateMarkup(block, 'div', 'stat__title', `Статистика за ${N_DAYS} дней`);
+    this.createLongStatChart(block, getNewWordsLongStat(stat, N_DAYS));
+    this.container?.append(block);
+  }
+
+  private createDeltaWordsLongStat(stat: IStatistics): void {
+    const block: HTMLElement = document.createElement('div');
+    block.className = 'stat__block';
+    new CreateMarkup(block, 'div', 'stat__title', `Рост числа изученных слов за ${N_DAYS} дней`);
+    this.createLongStatChart(block, getDeltaWordsLongStat(stat, N_DAYS));
+    this.container?.append(block);
+  }
+
+  private createLongStatChart(parent: HTMLElement, data: number[]): void {
+    const block: HTMLElement = document.createElement('div');
+    block.className = 'stat__chart';
+    const canvas = new CreateMarkup(block, 'canvas');
+
+    new Chart(<HTMLCanvasElement>canvas.node, {
+      type: 'line',
+      data: {
+        labels: getLastNDays(N_DAYS),
+        datasets: [
+          {
+            data: data,
+            borderColor: 'rgb(75, 192, 192)',
+            label: 'Новые слова',
+            fill: false,
+          },
+        ],
+      },
+    });
+    parent.append(block);
+  }
+
   private createDaysShortStat(parent: HTMLElement, stat: number[], labels: string[]): void {
     const block: HTMLElement = document.createElement('div');
     block.className = 'stat__chart';
     const canvas = new CreateMarkup(block, 'canvas');
-    canvas.node.id = 'days-stat';
 
     new Chart(<HTMLCanvasElement>canvas.node, {
       type: 'bar',
@@ -128,7 +174,6 @@ export class StatisticsView extends View implements IStatisticsView {
     block.classList.add('stat__chart');
     block.classList.add('stat__chart_doughnut');
     const canvas = new CreateMarkup(block, 'canvas');
-    canvas.node.id = 'answers-stat';
 
     new Chart(<HTMLCanvasElement>canvas.node, {
       type: 'doughnut',
@@ -145,20 +190,4 @@ export class StatisticsView extends View implements IStatisticsView {
     });
     parent.append(block);
   }
-
-  /*
-  private visualize(name, parameter, caption, statistics=statistics, nLastDays=3) {
-    let shortTermStat = getShortTermStatistics(statistics, nLastDays);
-    let xs = iterLastNDays(nLastDays);
-    let ys = xs.map(x => (x in shortTermStat.games[name]) ? shortTermStat.games[name][x][parameter] : 0);
-    let uuid = name + "_" + parameter;
-    let ctx = document.getElementById(uuid);
-    ctx.width = "100px";
-    ctx.height = "100px";
-    const myChart = new Chart(ctx, {
-        type: "line",
-        data: { labels: xs, datasets: [{ label: caption, data: ys, borderColor: 'rgb(255, 0, 0)' }] }
-    });
-  }
-  */
 }
