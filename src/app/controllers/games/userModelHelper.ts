@@ -7,9 +7,9 @@ import { UnitLevels, GameType } from '../constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
 
-const LAST_N_CORRECT_TO_COMPLETE = 5;
+const LAST_N_CORRECT_TO_COMPLETE = 3;
 
-const LAST_N_CORRECT_TO_COMPLETE_HARD = 7;
+const LAST_N_CORRECT_TO_COMPLETE_HARD = 5;
 
 export class UserModelHelper extends BaseModelHelper {
   private statistics: IStatistics | null;
