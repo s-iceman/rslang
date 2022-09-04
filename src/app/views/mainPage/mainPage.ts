@@ -31,9 +31,6 @@ export class MainPage extends View implements IView {
     containerMain.innerHTML = innerText();
     this.root.append(containerMain);
 
-    const text: HTMLDivElement = document.createElement('div');
-    text.textContent = 'MAIN PAGE';
-
     return [hero, containerMain];
   }
 }
