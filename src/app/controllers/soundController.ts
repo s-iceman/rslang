@@ -10,9 +10,9 @@ export class SoundController {
 
   async startPlay(isCorrect: boolean): Promise<void> {
     if (isCorrect) {
-      await this.playerCorrect.play();
+      await this.playerCorrect.play().catch((err) => console.debug(err));
     } else {
-      await this.playerIncorrect.play();
+      await this.playerIncorrect.play().catch((err) => console.debug(err));
     }
   }
 

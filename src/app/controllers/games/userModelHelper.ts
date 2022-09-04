@@ -74,6 +74,10 @@ export class UserModelHelper extends BaseModelHelper {
     this.updateEmptyStatistics(data, dateString);
 
     for (let i = 0; i < data.answers.length; i += 1) {
+      if (i >= words.length) {
+        console.debug('Invalid length of the word sequence');
+        break;
+      }
       const word: IPaginatedResults = words[i];
       if (words[i].userWord === undefined) {
         const optional = this.createNewWordOptional(word, answers[i], game, dateString);
