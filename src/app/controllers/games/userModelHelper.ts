@@ -1,17 +1,9 @@
-import { IModelHelper } from '../interfaces';
+import { BaseModelHelper } from './modelHelper';
 import AppModel from '../../models/AppModel';
 import { longestStreak, createEmptyStatistics, dateToString } from './gameUtis';
 import { StartGameOptions, GameWord, GameFullResultsData } from '../types';
-import {
-  IApiWords,
-  IOptional,
-  IPaginatedResults,
-  IStatistics,
-  IUserWord,
-  IGameStatistics,
-} from '../../models/interfaces';
+import { IOptional, IPaginatedResults, IStatistics, IUserWord, IGameStatistics } from '../../models/interfaces';
 import { UnitLevels, GameType } from '../constants';
-import { MAX_PAGE_WORDS } from '../../common/constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
 
@@ -19,46 +11,7 @@ const LAST_N_CORRECT_TO_COMPLETE = 5;
 
 const LAST_N_CORRECT_TO_COMPLETE_HARD = 7;
 
-abstract class BaseModelHelper implements IModelHelper {
-  protected model: AppModel;
-
-  protected context: StartGameOptions | undefined;
-
-  constructor(model: AppModel, context?: StartGameOptions) {
-    this.model = model;
-    this.context = context;
-  }
-
-  abstract getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]>;
-
-  protected getRandomPage(): number {
-    return Math.round(Math.random() * MAX_PAGE_WORDS);
-  }
-}
-
-class ModelHelper extends BaseModelHelper {
-  async getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]> {
-    let other: IApiWords[] = [];
-    let targetWords: IApiWords[] = [];
-    const page = (level !== undefined ? this.getRandomPage() : this.context?.page) || 0;
-    const unit = level !== undefined ? level : this.context?.unit;
-
-    if (gameType === GameType.Sprint) {
-      const availablePages = [...Array(page).keys()];
-      targetWords = await this.model.getWords(unit, page);
-      const rawOther = await Promise.all(availablePages.map(async (p) => this.model.getWords(unit, p)));
-      other = rawOther.flat(1);
-    } else if (gameType === GameType.VoiceCall) {
-      targetWords = await this.model.getWords(unit, page);
-    } else {
-      throw new Error('Invalid game type');
-    }
-    console.log('!!!!', targetWords.length, other.length);
-    return [targetWords, other];
-  }
-}
-
-class UserModelHelper extends BaseModelHelper {
+export class UserModelHelper extends BaseModelHelper {
   private statistics: IStatistics | null;
 
   constructor(model: AppModel, context?: StartGameOptions) {
@@ -67,41 +20,45 @@ class UserModelHelper extends BaseModelHelper {
   }
 
   async getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]> {
-    try {
-      const statistics = await this.model.getUserStatistics();
-      this.statistics = statistics;
-    } catch (err) {
-      this.statistics = createEmptyStatistics();
-    }
+    await this.getSavedUserStatistics();
+
     const group = level !== undefined ? level : this.context?.unit || MIN_GROUP_WORDS;
     const wordsData = await this.model.getAllUserAggregatedWords(group);
     const words = wordsData.map((w) => w.paginatedResults).flat(1);
+    if (gameType === GameType.VoiceCall) {
+      return this.getVoiceCallWords(words);
+    } else if (gameType === GameType.Sprint) {
+      return this.getSprintWords(words);
+    }
+    throw new Error('Invalid game type');
+  }
+
+  private getSprintWords(words: IPaginatedResults[]): GameWord[][] {
     let other: IPaginatedResults[] = [];
     let targetWords: IPaginatedResults[] = [];
-    if (gameType === GameType.VoiceCall) {
-      if (this.context) {
-        targetWords = this.getUnstudiedWords(words, this.context.page);
-      } else {
-        targetWords = words.filter((w) => w.page === Math.round(this.getRandomPage()));
-        console.log(targetWords.length);
-      }
-    } else if (gameType === GameType.Sprint) {
-      if (this.context) {
-        // go from the Textbook, use only subset of pages and don't use learned words
-        const page = this.context.page;
-        targetWords = this.getUnstudiedWords(words, page);
-        other = words.filter((w) => w.page < page && (w.userWord === undefined || !w.userWord.optional.study));
-      } else {
-        const page = Math.round(this.getRandomPage());
-        targetWords = words.filter((w) => w.page === page);
-        other = words.filter((w) => w.page < page);
-      }
-    } else {
-      throw new Error('Invalid game type');
-    }
-    console.log('!!!!', targetWords.length, other.length);
 
+    if (this.context) {
+      // go from the Textbook, use only subset of pages and don't use learned words
+      const page = this.context.page;
+      targetWords = this.getUnstudiedWords(words, page);
+      other = words.filter((w) => w.page < page && (w.userWord === undefined || !w.userWord.optional.study));
+    } else {
+      const page = Math.round(this.getRandomPage());
+      targetWords = words.filter((w) => w.page === page);
+      other = words.filter((w) => w.page < page);
+    }
     return [targetWords, other];
+  }
+
+  private getVoiceCallWords(words: IPaginatedResults[]): GameWord[][] {
+    let targetWords: IPaginatedResults[] = [];
+    if (this.context) {
+      targetWords = this.getUnstudiedWords(words, this.context.page);
+    } else {
+      const page = Math.round(this.getRandomPage());
+      targetWords = words.filter((w) => w.page === page);
+    }
+    return [targetWords, []];
   }
 
   private getUnstudiedWords(words: IPaginatedResults[], page: number): IPaginatedResults[] {
@@ -265,6 +222,13 @@ class UserModelHelper extends BaseModelHelper {
   private getDeltaComplete(): Record<string, number> | undefined {
     return this.statistics?.optional.deltaComplete;
   }
-}
 
-export { ModelHelper, UserModelHelper };
+  private async getSavedUserStatistics(): Promise<void> {
+    try {
+      const statistics = await this.model.getUserStatistics();
+      this.statistics = statistics;
+    } catch (err) {
+      this.statistics = createEmptyStatistics();
+    }
+  }
+}

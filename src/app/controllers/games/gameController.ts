@@ -5,10 +5,12 @@ import { IGameView, ViewOrNotInit } from './../../views/interfaces';
 import { BaseGameView } from '../../views/games/common/baseGame';
 import { GameType } from './../constants';
 import { UnitLevels } from './../constants';
-import { SprintEngine, AudioCallEngine } from './gameEngines';
+import { AudioCallEngine } from './gameEngines';
+import { SprintEngine } from './sprintEngine';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
-import { ModelHelper, UserModelHelper } from './modelHelpers';
+import { ModelHelper } from './modelHelper';
+import { UserModelHelper } from './userModelHelper';
 import { GameCustomEvents } from '../../common/constants';
 
 export class GameController extends State implements IGameController {
