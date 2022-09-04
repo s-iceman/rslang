@@ -131,6 +131,7 @@ export function innerText(): string {
                <li><span>Прогресс изучения</span></li>
                <li><span>Изученные слова</span></li>
                 <li><span>Стилизация игр</span></li>
+                <li><span>Деплой бэкенда</span></li>
             </ul>
            </div>
            <div class="social">
