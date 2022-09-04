@@ -9,6 +9,7 @@ import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
 import { LoginController } from './loginController';
 import { GameCustomEvents } from '../common/constants';
+import { baseUrl } from './constants';
 
 class AppController implements IAppController {
   private model: AppModel;
@@ -24,7 +25,7 @@ class AppController implements IAppController {
   private activeView: ViewOrNotInit;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8082';
+    this.baseUrl = baseUrl;
     this.router = new Router(this.baseUrl);
     this.model = new AppModel(this.baseUrl);
 

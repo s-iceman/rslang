@@ -1,6 +1,7 @@
 import { LoginModel } from '../models/loginModel';
 import { LoginView } from '../views/loginPage/login';
 import { IAutentificatedUser, INewUserRegistration, IUserSignIn } from '../views/loginPage/types';
+import { baseUrl } from './constants';
 
 export class LoginController {
   private baseUrl: string;
@@ -10,7 +11,7 @@ export class LoginController {
   private urlUserCreate: string;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8082';
+    this.baseUrl = baseUrl;
     this.urlUserCreate = `${this.baseUrl}/users`;
     this.urlSignin = `${this.baseUrl}/signin`;
   }
