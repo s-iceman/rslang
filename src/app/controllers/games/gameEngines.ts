@@ -26,6 +26,8 @@ function takeFirstNWithCondition<T>(arr: T[], startIdx: number, n: number, condi
 }
 
 abstract class GameEngine implements IGameEngine {
+  protected allWords: GameWord[][];
+
   protected words: GameWord[];
 
   protected userAnswers: boolean[];
@@ -37,6 +39,7 @@ abstract class GameEngine implements IGameEngine {
   protected idx: number;
 
   constructor() {
+    this.allWords = [];
     this.words = [];
     this.userAnswers = [];
     this.suggestedTranslations = [];
@@ -48,7 +51,7 @@ abstract class GameEngine implements IGameEngine {
 
   abstract getPoints(): number;
 
-  abstract preprocessWords(words: GameWord[]): void;
+  abstract preprocessWords(words: GameWord[][]): void;
 
   abstract checkAnswer(option: number): boolean;
 
@@ -76,6 +79,7 @@ abstract class GameEngine implements IGameEngine {
   }
 
   clear(): void {
+    this.allWords = [];
     this.words = [];
     this.userAnswers = [];
     this.suggestedTranslations = [];
@@ -103,9 +107,10 @@ class SprintEngine extends GameEngine {
     this.singleAnswerScore = 1;
   }
 
-  preprocessWords(words: GameWord[]): void {
-    this.words = words;
-    this.suggestedTranslations = words.map((w) => [w.wordTranslate]);
+  preprocessWords(words: GameWord[][]): void {
+    this.allWords = words;
+    this.words = words[0];
+    this.suggestedTranslations = words[0].map((w) => [w.wordTranslate]);
     this.correctOptions = words.map(() => (Math.random() >= 0.5 ? 0 : 1));
     const randomIndices: number[] = shuffle<number>([...Array(words.length).keys()]);
     this.correctOptions.forEach((option, i) => {
@@ -197,13 +202,14 @@ class AudioCallEngine extends GameEngine {
     this.singleAnswerScore = 1;
   }
 
-  preprocessWords(words: GameWord[]): void {
-    this.words = words;
+  preprocessWords(words: GameWord[][]): void {
+    this.allWords = words;
+    this.words = words[0];
     const correctWord = new Array<string>();
-    const optionsBtnTranslation = words.map((w) => [w.wordTranslate]);
+    const optionsBtnTranslation = words[0].map((w) => [w.wordTranslate]);
     optionsBtnTranslation.forEach((element) => {
       correctWord.push(element[0]);
-      const allWordsExcludetCurrent = words.filter((w) => w.wordTranslate !== element[0]);
+      const allWordsExcludetCurrent = words[0].filter((w) => w.wordTranslate !== element[0]);
       const wordsForOptions = shuffle(allWordsExcludetCurrent).slice(0, 4);
       wordsForOptions.forEach((el) => {
         element.push(el.wordTranslate);

@@ -71,7 +71,7 @@ export class GameController extends State implements IGameController {
 
   async startGame(level?: UnitLevels): Promise<void> {
     window.addEventListener(GameCustomEvents.EndGame, this.onEndGame);
-    const words = await this.modelHelper?.getWords(level);
+    const words = await this.modelHelper?.getWords(this.gameType, level);
     if (!words || words.length === 0 || !this.gameEngine) {
       throw new Error('Invalid list of the words');
     }

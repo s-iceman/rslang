@@ -10,7 +10,7 @@ import {
   IUserWord,
   IGameStatistics,
 } from '../../models/interfaces';
-import { UnitLevels } from '../constants';
+import { UnitLevels, GameType } from '../constants';
 import { MAX_PAGE_WORDS } from '../../common/constants';
 import { MIN_GROUP_WORDS } from '../../models/constants';
 import { DifficultyWord } from './../constants';
@@ -29,23 +29,32 @@ abstract class BaseModelHelper implements IModelHelper {
     this.context = context;
   }
 
-  abstract getWords(level?: UnitLevels): Promise<GameWord[]>;
+  abstract getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]>;
 
   protected getRandomPage(): number {
-    return Math.random() * MAX_PAGE_WORDS;
+    return Math.round(Math.random() * MAX_PAGE_WORDS);
   }
 }
 
 class ModelHelper extends BaseModelHelper {
-  async getWords(level?: UnitLevels): Promise<GameWord[]> {
-    let words: IApiWords[];
-    if (level !== undefined) {
-      const page = this.getRandomPage();
-      words = await this.model.getWords(level, page);
+  async getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]> {
+    let other: IApiWords[] = [];
+    let targetWords: IApiWords[] = [];
+    const page = (level !== undefined ? this.getRandomPage() : this.context?.page) || 0;
+    const unit = level !== undefined ? level : this.context?.unit;
+
+    if (gameType === GameType.Sprint) {
+      const availablePages = [...Array(page).keys()];
+      targetWords = await this.model.getWords(unit, page);
+      const rawOther = await Promise.all(availablePages.map(async (p) => this.model.getWords(unit, p)));
+      other = rawOther.flat(1);
+    } else if (gameType === GameType.VoiceCall) {
+      targetWords = await this.model.getWords(unit, page);
     } else {
-      words = await this.model.getWords(this.context?.unit, this.context?.page);
+      throw new Error('Invalid game type');
     }
-    return words;
+    console.log('!!!!', targetWords.length, other.length);
+    return [targetWords, other];
   }
 }
 
@@ -57,7 +66,7 @@ class UserModelHelper extends BaseModelHelper {
     this.statistics = null;
   }
 
-  async getWords(level?: UnitLevels): Promise<GameWord[]> {
+  async getWords(gameType: GameType, level?: UnitLevels): Promise<GameWord[][]> {
     try {
       const statistics = await this.model.getUserStatistics();
       this.statistics = statistics;
@@ -66,13 +75,37 @@ class UserModelHelper extends BaseModelHelper {
     }
     const group = level !== undefined ? level : this.context?.unit || MIN_GROUP_WORDS;
     const wordsData = await this.model.getAllUserAggregatedWords(group);
-    let words = wordsData.map((w) => w.paginatedResults).flat(1);
-    if (this.context) {
-      // go from the Textbook, use only subset of pages and don't use learned words
-      const page = this.context.page;
-      words = words.filter((w) => w.page === page && (w.userWord === undefined || !w.userWord.optional.study));
+    const words = wordsData.map((w) => w.paginatedResults).flat(1);
+    let other: IPaginatedResults[] = [];
+    let targetWords: IPaginatedResults[] = [];
+    if (gameType === GameType.VoiceCall) {
+      if (this.context) {
+        targetWords = this.getUnstudiedWords(words, this.context.page);
+      } else {
+        targetWords = words.filter((w) => w.page === Math.round(this.getRandomPage()));
+        console.log(targetWords.length);
+      }
+    } else if (gameType === GameType.Sprint) {
+      if (this.context) {
+        // go from the Textbook, use only subset of pages and don't use learned words
+        const page = this.context.page;
+        targetWords = this.getUnstudiedWords(words, page);
+        other = words.filter((w) => w.page < page && (w.userWord === undefined || !w.userWord.optional.study));
+      } else {
+        const page = Math.round(this.getRandomPage());
+        targetWords = words.filter((w) => w.page === page);
+        other = words.filter((w) => w.page < page);
+      }
+    } else {
+      throw new Error('Invalid game type');
     }
-    return words;
+    console.log('!!!!', targetWords.length, other.length);
+
+    return [targetWords, other];
+  }
+
+  private getUnstudiedWords(words: IPaginatedResults[], page: number): IPaginatedResults[] {
+    return words.filter((w) => w.page === page && (w.userWord === undefined || !w.userWord.optional.study));
   }
 
   async processGameResults(data: GameFullResultsData): Promise<boolean> {
