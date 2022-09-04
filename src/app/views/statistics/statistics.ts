@@ -107,7 +107,7 @@ export class StatisticsView extends View implements IStatisticsView {
     const block: HTMLElement = document.createElement('div');
     block.className = 'stat__block';
     new CreateMarkup(block, 'div', 'stat__title', `Статистика за ${N_DAYS} дней`);
-    this.createLongStatChart(block, getNewWordsLongStat(stat, N_DAYS));
+    this.createLongStatChart(block, getNewWordsLongStat(stat, N_DAYS), 'Новые слова');
     this.container?.append(block);
   }
 
@@ -115,11 +115,11 @@ export class StatisticsView extends View implements IStatisticsView {
     const block: HTMLElement = document.createElement('div');
     block.className = 'stat__block';
     new CreateMarkup(block, 'div', 'stat__title', `Рост числа изученных слов за ${N_DAYS} дней`);
-    this.createLongStatChart(block, getDeltaWordsLongStat(stat, N_DAYS));
+    this.createLongStatChart(block, getDeltaWordsLongStat(stat, N_DAYS), 'Изученные слова');
     this.container?.append(block);
   }
 
-  private createLongStatChart(parent: HTMLElement, data: number[]): void {
+  private createLongStatChart(parent: HTMLElement, data: number[], label: string): void {
     const block: HTMLElement = document.createElement('div');
     block.className = 'stat__chart';
     const canvas = new CreateMarkup(block, 'canvas');
@@ -132,7 +132,7 @@ export class StatisticsView extends View implements IStatisticsView {
           {
             data: data,
             borderColor: 'rgb(75, 192, 192)',
-            label: 'Новые слова',
+            label: label,
             fill: false,
           },
         ],

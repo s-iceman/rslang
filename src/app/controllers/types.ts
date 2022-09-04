@@ -31,4 +31,17 @@ type GameFullResultsData = {
   score?: number;
 };
 
-export { TextBookState, GameWordsData, GameCardData, StartGameOptions, GameWord, GameFullResultsData };
+type ProcessedWordsGroup = {
+  correctOptions: number[];
+  suggestedTranslations: string[][];
+};
+
+export {
+  TextBookState,
+  GameWordsData,
+  GameCardData,
+  StartGameOptions,
+  GameWord,
+  GameFullResultsData,
+  ProcessedWordsGroup,
+};

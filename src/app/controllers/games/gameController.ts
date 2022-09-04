@@ -5,10 +5,12 @@ import { IGameView, ViewOrNotInit } from './../../views/interfaces';
 import { BaseGameView } from '../../views/games/common/baseGame';
 import { GameType } from './../constants';
 import { UnitLevels } from './../constants';
-import { SprintEngine, AudioCallEngine } from './gameEngines';
+import { AudioCallEngine } from './gameEngines';
+import { SprintEngine } from './sprintEngine';
 import { SoundController } from './../soundController';
 import { StartGameOptions } from './../types';
-import { ModelHelper, UserModelHelper } from './modelHelpers';
+import { ModelHelper } from './modelHelper';
+import { UserModelHelper } from './userModelHelper';
 import { GameCustomEvents } from '../../common/constants';
 
 export class GameController extends State implements IGameController {
@@ -71,7 +73,7 @@ export class GameController extends State implements IGameController {
 
   async startGame(level?: UnitLevels): Promise<void> {
     window.addEventListener(GameCustomEvents.EndGame, this.onEndGame);
-    const words = await this.modelHelper?.getWords(level);
+    const words = await this.modelHelper?.getWords(this.gameType, level);
     if (!words || words.length === 0 || !this.gameEngine) {
       throw new Error('Invalid list of the words');
     }

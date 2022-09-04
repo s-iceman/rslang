@@ -1,5 +1,5 @@
 import { ViewOrNotInit } from '../views/interfaces';
-import { UnitLevels } from './constants';
+import { UnitLevels, GameType } from './constants';
 import { IApiWords, IStatistics } from './../models/interfaces';
 import { GameCardData, GameWord, GameFullResultsData } from './types';
 
@@ -36,7 +36,7 @@ interface IStatisticsController extends IController {
 }
 
 interface IGameEngine {
-  preprocessWords(words: GameWord[]): void;
+  preprocessWords(words: GameWord[][]): void;
   checkAnswer(option: number): boolean;
   getNextWord(): GameCardData | undefined;
   getResults(): string[][];
@@ -47,7 +47,7 @@ interface IGameEngine {
 }
 
 interface IModelHelper {
-  getWords(level?: UnitLevels): Promise<GameWord[]>;
+  getWords(gameType?: GameType, level?: UnitLevels): Promise<GameWord[][]>;
 }
 
 interface IRouter {

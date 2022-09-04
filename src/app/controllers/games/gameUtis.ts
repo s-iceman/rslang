@@ -1,6 +1,25 @@
 import { IGameStatistics, IStatistics, ICommonShortStat, IGameShortStat } from '../../models/interfaces';
 import { GameType, EMPTY_GAME_DATA } from '../constants';
 
+function shuffle<T>(arr: T[]): T[] {
+  return arr
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+}
+
+function takeFirstNWithCondition<T>(arr: T[], startIdx: number, n: number, condition: (T) => boolean) {
+  const output: T[] = [];
+  let idx = startIdx;
+  while (output.length < n && idx < arr.length) {
+    if (condition(arr[idx])) {
+      output.push(arr[idx]);
+    }
+    idx += 1;
+  }
+  return output;
+}
+
 const longestStreak = (statuses: boolean[]) => {
   let i = 0;
   let j = 0;
@@ -124,6 +143,8 @@ const getNewWordsLongStat = (stat: IStatistics, n: number): number[] => {
 };
 
 export {
+  shuffle,
+  takeFirstNWithCondition,
   longestStreak,
   createEmptyStatistics,
   dateToString,
