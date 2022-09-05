@@ -99,7 +99,6 @@ export class LoginView extends View implements IView {
     a.classList.add('close');
     a.innerHTML = 'ok';
     a.addEventListener('click', () => {
-      console.log('da');
       document.querySelector('.pop-up')?.remove();
       reload ? window.location.reload() : 0;
     });
