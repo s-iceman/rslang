@@ -1,0 +1,239 @@
+.header{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.header::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 2;
+}
+
+.header-container{
+    display: flex;
+    justify-content: center;
+}
+
+.header__body{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 8rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header__logo{
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+    text-decoration: none;
+    color: #fff;
+    font-size: 2.8rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+}
+
+.header__menu{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__list{
+    display: flex;
+    position: relative;
+    z-index: 2;
+    list-style: none;
+    align-items: center;
+}
+
+.header__list li{
+    list-style: none;
+    margin: 0 0 0 1rem;
+}
+
+.header__link,.dropdown,.dropbtn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 .4rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    transition: 0.3s;
+    text-transform: uppercase;
+    position: relative;
+    text-decoration: none;
+}
+
+.login{
+    padding: .8rem 2.5rem;
+    margin-left: 1.2rem;
+    border-radius: .4rem;
+    color: #fff;
+    font-weight: 400;
+    font-family: "Poppins", sans-serif;
+    border: .2rem solid #5c9f24;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.header__list>li>a:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: .2rem;
+    bottom: -.6rem;
+    left: 0;
+    background-color: #5c9f24;
+    visibility: hidden;
+    width: 0;
+    transition: all 0.3s ease-in-out 0s;
+    z-index: 999;
+}
+
+.header__list a:hover:before, .header__list li:hover>a:before, .header__list:before {
+    visibility: visible;
+    width: 100%;
+    
+}
+
+/* Header burger*/
+
+.header__burger{
+    display: none;
+}
+
+@media(max-width:768px){
+    .header__body{
+        height: 5rem;
+    }
+    .header__burger{
+        display: block;
+        position: relative;
+        width: 3rem;
+        height: 2rem;
+        z-index: 3;
+    }
+    .header__burger span{
+        position: absolute;
+        background-color: #fff;
+        left: 0;
+        width: 100%;
+        height: .2rem;
+        top: .9rem;
+        transition: all 0.3s ease 0s;
+    }
+    .header__burger:before,
+    .header__burger:after{
+        content: '';
+        background-color: #fff;
+        position: absolute;
+        width: 100%;
+        height: .2rem;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+    .header__burger:before{
+        top: 0;
+    }
+    .header__burger:after{
+        bottom: 0;
+    }
+
+    .header__burger.active:before{
+        transform:rotate(45deg);
+        top: .9rem
+    }
+
+    .header__burger.active span{
+        transform: scale(0);
+    }
+
+    .header__burger.active:after{
+        transform:rotate(-45deg);
+        bottom: .9rem;
+    }
+    .header__menu{
+        position: fixed;
+        top: -100%;
+        right: 0;
+        width: 15rem;
+        height: 40rem;
+        background: rgba(0, 0, 0, 0.75);
+        padding: 7rem 1.5rem 2rem 1.5remx;
+        transition: all 0.3s ease 0.3s;
+        color: #f1f1f1;
+    }
+
+    .header__menu.active{
+        top:0;
+        transition: all 0.3s ease 0.3s;
+    }
+
+    .header__list{
+        display: block;
+    }
+    .header__list li{
+        margin: 0 0 2rem 0;
+    }
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #4caf4f00;
+    border: none;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown_content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 10rem;
+    box-shadow: 0 .8rem 1.6rem 0 rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown_content a {
+    color: white;
+    padding: 1.2rem 1.6rem;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown_content a:hover {background-color:#5c9f24;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown_content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e4100;}

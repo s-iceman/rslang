@@ -1,0 +1,199 @@
+.textbook {
+  padding: 5rem;
+  width: 70%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  &__games {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    padding: 5rem;
+    cursor: default;
+
+    @media screen and (max-width: 768px) {
+      padding: 4rem 0;
+
+      .why-us__box {
+        width: 50%;
+        height: 100%;
+
+        &_img {
+          width: 80%;
+        }
+      }
+    }
+  }
+  
+  .games--disabled {
+    pointer-events: none;
+    opacity: 0.7;
+    transition: all .3s;
+  }
+}
+
+.textbook-nav {
+  display: flex;
+  flex-direction: row;
+  font-family: $font-main;
+  font-size: 3rem;
+  letter-spacing: 0.05rem;
+  padding-bottom: 3rem;
+
+  .textbook-nav__btn {
+    display: inline-flex;
+    width: 100%;
+    padding: 1rem;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    font-family: $font-main;
+    color: white;
+    font-weight: 500;
+    user-select: none;
+    -webkit-user-select: none;
+
+    @media(max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    &:hover {
+      color: white;
+      opacity: 90%;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+  }
+
+  .active {
+    font-weight: 700;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  }
+}
+
+.dictionary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  align-items: center;
+  font-size: 1.8rem;
+
+
+  .dictionary__card {
+    padding: 1rem;
+    background-color: rgb(248, 242, 234);
+    border-radius: 1rem;
+
+    &:hover {
+      box-shadow: rgb(38, 57, 77) 0 2rem 3rem -1rem;
+    }
+  }
+
+  .dictionary__card_beginner {
+    background-color: rgba(245, 189, 189, 0.274);
+  }
+
+  .dictionary__card_pre-intermediate {
+    background-color: rgba(246, 225, 131, 0.274);
+  }
+
+  .dictionary__card_intermediate {
+    background-color: rgba(245, 245, 147, 0.274);
+  }
+
+  .dictionary__card_upper-intermediate {
+    background-color: rgba(150, 243, 158, 0.274);
+  }
+
+  .dictionary__card_advanced {
+    background-color: rgba(147, 234, 245, 0.274);
+  }
+
+  .dictionary__card_proficient {
+    background-color: rgba(147, 149, 245, 0.274);
+  }
+
+  .dictionary__card_hard {
+    background-color: rgba(222, 147, 245, 0.274);
+  }
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: .5rem;
+  padding: 2.5rem 0;
+
+  @media screen and (max-width: 768px) {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+  }
+
+  .pagination__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 6rem;
+    height: 3rem;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 2.5rem;
+    clear: both;
+    user-select: none;
+
+    @media screen and (max-width: 768px) {
+      width: 6rem;
+      font-size: 2rem;
+    }
+  }
+
+  .active {
+    color: white;
+    font-weight: 700;
+  }
+
+  .disabled {
+    color: #90a192fa;
+    cursor:auto;
+  }
+
+  .learned {
+    background-color: rgb(187 187 187 / 70%);
+    opacity: 0.75;
+  }
+}
+
+
+.beginner {
+  background-color: $color-unit-a1;
+}
+
+.pre-intermediate {
+  background-color: $color-unit-a2;
+}
+
+.intermediate {
+  background-color: $color-unit-b1;
+}
+
+.upper-intermediate {
+  background-color: $color-unit-b2;
+}
+
+.advanced {
+  background-color: $color-unit-c1;
+}
+
+.proficient {
+  background-color: $color-unit-c2;
+}
+
+.hard {
+  background-color: $color-unit-hard;
+}
