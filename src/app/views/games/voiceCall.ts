@@ -98,9 +98,9 @@ export class VoiceCallView extends BaseGameView {
 
   createOptionBtn(data: GameCardData) {
     this.goNextBnt!.id = this.inCorrectIdForAnswersChecking;
-    this.correctWord!.innerHTML = '';
-    this.correctWordTranscription!.innerHTML = '';
-    this.correctWordTranslate!.innerHTML = '';
+    this.correctWord!.innerHTML = '<span>Слово</span>';
+    this.correctWordTranscription!.innerHTML = '<span>Транскрипция</span>';
+    this.correctWordTranslate!.innerHTML = '<span>Перевод</span>';
     this.optionsBtn?.forEach((element, index) => {
       element.node.textContent = `${index + 1}. ` + capitalizeFirstLetter(data.options[index]);
       this.optionsBtn![index].node.id = index.toString();

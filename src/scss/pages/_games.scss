@@ -63,6 +63,9 @@
   .ways-control__options {
     padding-left: 2.1rem;
     font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 
     li {
       list-style: initial;
@@ -239,6 +242,7 @@
   border: 2px #00f7d2 solid;
   border-radius: 3rem;
   font-size: 2rem;
+  padding: 1rem;
 }
 
 .result-page {

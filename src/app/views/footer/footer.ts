@@ -26,10 +26,10 @@ class Footer extends Component {
         <a target="_blank" href="https://github.com/Boffin-ux">Boris Nizameev</a>
         </div>
       </div> 
-      <div class="contacts__project">       
+      <div class="contacts__project">
       <h3 class="contacts__project__title">GitHub of project:</h3>
           <a href="https://github.com/s-iceman/rslang"  class="rslang">
-          <p class="gitHub">SpeakLang</p></a>
+          <p class="gitHub">SpeakLand</p></a>
       </div>
       <div class="footer__copyright">©<span>2022 RSLand</span></div>
         </div>

@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8082'; //https://rs-react-learnwords-example.herokuapp.com/
+const baseUrl = 'https://rs-react-learnwords-example.herokuapp.com';
 
 enum UnitLevels {
   A1 = 0,
