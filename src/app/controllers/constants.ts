@@ -1,3 +1,5 @@
+const baseUrl = 'http://localhost:8082'; //https://rs-react-learnwords-example.herokuapp.com/
+
 enum UnitLevels {
   A1 = 0,
   A2,
@@ -22,4 +24,4 @@ enum GameType {
 
 const EMPTY_GAME_DATA = -1;
 
-export { UnitLevels, DifficultyWord, USER_UNITS, GameType, EMPTY_GAME_DATA };
+export { UnitLevels, DifficultyWord, USER_UNITS, GameType, EMPTY_GAME_DATA, baseUrl };

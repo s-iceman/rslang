@@ -189,6 +189,21 @@
   }
 }
 
+.button-audio {
+  font-size: 1em;
+  padding: 1rem;
+  color: #fff;
+  border: 2px solid #06d85e88;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.button-audio:hover {
+  background-color: #29d0e6bb;
+}
+
 .game-card__btn {
   background-color: #1c97d9;
   font-size: 1.8rem;
@@ -200,6 +215,30 @@
 
 .game-card__btn_false {
   background-color: #c70026;
+}
+
+.game-word-audio {
+  display: flex;
+  min-width: 30rem;
+  height: 10rem;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.audio-correct-word__transcription,
+.audio-correct-word__translate,
+.audio-correct-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 6rem;
+  min-width: 15rem;
+  border: 2px #00f7d2 solid;
+  border-radius: 3rem;
+  font-size: 2rem;
 }
 
 .result-page {

@@ -31,7 +31,9 @@ class Footer extends Component {
           <a href="https://github.com/s-iceman/rslang"  class="rslang">
           <p class="gitHub">SpeakLang</p></a>
       </div>
-      <div class="footer__copyright">©<span>2022 RSLang</span></div>
+      <div class="footer__copyright">©<span>2022 RSLand</span></div>
+        </div>
+    </div>
   `;
 
     footerContainer.append(this.footerBody);

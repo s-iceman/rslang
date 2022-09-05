@@ -45,7 +45,6 @@ class Header extends Component {
         const menu = document.getElementsByClassName('header__menu') as HTMLCollection;
         menu[0].classList.toggle('active');
       }
-      //console.log(eventTarget);
       if (eventTarget.classList.contains('header__link')) {
         const closeBurger = document.querySelector('.header__burger');
         const closeMenu = document.querySelector('.header__menu');

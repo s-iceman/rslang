@@ -10,6 +10,7 @@ import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
 import { LoginController } from './loginController';
 import { GameCustomEvents } from '../common/constants';
+import { baseUrl } from './constants';
 import { VoiceCallView } from '../views/games/voiceCall';
 
 class AppController implements IAppController {
@@ -26,7 +27,7 @@ class AppController implements IAppController {
   private activeView: ViewOrNotInit;
 
   constructor() {
-    this.baseUrl = 'https://rs-react-learnwords-example.herokuapp.com';
+    this.baseUrl = baseUrl;
     this.router = new Router(this.baseUrl);
     this.model = new AppModel(this.baseUrl);
 
