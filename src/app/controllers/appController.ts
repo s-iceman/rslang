@@ -63,7 +63,11 @@ class AppController implements IAppController {
       return;
     }
     this.controllers.forEach((ctrl) => ctrl.registerView(this.activeView, context));
+
+    const textBookController = <ITextBookController>this.controllers[0];
+    textBookController.removeSound();
     this.activeView.render();
+
     for (const ctrl of this.controllers) {
       await ctrl.updateView().catch((err) => console.debug(err));
     }

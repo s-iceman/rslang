@@ -196,7 +196,7 @@
   box-shadow: 0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.2);
   border-radius: 2.5rem;
   transition: 0.3s;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .why-us__box:hover {
@@ -212,6 +212,7 @@
 .why-us__box_img {
   width: 20rem;
   height: 15rem;
+  flex-grow: 1;
 }
 
 .why-us__box_img img {
