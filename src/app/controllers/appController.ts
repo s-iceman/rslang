@@ -1,3 +1,4 @@
+import { SprintView } from './../views/games/sprint';
 import { ViewOrNotInit } from '../views/interfaces';
 import { IAppController, IGameController, IRouter, IStatisticsController, ITextBookController } from './interfaces';
 import { Router } from './router';
@@ -9,6 +10,7 @@ import { StatisticsController } from './statisticsController';
 import { StartGameOptions } from './types';
 import { LoginController } from './loginController';
 import { GameCustomEvents } from '../common/constants';
+import { VoiceCallView } from '../views/games/voiceCall';
 
 class AppController implements IAppController {
   private model: AppModel;
@@ -67,6 +69,16 @@ class AppController implements IAppController {
     const textBookController = <ITextBookController>this.controllers[0];
     textBookController.removeSound();
     this.activeView.render();
+
+    const getFooterBody = this.baseContainer.footer.footerBody;
+    if (
+      (this.activeView instanceof SprintView || this.activeView instanceof VoiceCallView) &&
+      !getFooterBody?.closest('footer--hidden')
+    ) {
+      getFooterBody?.classList.add('footer--hidden');
+    } else {
+      getFooterBody?.classList.remove('footer--hidden');
+    }
 
     for (const ctrl of this.controllers) {
       await ctrl.updateView().catch((err) => console.debug(err));
