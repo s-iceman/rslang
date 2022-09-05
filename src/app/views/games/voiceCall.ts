@@ -84,7 +84,7 @@ export class VoiceCallView extends BaseGameView {
     goNextBnt.node.id = this.inCorrectIdForAnswersChecking;
     this.goNextBnt = goNextBnt.node;
 
-    this.controls = new CreateMarkup(card, 'div', 'game-card__controls');
+    this.controls = new CreateMarkup(card, 'div', 'game-card__controls voice-call');
     this.optionsBtn = [];
     for (let i = 0; i < 5; i++) {
       const newOptionBtn = new CreateMarkup(this.controls.node, 'button', 'button-audio game-card__btn');

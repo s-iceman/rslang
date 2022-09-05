@@ -20,6 +20,9 @@ class StartPage implements IStartPage {
     parent.className = 'instruction__controls';
     if (isShowLevels) {
       parent.append(this.createUnitBlock());
+      if (!parent.closest('.level--show')) parent.classList.add('level--show');
+    } else {
+      parent.classList.remove('level--show');
     }
     parent.append(this.createButton());
     this.content.append(parent);

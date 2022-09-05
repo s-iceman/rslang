@@ -8,7 +8,7 @@ export class BaseContainer {
 
   private header: Header;
 
-  private footer: Footer;
+  public footer: Footer;
 
   constructor() {
     this.body = <HTMLElement>document.querySelector('body');
