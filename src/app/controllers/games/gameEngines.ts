@@ -103,7 +103,7 @@ class AudioCallEngine extends GameEngine {
     this.suggestedTranslations.forEach((element, index) => {
       this.correctOptions.push(element.indexOf(correctWord[index]));
     });
-    AudioCallEngine.correctAnserw = [...this.correctOptions];
+    AudioCallEngine.correctAnswers = [...this.correctOptions];
     this.idx = -1;
   }
 
