@@ -1,3 +1,6 @@
+import '../../assets/sound/correct-answer.mp3';
+import '../../assets/sound/wrong-answer.mp3';
+
 export class SoundController {
   private playerCorrect: HTMLAudioElement;
 
@@ -18,7 +21,6 @@ export class SoundController {
 
   stopPlay() {
     this.playerCorrect.currentTime = 0;
-    console.log('this.playerCorrect: ', this.playerCorrect);
     this.playerCorrect.pause();
     this.playerIncorrect.currentTime = 0;
     this.playerIncorrect.pause();

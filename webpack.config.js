@@ -43,6 +43,13 @@ module.exports = {
           filename: 'assets/fonts/[name][ext]',
         },
       },
+      {
+        test: /\.(mp3|wav)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/sound/[name][ext]',
+        },
+      },
     ],
   },
   resolve: {
