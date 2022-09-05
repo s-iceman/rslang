@@ -1,11 +1,14 @@
+import '../../assets/sound/correct-answer.mp3';
+import '../../assets/sound/wrong-answer.mp3';
+
 export class SoundController {
   private playerCorrect: HTMLAudioElement;
 
   private playerIncorrect: HTMLAudioElement;
 
   constructor() {
-    this.playerCorrect = new Audio('../../assets/sound/correct-answer.wav');
-    this.playerIncorrect = new Audio('../../assets/sound/wrong-answer.wav');
+    this.playerCorrect = new Audio('../../assets/sound/correct-answer.mp3');
+    this.playerIncorrect = new Audio('../../assets/sound/wrong-answer.mp3');
   }
 
   async startPlay(isCorrect: boolean): Promise<void> {

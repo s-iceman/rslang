@@ -10,7 +10,7 @@ export class LoginController {
   private urlUserCreate: string;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8082';
+    this.baseUrl = 'https://rs-react-learnwords-example.herokuapp.com';
     this.urlUserCreate = `${this.baseUrl}/users`;
     this.urlSignin = `${this.baseUrl}/signin`;
   }
@@ -95,7 +95,6 @@ export class LoginController {
   static checkTimeToken() {
     const timeSignIn = localStorage.getItem('dateSignIn');
     if (timeSignIn !== null) {
-      console.log(timeSignIn);
       if (Number(timeSignIn) + 14400000 < Date.now()) {
         LoginController.logOut();
       }

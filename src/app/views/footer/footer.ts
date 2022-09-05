@@ -1,15 +1,21 @@
 import Component from '../components/components';
 
 class Footer extends Component {
+  footerBody: null | HTMLElement;
+
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(tagName: string, className: string, id?: string) {
     super(tagName, className, id);
+    this.footerBody = null;
   }
 
   render() {
-    this.container.innerHTML = `
-    <div class='container'>
-      <div class="footer__body">
+    const footerContainer = document.createElement('div');
+    this.footerBody = document.createElement('div');
+    footerContainer.classList.add('container');
+    this.footerBody.classList.add('footer__body');
+
+    this.footerBody.innerHTML = `
       <div class="footer__rsshool_img">
       <a target="_blank" href="https://rs.school/"><img src="./assets/img/rs_school.jpg" alt="rs_school"></a></div>
       <div class="footer__members">
@@ -26,9 +32,10 @@ class Footer extends Component {
           <p class="gitHub">SpeakLang</p></a>
       </div>
       <div class="footer__copyright">©<span>2022 RSLang</span></div>
-        </div>
-    </div>
   `;
+
+    footerContainer.append(this.footerBody);
+    this.container.append(footerContainer);
     return this.container;
   }
 }

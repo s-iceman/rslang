@@ -36,7 +36,7 @@
     &__controls {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: center;
       gap: 2rem;
       font-size: 1.8rem;
       padding-top: 1rem;
@@ -46,6 +46,10 @@
       color: rgba(3, 63, 95, 0.82);
       font-size: 2.6rem;
       text-align: center;
+    }
+
+    .level--show {
+      justify-content: space-between;
     }
   }
 
@@ -99,13 +103,31 @@
   }
 
   .card--right {
-    box-shadow: 0 0 10px 2px #00f7d2;
+    box-shadow: 0 0 .1rem .2rem #00f7d2;
     transition: all 0.3s;
   }
 
   .card--wrong {
-    box-shadow: 0 0 10px 2px #c53107;
-    transition: all 0.3s;
+    box-shadow: 0 0 .1rem .2rem #c53107;
+    transition: all .3s;
+  }
+
+  .voice-call {
+    flex-wrap: wrap;
+
+    &__btn {
+      min-width: 40%;
+    }
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+
+      .game-card__btn {
+        width: 80%;
+      }
+    }
   }
 }
 
@@ -159,7 +181,7 @@
 
   select {
     border-radius: 0.3rem;
-    width: 6rem;
+    width: 7rem;
   }
 
   option {
@@ -170,7 +192,6 @@
 .game-card__btn {
   background-color: #1c97d9;
   font-size: 1.8rem;
-  min-width: 21rem;
 }
 
 .game-card__btn_true {

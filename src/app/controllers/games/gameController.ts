@@ -67,7 +67,7 @@ export class GameController extends State implements IGameController {
   async updateView(): Promise<void> {
     if (this.gameView) {
       this.gameView.updateView();
-      await new Promise(() => {}); // пока костыль
+      await new Promise(() => {});
     }
   }
 
