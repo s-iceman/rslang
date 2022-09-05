@@ -75,6 +75,8 @@ class AudioCallEngine extends GameEngine {
 
   private singleAnswerScore: number;
 
+  static correctAnserw: number[];
+
   constructor() {
     super();
     this.streakLength = 0;
@@ -101,6 +103,7 @@ class AudioCallEngine extends GameEngine {
     this.suggestedTranslations.forEach((element, index) => {
       this.correctOptions.push(element.indexOf(correctWord[index]));
     });
+    AudioCallEngine.correctAnserw = [...this.correctOptions];
     this.idx = -1;
   }
 
