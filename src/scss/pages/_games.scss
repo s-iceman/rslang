@@ -65,7 +65,7 @@
     font-size: 2rem;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 0.5rem;
 
     li {
       list-style: initial;
@@ -106,13 +106,13 @@
   }
 
   .card--right {
-    box-shadow: 0 0 .1rem .2rem #00f7d2;
+    box-shadow: 0 0 0.1rem 0.2rem #00f7d2;
     transition: all 0.3s;
   }
 
   .card--wrong {
-    box-shadow: 0 0 .1rem .2rem #c53107;
-    transition: all .3s;
+    box-shadow: 0 0 0.1rem 0.2rem #c53107;
+    transition: all 0.3s;
   }
 
   .voice-call {
@@ -201,6 +201,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease-out;
+  min-width: 20rem;
 }
 
 .button-audio:hover {
