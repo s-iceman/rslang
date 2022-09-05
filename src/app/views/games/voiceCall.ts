@@ -29,6 +29,8 @@ export class VoiceCallView extends BaseGameView {
 
   private newData: GameCardData | undefined;
 
+  private inCorrectIdForAnswersChecking: string;
+
   constructor(baseUrl: string) {
     super(baseUrl);
     this.startPage = new VoiceCallStartPage();
@@ -41,6 +43,7 @@ export class VoiceCallView extends BaseGameView {
     this.optionsBtn = [];
     this.step = 0;
     this.newData = undefined;
+    this.inCorrectIdForAnswersChecking = '10';
   }
 
   static getPath(): string {
@@ -78,7 +81,7 @@ export class VoiceCallView extends BaseGameView {
     const goNextBnt = new CreateMarkup(cardWord.node, 'div', 'button game-card__btn');
 
     goNextBnt.node.textContent = 'Далее ►';
-    goNextBnt.node.id = '10';
+    goNextBnt.node.id = this.inCorrectIdForAnswersChecking;
     this.goNextBnt = goNextBnt.node;
 
     this.controls = new CreateMarkup(card, 'div', 'game-card__controls');
@@ -94,7 +97,7 @@ export class VoiceCallView extends BaseGameView {
   }
 
   createOptionBtn(data: GameCardData) {
-    this.goNextBnt!.id = '10';
+    this.goNextBnt!.id = this.inCorrectIdForAnswersChecking;
     this.correctWord!.innerHTML = '';
     this.correctWordTranscription!.innerHTML = '';
     this.correctWordTranslate!.innerHTML = '';
@@ -112,7 +115,7 @@ export class VoiceCallView extends BaseGameView {
   }
 
   displayCorrectOption(event: MouseEvent, data?: GameCardData) {
-    const corectOption = AudioCallEngine.correctAnserw[this.step];
+    const corectOption = AudioCallEngine.correctAnswers[this.step];
     const coosenOptins = (<HTMLElement>event.target).id;
     const inCorrectOptions = this.optionsBtn?.filter((el, index) => index !== corectOption);
     inCorrectOptions?.forEach((options) => {

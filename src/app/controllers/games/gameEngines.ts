@@ -75,7 +75,7 @@ class AudioCallEngine extends GameEngine {
 
   private singleAnswerScore: number;
 
-  static correctAnserw: number[];
+  static correctAnswers: number[];
 
   constructor() {
     super();
