@@ -24,7 +24,7 @@ class AppController implements IAppController {
   private activeView: ViewOrNotInit;
 
   constructor() {
-    this.baseUrl = 'http://localhost:8082';
+    this.baseUrl = 'https://rs-react-learnwords-example.herokuapp.com';
     this.router = new Router(this.baseUrl);
     this.model = new AppModel(this.baseUrl);
 

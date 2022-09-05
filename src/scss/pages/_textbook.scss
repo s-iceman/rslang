@@ -10,19 +10,19 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 30px;
+    gap: 2rem;
     padding: 5rem;
+    cursor: default;
 
-    @media screen and (max-width: 767px) {
-      padding-bottom: 4rem;
+    @media screen and (max-width: 768px) {
+      padding: 4rem 0;
 
       .why-us__box {
-        width: 20rem;
-        height: 20rem;
+        width: 50%;
+        height: 100%;
 
         &_img {
-          width: 12rem;
-          height: 12rem;
+          width: 80%;
         }
       }
     }

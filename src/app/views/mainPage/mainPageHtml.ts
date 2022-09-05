@@ -38,41 +38,35 @@ export function innerText(): string {
         </div>
 
         <div class="why-us__boxs">
-
           <div class="">
             <div class="why-us__box">
-              <span></span>
               <h4>Учебник</h4>
-             <a class="content__game" href='#${ViewPath.TEXTBOOK}'><div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="statistic"></div></a>
-             
-              <p>Увеличивай свой словарь</p>
+              <a class="content__game" href='#${ViewPath.TEXTBOOK}'><div class="why-us__box_img"><img src="./assets/img/why-as-box/textbook.jpg" alt="textbook"></div></a>
+              <span>Увеличивай свой словарь</span>
             </div>
           </div>
 
           <div class="">
             <div class="why-us__box">
-              <span></span>
               <h4>Аудиовызов</h4>
-             <a class="content__game" href='#${ViewPath.VOICECALL}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/savana.jpg" alt="audiocall"></div></a>
-              <p>Слушай и запоминай</p>
+              <a class="content__game" href='#${ViewPath.VOICECALL}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/audiocall.jpg" alt="audiocall"></div></a>
+              <span>Слушай и запоминай</span>
             </div>
           </div>
 
           <div class="">
             <div class="why-us__box">
-              <span></span>
               <h4>Спринт</h4>
-             <a class="content__game" href='#${ViewPath.SPRINT}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="spritn"></div></a>
-              <p>Пробуй запоминать быстрее.</p>
+              <a class="content__game" href='#${ViewPath.SPRINT}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/sprint.jpg" alt="sprint"></div></a>
+              <span>Пробуй запоминать быстрее.</span>
             </div>
           </div>
 
           <div class="">
             <div class="why-us__box">
-              <span></span>
               <h4>Статистика</h4>
-             <a class="content__game" href='#${ViewPath.STATISTICS}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistic.png" alt="statistic"></div></a>
-              <p>Отслеживайте свой прогресс.</p>
+              <a class="content__game" href='#${ViewPath.STATISTICS}'> <div class="why-us__box_img"><img src="./assets/img/why-as-box/statistics.jpg" alt="statistics"></div></a>
+              <span>Отслеживайте свой прогресс.</span>
             </div>
           </div>
 
@@ -96,7 +90,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="./assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
@@ -120,7 +114,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="./assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
@@ -143,7 +137,7 @@ export function innerText(): string {
       
           <div class="team__member">
           <div class="member__img">
-          <img src="./assets/img/team/team-1.jpeg" alt="member">
+          <img src="./assets/img/team/team-1.jpg" alt="member">
           </div>
           <div class="member__info">
           <div class="member__info__content">
